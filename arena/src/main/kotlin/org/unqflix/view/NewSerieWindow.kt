@@ -66,6 +66,7 @@ class NewSerieWindow(owner: WindowOwner, model: NewSerieAppModel) : SimpleWindow
             }
 
             List<CategoryAppModel>(it) with {
+                setHeight(100)
                 bindItemsTo("categories").adaptWithProp<CategoryAppModel>("name")
                 bindSelectedTo("categorySelected")
 
@@ -91,6 +92,7 @@ class NewSerieWindow(owner: WindowOwner, model: NewSerieAppModel) : SimpleWindow
                     bindSelectedTo("relatedSerieToRemove")
                 }
                 List<SerieAppModel>(it) with {
+                    setWidth(100)
                     bindItemsTo("allSeries").adaptWithProp<SerieAppModel>("title")
                     bindSelectedTo("serieSelected")
                 }
