@@ -12,7 +12,8 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-
+/arena/.idea/
+/arena/target/
 # Generated files
 .idea/**/contentModel.xml
 
