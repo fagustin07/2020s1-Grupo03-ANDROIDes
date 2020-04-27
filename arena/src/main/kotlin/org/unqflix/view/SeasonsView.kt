@@ -1,10 +1,7 @@
 package org.unqflix.view
 
 import ICON
-import org.unqflix.model.EditSerieAppModel
-import org.unqflix.model.NewSerieAppModel
-import org.unqflix.model.SeasonsAppModel
-import org.unqflix.model.SerieAppModel
+import org.unqflix.model.*
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
@@ -12,13 +9,13 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
 
-class SeasonsView(owner : WindowOwner, model : SerieAppModel) : SimpleWindow<SerieAppModel>(owner,model) {
-
+class SeasonsView(owner : WindowOwner, model : SerieAppModel, private val modelBack: UNQflixAppModel) : SimpleWindow<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= ""
         iconImage= ICON
         Label(mainPanel) with { text = thisWindow.modelObject.title }
+
         makeTableOfSeasons(mainPanel)
     }
 
@@ -55,6 +52,10 @@ class SeasonsView(owner : WindowOwner, model : SerieAppModel) : SimpleWindow<Ser
             Button(it) with {
                 caption = "Show chapters"
                 onClick { }
+            }
+            Button(it) with {
+                caption = "Back"
+                onClick{thisWindow.close() ; UNQflixWindow(owner, modelBack).open() }
             }
 
         }

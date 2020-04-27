@@ -64,8 +64,8 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             }
             Button(it) with {
                 caption = "Show selected"
-                onClick {
-                    thisWindow.modelObject.selectedSerie?.let { it1 -> SeasonsView(owner, it1).open() }
+                onClick { thisWindow.close() ;
+                    thisWindow.modelObject.selectedSerie?.let { it1 -> SeasonsView(owner, it1, thisWindow.modelObject).open() }
 
                 }
             }
