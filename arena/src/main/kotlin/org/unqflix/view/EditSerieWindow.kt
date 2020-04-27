@@ -109,8 +109,8 @@ class EditSerieWindow(owner: WindowOwner, model: EditSerieAppModel) : SimpleWind
         }
     }
 
-    override fun addActions(p0: Panel?) {
-        Button(p0) with {
+    override fun addActions(mainPanel: Panel) {
+        Button(mainPanel) with {
             caption= "Modify"
             onClick {
                 try {
@@ -122,7 +122,7 @@ class EditSerieWindow(owner: WindowOwner, model: EditSerieAppModel) : SimpleWind
                 }
             }
         }
-        Button(p0) with {
+        Button(mainPanel) with {
             caption= "Cancel"
             onClick { close() }
         }

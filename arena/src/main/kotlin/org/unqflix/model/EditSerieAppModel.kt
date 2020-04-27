@@ -26,9 +26,9 @@ class EditSerieAppModel(selectedSerie : SerieAppModel?, model : UNQFlix) {
         categories = categoryToAppModel(system.categories)
         serieCategories = categoryToAppModel(serieToEdit?.serie?.categories)
 
-        val contents = mutableListOf<SerieAppModel>()
-        serieToEdit?.serie?.relatedContent?.forEach { contents.add(it)}
-        contents.forEach {relatedContent.add(it)}
+       // val contents = mutableListOf<SerieAppModel>()
+        //serieToEdit?.serie?.relatedContent?.forEach { contents.add(it)}
+        //contents.forEach {relatedContent.add(it)}
 
         val series = mutableListOf<SerieAppModel>()
         system.series.forEach { series.add(SerieAppModel(it)) }
