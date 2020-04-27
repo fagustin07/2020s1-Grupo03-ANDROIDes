@@ -2,9 +2,7 @@ package org.unqflix.view
 
 import ICON
 import org.unqflix.exceptions.NoSelectSerieException
-import org.unqflix.model.NewSerieAppModel
-import org.unqflix.model.SerieAppModel
-import org.unqflix.model.UNQflixAppModel
+import org.unqflix.model.*
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
@@ -55,11 +53,21 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             }
             Button(it) with {
                 caption = "Modify selected"
-                onClick { }
+                onClick {
+                    EditSerieWindow(
+                        owner, EditSerieAppModel(
+                                                thisWindow.modelObject.selectedSerie,thisWindow.modelObject.system)
+                    ).open()
+
+                    thisWindow.modelObject.restartFilter()
+                }
             }
             Button(it) with {
                 caption = "Show selected"
-                onClick { }
+                onClick {
+                    thisWindow.modelObject.selectedSerie?.let { it1 -> SeasonsView(owner, it1).open() }
+
+                }
             }
             Button(it) with {
                 caption = "Delete selected"
@@ -117,7 +125,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             column {
                 title = "Seasons"
                 alignCenter()
-                bindContentsTo("seasons")
+                bindContentsTo("seasonsSize")
             }
             column {
                 title = "State"

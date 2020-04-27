@@ -38,4 +38,7 @@ class UNQflixAppModel(private val model: UNQFlix, val idGenerator: IdGenerator) 
         serieToSearch=""
         filtrateSeries()
     }
+
+
 }
+
