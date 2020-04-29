@@ -52,7 +52,8 @@ class ApplicationUNQflix: Application() {
         var csFic = Category(idGenerator.nextCategoryId(),"Cs. Fiction")
         var rltShow = Category(idGenerator.nextCategoryId(),"Reality Show")
         var trror = Category(idGenerator.nextCategoryId(),"Terror")
-        return mutableListOf(comedy,anime,horror,csFic,rltShow,trror)
+        var rmc = Category(idGenerator.nextCategoryId(),"Romance")
+        return mutableListOf(comedy,anime,horror,csFic,rltShow,trror,rmc)
     }
 
     fun baseSeasons(idGenerator: IdGenerator) : MutableList<Season>{

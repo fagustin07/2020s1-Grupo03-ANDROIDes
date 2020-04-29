@@ -1,13 +1,14 @@
 package org.unqflix.model
 
 import domain.IdGenerator
+import domain.Serie
 import domain.UNQFlix
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
 class UNQflixAppModel(private val model: UNQFlix, val idGenerator: IdGenerator) {
-    var system = model
-    lateinit var filteredSeries: MutableList<SerieAppModel>
+    var unqflixModel = model
+    var filteredSeries= mutableListOf<SerieAppModel>()
 
     var selectedSerie: SerieAppModel? = null
     var serieToSearch: String = ""
@@ -17,26 +18,36 @@ class UNQflixAppModel(private val model: UNQFlix, val idGenerator: IdGenerator) 
         }
 
     init {
-        val series = mutableListOf<SerieAppModel>()
-        system.series.forEach {
-            series.add(SerieAppModel(it))
-
-            filteredSeries = series
-        }
+        unqflixModel.series.forEach { filteredSeries.add(SerieAppModel(it)) }
+    }
+    fun addSerie(newSerie: Serie) {
+        unqflixModel.addSerie(newSerie)
+        restartFilter()
     }
 
     fun filtrateSeries() {
         filteredSeries.removeAll(filteredSeries)
-        system.searchSeries(serieToSearch).forEach { filteredSeries.add(SerieAppModel(it)) }
+        unqflixModel.searchSeries(serieToSearch).forEach { filteredSeries.add(SerieAppModel(it)) }
     }
 
     fun removeSerie() {
-        selectedSerie?.id?.let { system.deleteSerie(it) }
+        selectedSerie?.id?.let { unqflixModel.deleteSerie(it) }
     }
 
     fun restartFilter() {
         serieToSearch=""
         filtrateSeries()
+    }
+    fun categories(): MutableList<CategoryAppModel> {
+        var categoriesInSystem = mutableListOf<CategoryAppModel>()
+        unqflixModel.categories.forEach { categoriesInSystem.add(CategoryAppModel(it))}
+        return categoriesInSystem
+    }
+
+    fun series(): MutableList<SerieAppModel>{
+        var seriesInSystem = mutableListOf<SerieAppModel>()
+        unqflixModel.series.forEach { seriesInSystem.add(SerieAppModel(it))}
+        return seriesInSystem
     }
 
 

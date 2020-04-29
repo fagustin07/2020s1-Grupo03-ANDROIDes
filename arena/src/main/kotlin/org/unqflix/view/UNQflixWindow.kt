@@ -1,6 +1,9 @@
 package org.unqflix.view
 
 import ICON
+import domain.ExistsException
+import domain.Serie
+import domain.Unavailable
 import org.unqflix.exceptions.NoSelectSerieException
 import org.unqflix.model.*
 import org.uqbar.commons.model.exceptions.UserException
@@ -41,31 +44,59 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Add new serie"
                 onClick {
-                    NewSerieWindow(
-                        owner, NewSerieAppModel(
-                            thisWindow.modelObject.system,
-                            thisWindow.modelObject.idGenerator
-                        )
-                    ).open()
-
-                    thisWindow.modelObject.restartFilter()
+                    close()
+                    val newSerie=newSerie()
+                    NewSerieDialog(
+                        owner,
+                        SerieAppModel(newSerie,thisWindow.modelObject.categories(), thisWindow.modelObject.series())
+                    )with {
+                        onAccept{
+                            addSerieToSystem(newSerie)
+                            reopenWindow()
+                        }
+                        onCancel{
+                            reopenWindow()
+                        }
+                        open()
+                    }
                 }
             }
             Button(it) with {
                 caption = "Modify selected"
                 onClick {
-                    EditSerieWindow(
-                        owner, EditSerieAppModel(
-                                                thisWindow.modelObject.selectedSerie,thisWindow.modelObject.system)
-                    ).open()
-
-                    thisWindow.modelObject.restartFilter()
+                    try {
+                        checkSelectSerieOrException()
+                    } catch (e: NoSelectSerieException) {
+                        throw UserException(e.message)
+                    }
+                    EditSerieDialog(owner, thisWindow.modelObject.selectedSerie?.serie?.let
+                    { serie -> SerieAppModel(serie, categories(), series()) })with {
+                        onAccept{
+                            restartFilter()
+                            reopenWindow()
+                        }
+                        onCancel{
+                            reopenWindow()
+                        }
+                        open()
+                    }
                 }
             }
             Button(it) with {
                 caption = "Show selected"
-                onClick { thisWindow.close() ;
-                    thisWindow.modelObject.selectedSerie?.let { it1 -> SeasonsView(owner, it1, thisWindow.modelObject).open() }
+                onClick {
+                    try {
+                        checkSelectSerieOrException()
+                    } catch (e: NoSelectSerieException) {
+                        throw UserException(e.message)
+                    }
+                    thisWindow.modelObject.selectedSerie?.let { it1 ->
+                        SeasonsView(owner, it1) with {
+                            onCancel {
+                                reopenWindow()
+                            }
+                        }
+                    }
 
                 }
             }
@@ -73,7 +104,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 caption = "Delete selected"
                 onClick {
                     try {
-                        verifySelected()
+                        checkNoSelectedException()
                     } catch (e: NoSelectSerieException) {
                         throw UserException(e.message)
                     }
@@ -81,15 +112,44 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         onAccept { thisWindow.modelObject.removeSerie() }
                         onCancel { close() }
                         open()
-                        thisWindow.modelObject.restartFilter()
+                       restartFilter()
                     }
                 }
             }
         }
     }
 
-    private fun verifySelected() {
-        if (modelObject.selectedSerie==null){
+    private fun reopenWindow() {
+        UNQflixWindow(owner,modelObject).open()
+    }
+    private fun restartFilter() {
+        modelObject.restartFilter()
+    }
+
+
+    private fun newSerie(): Serie {
+        return Serie(modelObject.idGenerator.nextSerieId(),"","","", Unavailable())
+    }
+
+    private fun addSerieToSystem(newSerie: Serie) {
+        try {
+            modelObject.addSerie(newSerie)
+        }catch(e: ExistsException){
+            throw UserException(e.message)
+        }
+        reopenWindow()
+    }
+
+    private fun categories()=modelObject.categories()
+    private fun series()=modelObject.series()
+
+    private fun checkSelectSerieOrException() {
+        checkNoSelectedException()
+        close()
+    }
+
+    private fun checkNoSelectedException() {
+        if (modelObject.selectedSerie == null) {
             throw NoSelectSerieException("To do this, first, click on a serie please.")
         }
     }

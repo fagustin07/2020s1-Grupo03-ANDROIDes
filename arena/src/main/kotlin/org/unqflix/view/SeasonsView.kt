@@ -6,10 +6,10 @@ import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.windows.SimpleWindow
+import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 
-class SeasonsView(owner : WindowOwner, model : SerieAppModel, private val modelBack: UNQflixAppModel) : SimpleWindow<SerieAppModel>(owner,model) {
+class SeasonsView(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= ""
@@ -55,7 +55,8 @@ class SeasonsView(owner : WindowOwner, model : SerieAppModel, private val modelB
             }
             Button(it) with {
                 caption = "Back"
-                onClick{thisWindow.close() ; UNQflixWindow(owner, modelBack).open() }
+                onClick{ cancel()
+                }
             }
 
         }
