@@ -14,20 +14,14 @@ class SeasonAppModel(season: Season) {
 
 
     var chaptersSize = model.chapters.size
-    lateinit var chaptersF: MutableList<ChapterAppModel>
+    var chaptersF= mutableListOf<ChapterAppModel>()
 
     init {
-        val chapters = mutableListOf<ChapterAppModel>()
-        model.chapters.forEach {
-            chapters.add(ChapterAppModel(it))
-        }
-
-        chaptersF = chapters
+        model.chapters.forEach { chaptersF.add(ChapterAppModel(it)) }
     }
 
 
     fun modifySeason() {
-        id = id
         model.title = title
         model.description = description
         model.poster = poster

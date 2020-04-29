@@ -1,4 +1,4 @@
-package org.unqflix.view
+package org.unqflix.view.season
 
 import ICON
 import org.unqflix.model.SeasonAppModel
@@ -8,10 +8,10 @@ import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.lacar.ui.model.Action
 
-class SeasonNewDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
+class NewSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title= "Creating new Serie"
+        title= "Creating new Season"
         iconImage= ICON
 
         baseInformation(mainPanel)
@@ -27,7 +27,7 @@ class SeasonNewDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<Sea
                 bindTo("title")
             }
             Label(it) withText ("Description: ")
-            TextBox(it) with {
+            KeyWordTextArea(it) with {
                 width = 100
                 height = 60
                 bindTo("description")
@@ -47,11 +47,11 @@ class SeasonNewDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<Sea
             asColumns(2)
             Button(it) with {
                 caption = "Save"
-                onClick(Action { thisWindow.modelObject.modifySeason() ; close() ; accept()})
+                onClick{ thisWindow.modelObject.modifySeason() ; close() ; accept()}
             }
             Button(it) with {
                 caption = "Cancel"
-                onClick(Action { close() ; cancel() })
+                onClick{ close()}
             }
 
 

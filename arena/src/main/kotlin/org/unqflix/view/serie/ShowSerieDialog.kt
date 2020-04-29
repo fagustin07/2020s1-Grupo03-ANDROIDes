@@ -1,9 +1,11 @@
-package org.unqflix.view
+package org.unqflix.view.serie
 
 import ICON
 import data.idGenerator
 import domain.Season
 import org.unqflix.model.*
+import org.unqflix.view.season.EditSeasonDialog
+import org.unqflix.view.season.NewSeasonDialog
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
@@ -11,13 +13,18 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.lacar.ui.model.Action
+import java.awt.Color
 
-class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieAppModel>(owner,model) {
+class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title= "Seasons"
+        title= "Seasons from ${modelObject.title}"
         iconImage= ICON
-        Label(mainPanel) with { text = thisWindow.modelObject.title }
+        Label(mainPanel) with {
+            fontSize=11
+            bgColor= Color(0,164,144)
+            color= Color(250,250,200)
+            text = "~ ${thisWindow.modelObject.idAndTitle} ~" }
 
         makeTableOfSeasons(mainPanel)
     }
@@ -28,14 +35,21 @@ class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieApp
             bindItemsTo("seasonsF")
             bindSelectionTo("seasonSelected")
             column {
-                title = "Seasons"
-                fixedSize=150
+                title = "#"
+                fixedSize=50
+                alignCenter()
+                bindContentsTo("id")
+            }
+            column {
+                title = "Season"
+                fixedSize=120
                 alignCenter()
                 bindContentsTo("title")
             }
             column {
                 title = "#Chapters"
                 alignCenter()
+                fixedSize=70
                 bindContentsTo("chaptersSize")
             }
         }
@@ -47,11 +61,11 @@ class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieApp
             Button(it) with {
                 caption = "Add new season"
                 onClick {
-                    close()
                     val newSeason = newSeason()
-                    SeasonNewDialog(owner, SeasonAppModel(newSeason)) with {
-                        onAccept { addSeasonToSystem(newSeason); reopenSeasonWindow() }
-                        onCancel { reopenSeasonWindow() }
+                    NewSeasonDialog(owner, SeasonAppModel(newSeason)) with {
+                        onAccept {
+                            addSeasonToSystem(newSeason)
+                        }
                         open()
                     }
                 }
@@ -59,12 +73,10 @@ class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieApp
             Button(it) with {
                 caption = "Modify Season"
                 onClick {
-                    close()
-                    SeasonEditDialog(
+                    EditSeasonDialog(
                         owner, thisWindow.modelObject.seasonSelected?.model?.let
                         { season -> SeasonAppModel(season) }) with {
-                        onAccept { reopenSeasonWindow(); updateData() }
-                        onCancel { reopenSeasonWindow() }
+                        onAccept {updateData() }
                         open()
                     }
                 }
@@ -75,14 +87,14 @@ class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieApp
             }
             Button(it) with {
                 caption = "Back"
-                onClick (Action{ close() ; cancel()})
+                onClick { close() ; cancel()}
             }
 
         }
     }
 
         fun reopenSeasonWindow(){
-            SeasonDialog(owner,modelObject).open()
+            ShowSerieDialog(owner, modelObject).open()
         }
 
 
@@ -90,8 +102,6 @@ class SeasonDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieApp
 
     fun addSeasonToSystem(season: Season){
         modelObject.addSeasonToSystem(SeasonAppModel(season))
-        reopenSeasonWindow()
-
     }
 
     fun updateData(){

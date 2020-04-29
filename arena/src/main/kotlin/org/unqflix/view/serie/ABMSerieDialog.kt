@@ -1,6 +1,5 @@
-package org.unqflix.view
+package org.unqflix.view.serie
 
-import ICON
 import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.model.CategoryAppModel
 import org.unqflix.model.SerieAppModel
@@ -49,12 +48,14 @@ abstract class ABMSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialo
             asColumns(2)
             List<CategoryAppModel>(it) with {
                 setHeight(100)
+                setWidth(70)
                 bindItemsTo("chosenCategories").adaptWithProp<CategoryAppModel>("name")
                 bindSelectedTo("categoryToRemove")
             }
 
             List<CategoryAppModel>(it) with {
                 setHeight(100)
+                setWidth(90)
                 bindItemsTo("systemCategories").adaptWithProp<CategoryAppModel>("name")
                 bindSelectedTo("categorySelected")
 
@@ -75,13 +76,15 @@ abstract class ABMSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialo
             title = "Related content: "
             asColumns(2)
             List<SerieAppModel>(it) with {
-                setWidth(100)
-                bindItemsTo("chosenSeries").adaptWithProp<SerieAppModel>("title")
+                setWidth(150)
+                setHeight(100)
+                bindItemsTo("chosenSeries").adaptWithProp<SerieAppModel>("idAndTitle")
                 bindSelectedTo("relatedSerieToRemove")
             }
             List<SerieAppModel>(it) with {
-                setWidth(100)
-                bindItemsTo("allSeries").adaptWithProp<SerieAppModel>("title")
+                setWidth(150)
+                setHeight(100)
+                bindItemsTo("allSeries").adaptWithProp<SerieAppModel>("idAndTitle")
                 bindSelectedTo("serieSelected")
             }
             Button(it) with {

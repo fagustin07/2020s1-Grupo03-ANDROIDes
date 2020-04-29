@@ -1,4 +1,4 @@
-package org.unqflix.view
+package org.unqflix.view.serie
 
 import ICON
 import org.unqflix.model.UNQflixAppModel

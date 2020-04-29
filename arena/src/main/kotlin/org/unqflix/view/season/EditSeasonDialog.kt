@@ -1,4 +1,4 @@
-package org.unqflix.view
+package org.unqflix.view.season
 
 import ICON
 import org.unqflix.model.SeasonAppModel
@@ -8,10 +8,10 @@ import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.lacar.ui.model.Action
 
-class SeasonEditDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
+class EditSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title= "Editing Serie"
+        title= "Editing season"
         iconImage= ICON
 
         baseInformation(mainPanel)
@@ -47,11 +47,17 @@ class SeasonEditDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<Se
             asColumns(2)
             Button(it) with {
                 caption = "Save"
-                onClick(Action { thisWindow.modelObject.modifySeason() ; close() ; accept()})
+                onClick{
+                    thisWindow.modelObject.modifySeason()
+                    close()
+                    accept()
+                }
             }
             Button(it) with {
                 caption = "Cancel"
-                onClick(Action { close() ; cancel() })
+                onClick{
+                    close()
+                }
             }
 
 

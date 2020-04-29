@@ -25,19 +25,19 @@ class ApplicationUNQflix: Application() {
             poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
         var oneP = Serie(
             title = "one piece", description = "dragon ball", id = idGenerator.nextSerieId(),
-            poster = "google.com", state = Available(), categories = mutableListOf(baseCats[1]),seasons = baseSeas)
+            poster = "google.com", state = Available(), categories = mutableListOf(baseCats[1]))
         var gint = Serie(
             title = "gintama", description = "dragon ball", id = idGenerator.nextSerieId(),
-            poster = "google.com", state = Unavailable(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
+            poster = "google.com", state = Unavailable(),categories = mutableListOf(baseCats[1]))
         var dn = Serie(
             title = "death note", description = "dragon ball", id = idGenerator.nextSerieId(),
-            poster = "google.com", state = Unavailable(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
+            poster = "google.com", state = Unavailable(),categories = mutableListOf(baseCats[1]))
         var snk = Serie(
             title = "attack on titan", description = "dragon ball", id = idGenerator.nextSerieId(),
-            poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
+            poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]))
         var opm = Serie(
             title = "one punch man", description = "dragon ball", id = idGenerator.nextSerieId(),
-            poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
+            poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]))
 
         var baseSeries= mutableListOf(dbz,oneP,gint,dn,snk,opm)
 
@@ -59,17 +59,21 @@ class ApplicationUNQflix: Application() {
     fun baseSeasons(idGenerator: IdGenerator) : MutableList<Season>{
         var baseCh = baseChapters(idGenerator)
         var season1 = Season(
-            idGenerator.nextSeasonId(),"Season 1","La mejor temporada","google.com",chapters = baseCh)
+            idGenerator.nextSeasonId(),"Saga de Freezer","Freezer alto alien",
+            "dragonballz.com/sagafreezer.jpg",chapters = baseCh)
         var season2 = Season(
-            idGenerator.nextSeasonId(),"Season 2","La mejor temporada","google.com",chapters = baseCh)
+            idGenerator.nextSeasonId(),"Saga de Cell","Cell es un monstruo verde re polenta",
+            "dragonballz.com/sagadecell.jpg")
         return mutableListOf(season1,season2)
     }
 
     fun baseChapters(idGenerator: IdGenerator) : MutableList<Chapter>{
         var chapter1 = Chapter(
-            idGenerator.nextChapterId(),"Chapter 1","Pasan cosas",60,"","")
+            idGenerator.nextChapterId(),"Volamos hacia el espacio!","Termina la batalla entre saiyans" +
+                    "y deciden ir a Namekusei.",60,"dragonballz.com/sagadefreezer1.mp4","")
         var chapter2 = Chapter(
-            idGenerator.nextChapterId(),"Chapter 2","Pasan mas cosas",90,"","")
+            idGenerator.nextChapterId(),"El misterio de Yunzabit!","La busqueda de la nave espacial de Dios.",
+            90,"dragonballz.com/sagadefreezer2.mp4","")
         return mutableListOf(chapter1,chapter2)
     }
 }

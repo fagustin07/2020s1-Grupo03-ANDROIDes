@@ -2,6 +2,7 @@ package org.unqflix.model
 
 import domain.*
 import org.unqflix.exceptions.ExistSerieTitleException
+import org.uqbar.arena.kotlin.extensions.thisWindow
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
@@ -10,19 +11,13 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
 
     val model = serie
     val id = serie.id
-
+    var idAndTitle= "${serie.id} - ${serie.title}"
     var title = serie.title
         set(value){
             field=value.toLowerCase()
         }
     var poster = serie.poster
-        set(value) {
-            field=value
-        }
     var description= serie.description
-        set(value) {
-            field=value
-        }
     var status = serie.state::class == Available::class
     var state: String = if(serie.state::class == Available::class){
         "✓"
@@ -34,22 +29,22 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     var categorySelected : CategoryAppModel? = null
     var categoryToRemove: CategoryAppModel? = null
     var seasonSelected : SeasonAppModel? = null
-    var allSeries : MutableList<SerieAppModel>
-    var systemCategories : MutableList<CategoryAppModel>
+    var allSeries = series
+    var systemCategories = categories
     var chosenSeries = mutableListOf<SerieAppModel>()
     var chosenCategories = mutableListOf<CategoryAppModel>()
     var seasonsF = mutableListOf<SeasonAppModel>()
     var seasonsSize = serie.seasons.size
     init {
-        allSeries= series
-        systemCategories=categories
         allSeries.removeIf { it.serie==serie }
+        allSeries.sortBy { id }
 
         serie.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
         allSeries.forEach { if (serie.relatedContent.contains(it.serie)) chosenSeries.add(it) }
         systemCategories.forEach { if (serie.categories.contains(it.category)) chosenCategories.add(it) }
 
     }
+
     fun addCategory(){
         if(!chosenCategories.contains(categorySelected)) {
             categorySelected?.let { chosenCategories.add(it) }
@@ -75,7 +70,7 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
         serie.poster=poster
         serie.state=serieState()
         serie.categories=chosenCategories.map { it.category }.toMutableList()
-        serie.relatedContent=chosenSeries.map { it.serie }.toMutableList()
+        serie.relatedContent=chosenSeries.map { it.serie }.toMutableList<Content>()
     }
 
     fun modifySerie() {

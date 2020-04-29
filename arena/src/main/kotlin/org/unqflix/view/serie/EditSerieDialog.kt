@@ -1,33 +1,35 @@
-package org.unqflix.view
+package org.unqflix.view.serie
 
 import ICON
 import org.unqflix.exceptions.EmptyFieldException
+import org.unqflix.exceptions.ExistSerieTitleException
 import org.unqflix.model.SerieAppModel
-import org.uqbar.commons.model.exceptions.UserException
+import org.unqflix.view.serie.ABMSerieDialog
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.model.exceptions.UserException
 
-class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog(owner, model) {
+class EditSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog(owner, model) {
 
     override fun createFormPanel(mainPanel: Panel?) {
-        title= "Creating new Serie"
+        title= "Modify Serie"
         iconImage= ICON
-
+        setMinHeight(500)
+        setMinWidth(400)
         baseInformation(mainPanel)
         categoriesPanel(mainPanel)
         relatedContentPanel(mainPanel)
 
     }
 
-
-    override fun addActions(p0: Panel?) {
-        Button(p0) with {
-            caption= "Create"
+    override fun addActions(mainPanel: Panel) {
+        Button(mainPanel) with {
+            caption= "Modify"
             onClick {
                 try {
                     checkFields()
-                    thisWindow.modelObject.updateFields()
+                    tryToModify()
                     close()
                     accept()
                 }catch(e: EmptyFieldException){
@@ -35,7 +37,7 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
                 }
             }
         }
-        Button(p0) with {
+        Button(mainPanel) with {
             caption= "Cancel"
             onClick {
                 close()
@@ -43,5 +45,12 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
             }
         }
 
+    }
+    private fun tryToModify(){
+        try {
+            modelObject.modifySerie()
+        }catch (e: ExistSerieTitleException){
+            throw UserException(e.message)
+        }
     }
 }
