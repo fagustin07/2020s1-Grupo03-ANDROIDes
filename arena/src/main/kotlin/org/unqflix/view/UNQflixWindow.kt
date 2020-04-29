@@ -52,10 +52,10 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     )with {
                         onAccept{
                             addSerieToSystem(newSerie)
-                            reopenWindow()
+                            reopenPrincipalWindow()
                         }
                         onCancel{
-                            reopenWindow()
+                            reopenPrincipalWindow()
                         }
                         open()
                     }
@@ -73,10 +73,10 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     { serie -> SerieAppModel(serie, categories(), series()) })with {
                         onAccept{
                             restartFilter()
-                            reopenWindow()
+                            reopenPrincipalWindow()
                         }
                         onCancel{
-                            reopenWindow()
+                            reopenPrincipalWindow()
                         }
                         open()
                     }
@@ -91,10 +91,9 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         throw UserException(e.message)
                     }
                     thisWindow.modelObject.selectedSerie?.let { it1 ->
-                        SeasonsView(owner, it1) with {
-                            onCancel {
-                                reopenWindow()
-                            }
+                        SeasonDialog(owner, it1) with {
+                            onCancel { close() ; reopenPrincipalWindow() }
+                            open()
                         }
                     }
 
@@ -119,7 +118,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
         }
     }
 
-    private fun reopenWindow() {
+    private fun reopenPrincipalWindow() {
         UNQflixWindow(owner,modelObject).open()
     }
     private fun restartFilter() {
@@ -137,7 +136,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
         }catch(e: ExistsException){
             throw UserException(e.message)
         }
-        reopenWindow()
+        reopenPrincipalWindow()
     }
 
     private fun categories()=modelObject.categories()

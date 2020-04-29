@@ -33,19 +33,19 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     var relatedSerieToRemove: SerieAppModel? = null
     var categorySelected : CategoryAppModel? = null
     var categoryToRemove: CategoryAppModel? = null
-    var seasonSelected : SeasonsAppModel? = null
+    var seasonSelected : SeasonAppModel? = null
     var allSeries : MutableList<SerieAppModel>
     var systemCategories : MutableList<CategoryAppModel>
     var chosenSeries = mutableListOf<SerieAppModel>()
     var chosenCategories = mutableListOf<CategoryAppModel>()
-    var seasonsF = mutableListOf<SeasonsAppModel>()
+    var seasonsF = mutableListOf<SeasonAppModel>()
     var seasonsSize = serie.seasons.size
     init {
         allSeries= series
         systemCategories=categories
         allSeries.removeIf { it.serie==serie }
 
-        serie.seasons.forEach{ seasonsF.add(SeasonsAppModel(it))}
+        serie.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
         allSeries.forEach { if (serie.relatedContent.contains(it.serie)) chosenSeries.add(it) }
         systemCategories.forEach { if (serie.categories.contains(it.category)) chosenCategories.add(it) }
 
@@ -89,13 +89,26 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
                         "o bien, seleccione la que desea modificar en el menu principal.")
         }
     }
-    fun addSeason(season : SeasonsAppModel){
-        model.addSeason(season.system)
-    }
-
     fun deleteSeason(idSeason : String){
         model.deleteSeason(idSeason)
     }
+
+    fun addSeasonToSystem(season : SeasonAppModel){
+        model.addSeason(season.model)
+        update()
+    }
+
+
+    fun update() {
+        seasonsF.removeAll(seasonsF)
+        model.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
+        seasonsSize = model.seasons.size
+        seasonSelected = null
+    }
+
+
+
+
 
 
 }
