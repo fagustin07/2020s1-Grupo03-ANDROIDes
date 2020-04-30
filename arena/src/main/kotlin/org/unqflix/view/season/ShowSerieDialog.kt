@@ -17,16 +17,16 @@ import java.awt.Color
 class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel?) : Dialog<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title= "Seasons from ${modelObject.title}"
-        iconImage= ICON
-        Label(mainPanel) with {
-            fontSize=11
-            bgColor= Color(0,164,144)
-            color= Color(250,250,200)
-            text = "~ ${thisWindow.modelObject.idAndTitle()} ~" }
-
-        makeTableOfSeasons(mainPanel)
-    }
+        title = "Seasons from ${modelObject.title}"
+        iconImage = ICON
+            Label(mainPanel) with {
+                fontSize = 11
+                bgColor = Color(0, 164, 144)
+                color = Color(250, 250, 200)
+                text = "~ ${thisWindow.modelObject.idAndTitle()} ~"
+            }
+            makeTableOfSeasons(mainPanel)
+        }
 
     fun makeTableOfSeasons(mainPanel : Panel){
         table<SeasonAppModel>(mainPanel) with {
@@ -92,6 +92,20 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel?) : Dialog<Seri
                 onClick { }
             }
             Button(it) with {
+                caption = "Delete Season"
+                onClick{
+                    try {
+                        checkSelectSeasonOrException()
+                    } catch (e: NoSelectItemException) {
+                        throw UserException(e.message)
+                    }
+                    DeleteSeasonDialog(owner, thisWindow.modelObject.seasonSelected) with {
+                        onAccept { deleteSeason() }
+                        open()
+                    }
+                }
+            }
+            Button(it) with {
                 caption = "Back"
                 onClick {
                     close()
@@ -107,6 +121,9 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel?) : Dialog<Seri
             throw NoSelectItemException("To do this, first, click on a season please.")
         }
 
+    }
+    fun deleteSeason(){
+        modelObject.deleteSeason()
     }
 
     fun newSeason() = Season(IdGeneratorFactory.takeIdGen().nextSeasonId(),"","","")

@@ -35,8 +35,8 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
                 }
                 try {
                     thisWindow.modelObject.updateFields()
-                    accept()
                     close()
+                    accept()
                 }catch(e: ExistsException){
                     throw UserException(e.message)
                 }

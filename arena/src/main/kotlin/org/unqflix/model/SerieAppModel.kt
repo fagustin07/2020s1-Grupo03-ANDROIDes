@@ -87,9 +87,11 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
         model.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
         seasonSelected = null
     }
-    fun deleteSeason(idSeason : String){
-        model.deleteSeason(idSeason)
+    fun deleteSeason(){
+        seasonSelected?.id?.let { model.deleteSeason(it) }
+        updateSeasonsList()
     }
+
 
     fun state() = if(serie.state::class == Available::class) "✓" else "✘"
 

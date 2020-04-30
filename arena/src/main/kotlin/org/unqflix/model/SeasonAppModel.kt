@@ -28,7 +28,7 @@ class SeasonAppModel(season: Season, serieFromSeason : MutableList<Season> = mut
     }
 
     private fun checkTitle() {
-        if (serieFromSeason.map { it.title }.toMutableList().contains(title.toLowerCase())){
+        if (model.title!=title && serieFromSeason.map { it.title }.toMutableList().contains(title.toLowerCase())){
             throw ExistItemTitleException("El titulo '$title' ya existe en la serie seleccionada, por favor, elija otro nombre.")
         }
     }
