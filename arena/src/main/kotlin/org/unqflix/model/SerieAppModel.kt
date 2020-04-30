@@ -1,6 +1,7 @@
 package org.unqflix.model
 
 import domain.*
+import org.unqflix.exceptions.ExistSeasonTitleException
 import org.unqflix.exceptions.ExistSerieTitleException
 import org.uqbar.arena.kotlin.extensions.thisWindow
 import org.uqbar.commons.model.annotations.Observable
@@ -84,28 +85,22 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
                         "o bien, seleccione la que desea modificar en el menu principal.")
         }
     }
+
     fun deleteSeason(idSeason : String){
         model.deleteSeason(idSeason)
     }
 
-    fun addSeasonToSystem(season : SeasonAppModel){
-        model.addSeason(season.model)
+    fun addSeasonToSystem(season : Season){
+        model.addSeason(season)
         update()
-    }
 
+    }
 
     fun update() {
         seasonsF.removeAll(seasonsF)
         model.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
-        seasonsSize = model.seasons.size
         seasonSelected = null
     }
-
-
-
-
-
-
 }
 
 

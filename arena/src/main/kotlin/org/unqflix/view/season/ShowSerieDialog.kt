@@ -1,18 +1,19 @@
-package org.unqflix.view.serie
+package org.unqflix.view.season
 
 import ICON
 import data.idGenerator
+import domain.ExistsException
 import domain.Season
+import org.unqflix.exceptions.ExistSeasonTitleException
+import org.unqflix.exceptions.NoSelectSeasonException
 import org.unqflix.model.*
-import org.unqflix.view.season.EditSeasonDialog
-import org.unqflix.view.season.NewSeasonDialog
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.lacar.ui.model.Action
+import org.uqbar.commons.model.exceptions.UserException
 import java.awt.Color
 
 class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieAppModel>(owner,model) {
@@ -76,7 +77,7 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
                     EditSeasonDialog(
                         owner, thisWindow.modelObject.seasonSelected?.model?.let
                         { season -> SeasonAppModel(season) }) with {
-                        onAccept {updateData() }
+                        onAccept {update()}
                         open()
                     }
                 }
@@ -87,25 +88,24 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
             }
             Button(it) with {
                 caption = "Back"
-                onClick { close() ; cancel()}
+                onClick { close() }
             }
 
         }
     }
 
-        fun reopenSeasonWindow(){
-            ShowSerieDialog(owner, modelObject).open()
-        }
-
-
-        fun newSeason() = Season(idGenerator.nextSeasonId(),"","","")
+    fun newSeason() = Season(idGenerator.nextSeasonId(),"","","")
 
     fun addSeasonToSystem(season: Season){
-        modelObject.addSeasonToSystem(SeasonAppModel(season))
+        try {
+            modelObject.addSeasonToSystem(season)
+            } catch (e: ExistsException){
+              throw UserException(e.message)
+        }
     }
 
-    fun updateData(){
-        modelObject.update()
+    fun update(){
+            modelObject.update()
     }
 
 }

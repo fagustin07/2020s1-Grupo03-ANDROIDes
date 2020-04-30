@@ -1,6 +1,8 @@
 package org.unqflix.model
 
 import domain.Season
+import org.unqflix.exceptions.ExistSeasonTitleException
+import org.unqflix.exceptions.ExistSerieTitleException
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
@@ -12,7 +14,6 @@ class SeasonAppModel(season: Season) {
     var description = season.description
     var poster = season.poster
 
-
     var chaptersSize = model.chapters.size
     var chaptersF= mutableListOf<ChapterAppModel>()
 
@@ -20,6 +21,9 @@ class SeasonAppModel(season: Season) {
         model.chapters.forEach { chaptersF.add(ChapterAppModel(it)) }
     }
 
+    fun updateData(){
+
+    }
 
     fun modifySeason() {
         model.title = title

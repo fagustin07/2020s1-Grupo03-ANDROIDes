@@ -9,7 +9,7 @@ import org.unqflix.model.*
 import org.unqflix.view.serie.EditSerieDialog
 import org.unqflix.view.serie.NewSerieDialog
 import org.unqflix.view.serie.RemoveSerieDialog
-import org.unqflix.view.serie.ShowSerieDialog
+import org.unqflix.view.season.ShowSerieDialog
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
@@ -96,10 +96,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         throw UserException(e.message)
                     }
                     thisWindow.modelObject.selectedSerie?.let { serie ->
-                        ShowSerieDialog(thisWindow.owner, serie) with {
-                            onCancel {reopenPrincipalWindow() }
-                            open()
-                        }
+                        ShowSerieDialog(thisWindow.owner, serie).open()
                     }
 
                 }
@@ -149,7 +146,6 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
 
     private fun checkSelectSerieOrException() {
         checkNoSelectedException()
-        close()
     }
 
     private fun checkNoSelectedException() {
@@ -181,9 +177,9 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             bindItemsTo("filteredSeries")
             bindSelectionTo("selectedSerie")
             column {
-                title = "#"
+               title = "#"
                 fixedSize=50
-                alignCenter()
+              alignCenter()
                 bindContentsTo("id")
             }
             column {
