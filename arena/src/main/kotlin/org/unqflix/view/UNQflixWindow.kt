@@ -3,7 +3,7 @@ package org.unqflix.view
 import ICON
 import domain.Serie
 import domain.Unavailable
-import org.unqflix.exceptions.NoAvaliableException
+import org.unqflix.exceptions.NoAvailableException
 import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
 import org.unqflix.view.serie.EditSerieDialog
@@ -49,7 +49,6 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 caption = "Add new serie"
                 onClick {
                     val newSerie=newSerie()
-                    close()
                     NewSerieDialog(
                         owner,
                         SerieAppModel(newSerie, thisWindow.modelObject.categories(), thisWindow.modelObject.series())
@@ -57,9 +56,6 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         onAccept{
                             addSerieToSystem(newSerie)
 
-                        }
-                        onCancel{
-                            reopenPrincipalWindow()
                         }
                         open()
                     }
@@ -73,17 +69,11 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    close()
                     EditSerieDialog(owner,
                         thisWindow.modelObject.selectedSerie?.serie?.let
                         { serie -> SerieAppModel(serie, categories(), series()) }) with {
                         onAccept{
                             restartFilter()
-                            reopenPrincipalWindow()
-
-                        }
-                        onCancel{
-                            reopenPrincipalWindow()
                         }
                         open()
                     }
@@ -98,8 +88,8 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         throw UserException(e.message)
                     }
                     try {
-                        checkIsNotAvaliable()
-                    } catch (e : NoAvaliableException) {
+                        checkIsNotAvailable()
+                    } catch (e : NoAvailableException) {
                         throw UserException(e.message)
                     }
                     close()
@@ -122,7 +112,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 caption = "Delete selected"
                 onClick {
                     try {
-                        checkNoSelectedException()
+                        checkSelectSerieOrException()
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
@@ -151,25 +141,17 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
 
     private fun addSerieToSystem(newSerie: Serie) {
         modelObject.addSerie(newSerie)
-        reopenPrincipalWindow()
     }
 
     private fun categories()=modelObject.categories()
     private fun series()=modelObject.series()
 
     private fun checkSelectSerieOrException() {
-        checkNoSelectedException()
+        modelObject.checkNoSelectedException()
     }
 
-    private fun checkNoSelectedException() {
-        if (modelObject.selectedSerie == null) {
-            throw NoSelectItemException("To do this, first, click on a serie please.")
-        }
-    }
-    private fun checkIsNotAvaliable(){
-        if(!modelObject.selectedSerie?.status!!){
-            throw NoAvaliableException("This serie is not avaliable")
-        }
+    private fun checkIsNotAvailable(){
+        modelObject.checkIsNotAvailable()
     }
 
     private fun makeSearchBox(mainPanel: Panel) {

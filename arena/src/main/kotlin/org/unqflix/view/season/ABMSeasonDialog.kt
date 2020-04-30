@@ -36,6 +36,7 @@ abstract class ABMSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : D
             TextBox(it) with {
                 width= 100
                 bindTo("poster")
+                withFilter { event -> event.potentialTextResult.matches(Regex("[/^a-zA-Z\\d\\-.,!*?]*")) }
             }
 
         }

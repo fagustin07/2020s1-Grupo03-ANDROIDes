@@ -35,11 +35,11 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
                 }
                 try {
                     thisWindow.modelObject.updateFields()
-                    close()
                     accept()
                 }catch(e: ExistsException){
                     throw UserException(e.message)
                 }
+                close()
 
             }
         }
@@ -47,7 +47,6 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
             caption= "Cancel"
             onClick {
                 close()
-                cancel()
             }
         }
 

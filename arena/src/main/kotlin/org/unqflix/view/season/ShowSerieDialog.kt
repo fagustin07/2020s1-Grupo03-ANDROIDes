@@ -17,7 +17,7 @@ import java.awt.Color
 class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel?) : Dialog<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title = "Seasons from ${modelObject.title}"
+        title =  modelObject.title
         iconImage = ICON
             Label(mainPanel) with {
                 fontSize = 11

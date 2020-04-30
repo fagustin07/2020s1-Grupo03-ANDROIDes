@@ -40,7 +40,6 @@ class EditSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialo
             caption= "Cancel"
             onClick {
                 close()
-                cancel()
             }
         }
 
