@@ -1,6 +1,7 @@
 package org.unqflix.view.serie
 
 import ICON
+import domain.ExistsException
 import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.model.SerieAppModel
 import org.unqflix.view.serie.ABMSerieDialog
@@ -29,12 +30,17 @@ class NewSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog
             onClick {
                 try {
                     checkFields()
-                    thisWindow.modelObject.updateFields()
-                    close()
-                    accept()
                 }catch(e: EmptyFieldException){
                     throw UserException(e.message)
                 }
+                try {
+                    thisWindow.modelObject.updateFields()
+                    accept()
+                    close()
+                }catch(e: ExistsException){
+                    throw UserException(e.message)
+                }
+
             }
         }
         Button(p0) with {

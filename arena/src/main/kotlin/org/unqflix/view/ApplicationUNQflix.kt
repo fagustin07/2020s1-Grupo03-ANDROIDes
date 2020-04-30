@@ -1,6 +1,7 @@
 package org.unqflix.view
 
 import domain.*
+import org.unqflix.model.IdGeneratorFactory
 import org.unqflix.model.UNQflixAppModel
 import org.uqbar.arena.Application
 import org.uqbar.arena.windows.Window
@@ -13,13 +14,13 @@ fun main(){
 class ApplicationUNQflix: Application() {
 
     override fun createMainWindow(): Window<*> {
-        val idGenerator= IdGenerator()
-        return UNQflixWindow(this, UNQflixAppModel(unqFlix(idGenerator), idGenerator))
+        return UNQflixWindow(this, UNQflixAppModel(unqFlix()))
     }
 
-    private fun unqFlix(idGenerator: IdGenerator): UNQFlix{
-        var baseCats = baseCategories(idGenerator)
-        var baseSeas = baseSeasons(idGenerator)
+    private fun unqFlix(): UNQFlix{
+        val idGenerator = IdGeneratorFactory.takeIdGen()
+        var baseCats = baseCategories()
+        var baseSeas = baseSeasons()
         var dbz = Serie(
             title = "dragon ball z", description = "dragon ball", id = idGenerator.nextSerieId(),
             poster = "google.com", state = Available(),categories = mutableListOf(baseCats[1]),seasons = baseSeas)
@@ -45,7 +46,9 @@ class ApplicationUNQflix: Application() {
 
     }
 
-    private fun baseCategories(idGenerator: IdGenerator): MutableList<Category> {
+    private fun baseCategories(): MutableList<Category> {
+        val idGenerator = IdGeneratorFactory.takeIdGen()
+
         var comedy = Category(idGenerator.nextCategoryId(),"Comedy")
         var anime = Category(idGenerator.nextCategoryId(),"Anime")
         var horror = Category(idGenerator.nextCategoryId(),"Horror")
@@ -56,23 +59,27 @@ class ApplicationUNQflix: Application() {
         return mutableListOf(comedy,anime,horror,csFic,rltShow,trror,rmc)
     }
 
-    fun baseSeasons(idGenerator: IdGenerator) : MutableList<Season>{
-        var baseCh = baseChapters(idGenerator)
+    fun baseSeasons() : MutableList<Season>{
+        val idGenerator = IdGeneratorFactory.takeIdGen()
+
+        var baseCh = baseChapters()
         var season1 = Season(
-            idGenerator.nextSeasonId(),"Saga de Freezer","Freezer alto alien",
+            idGenerator.nextSeasonId(),"saga de freezer","Freezer alto alien",
             "dragonballz.com/sagafreezer.jpg",chapters = baseCh)
         var season2 = Season(
-            idGenerator.nextSeasonId(),"Saga de Cell","Cell es un monstruo verde re polenta",
+            idGenerator.nextSeasonId(),"saga de cell","Cell es un monstruo verde re polenta",
             "dragonballz.com/sagadecell.jpg")
         return mutableListOf(season1,season2)
     }
 
-    fun baseChapters(idGenerator: IdGenerator) : MutableList<Chapter>{
+    fun baseChapters() : MutableList<Chapter>{
+        val idGenerator = IdGeneratorFactory.takeIdGen()
+
         var chapter1 = Chapter(
-            idGenerator.nextChapterId(),"Volamos hacia el espacio!","Termina la batalla entre saiyans" +
+            idGenerator.nextChapterId(),"volamos hacia el espacio!","Termina la batalla entre saiyans" +
                     "y deciden ir a Namekusei.",60,"dragonballz.com/sagadefreezer1.mp4","")
         var chapter2 = Chapter(
-            idGenerator.nextChapterId(),"El misterio de Yunzabit!","La busqueda de la nave espacial de Dios.",
+            idGenerator.nextChapterId(),"el misterio de yunzabit!","La busqueda de la nave espacial de Dios.",
             90,"dragonballz.com/sagadefreezer2.mp4","")
         return mutableListOf(chapter1,chapter2)
     }

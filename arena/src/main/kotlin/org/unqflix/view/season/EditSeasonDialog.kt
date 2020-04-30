@@ -2,6 +2,7 @@ package org.unqflix.view.season
 
 import ICON
 import org.unqflix.exceptions.EmptyFieldException
+import org.unqflix.exceptions.ExistItemTitleException
 import org.unqflix.model.SeasonAppModel
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
@@ -25,12 +26,16 @@ class EditSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : ABMSeason
                 onClick {
                     try {
                         checkFields()
-                        thisWindow.modelObject.modifySeason()
-                        accept()
-                        close()
                     } catch (e: EmptyFieldException){
                         throw UserException(e.message)
                     }
+                    try{
+                        thisWindow.modelObject.modifySeason()
+                    }catch(e: ExistItemTitleException){
+                        throw UserException(e.message)
+                    }
+                    accept()
+                    close()
                 }
             }
             Button(it) with {

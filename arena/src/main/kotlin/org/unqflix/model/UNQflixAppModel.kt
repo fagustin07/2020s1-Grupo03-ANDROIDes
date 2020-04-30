@@ -6,7 +6,7 @@ import domain.UNQFlix
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
-class UNQflixAppModel(private val model: UNQFlix, val idGenerator: IdGenerator) {
+class UNQflixAppModel(private val model: UNQFlix) {
     var unqflixModel = model
     var filteredSeries= mutableListOf<SerieAppModel>()
 

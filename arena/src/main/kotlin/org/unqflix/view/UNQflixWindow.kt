@@ -1,10 +1,9 @@
 package org.unqflix.view
 
 import ICON
-import domain.ExistsException
 import domain.Serie
 import domain.Unavailable
-import org.unqflix.exceptions.NoSelectSerieException
+import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
 import org.unqflix.view.serie.EditSerieDialog
 import org.unqflix.view.serie.NewSerieDialog
@@ -48,15 +47,14 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Add new serie"
                 onClick {
-                    close()
                     val newSerie=newSerie()
+                    close()
                     NewSerieDialog(
                         owner,
                         SerieAppModel(newSerie, thisWindow.modelObject.categories(), thisWindow.modelObject.series())
                     ) with {
                         onAccept{
-                            addSerieToSystem(newSerie)
-                            reopenPrincipalWindow()
+                            addSerieToSystem(newSerie,thisWindow)
                         }
                         onCancel{
                             reopenPrincipalWindow()
@@ -70,9 +68,10 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 onClick {
                     try {
                         checkSelectSerieOrException()
-                    } catch (e: NoSelectSerieException) {
+                    } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     EditSerieDialog(owner,
                         thisWindow.modelObject.selectedSerie?.serie?.let
                         { serie -> SerieAppModel(serie, categories(), series()) }) with {
@@ -92,11 +91,21 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 onClick {
                     try {
                         checkSelectSerieOrException()
-                    } catch (e: NoSelectSerieException) {
+                    } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    thisWindow.modelObject.selectedSerie?.let { serie ->
-                        ShowSerieDialog(thisWindow.owner, serie).open()
+                    close()
+                    ShowSerieDialog(owner,
+                        thisWindow.modelObject.selectedSerie?.serie?.let
+                        { serie -> SerieAppModel(serie) }) with {
+                        onAccept{
+                            restartFilter()
+                            reopenPrincipalWindow()
+                        }
+                        onCancel{
+                            reopenPrincipalWindow()
+                        }
+                        open()
                     }
 
                 }
@@ -106,7 +115,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 onClick {
                     try {
                         checkNoSelectedException()
-                    } catch (e: NoSelectSerieException) {
+                    } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
                     RemoveSerieDialog(thisWindow, thisWindow.modelObject) with {
@@ -129,15 +138,11 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
 
 
     private fun newSerie(): Serie {
-        return Serie(modelObject.idGenerator.nextSerieId(),"","","", Unavailable())
+        return Serie(IdGeneratorFactory.takeIdGen().nextSerieId(),"","","", Unavailable())
     }
 
-    private fun addSerieToSystem(newSerie: Serie) {
-        try {
-            modelObject.addSerie(newSerie)
-        }catch(e: ExistsException){
-            throw UserException(e.message)
-        }
+    private fun addSerieToSystem(newSerie: Serie, thisWindow: NewSerieDialog) {
+        modelObject.addSerie(newSerie)
         reopenPrincipalWindow()
     }
 
@@ -150,7 +155,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
 
     private fun checkNoSelectedException() {
         if (modelObject.selectedSerie == null) {
-            throw NoSelectSerieException("To do this, first, click on a serie please.")
+            throw NoSelectItemException("To do this, first, click on a serie please.")
         }
     }
 

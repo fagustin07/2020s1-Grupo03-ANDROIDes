@@ -1,11 +1,9 @@
 package org.unqflix.view.season
 
 import ICON
-import data.idGenerator
 import domain.ExistsException
 import domain.Season
-import org.unqflix.exceptions.ExistSeasonTitleException
-import org.unqflix.exceptions.NoSelectSeasonException
+import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
@@ -16,7 +14,7 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 import java.awt.Color
 
-class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<SerieAppModel>(owner,model) {
+class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel?) : Dialog<SerieAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Seasons from ${modelObject.title}"
@@ -25,7 +23,7 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
             fontSize=11
             bgColor= Color(0,164,144)
             color= Color(250,250,200)
-            text = "~ ${thisWindow.modelObject.idAndTitle} ~" }
+            text = "~ ${thisWindow.modelObject.idAndTitle()} ~" }
 
         makeTableOfSeasons(mainPanel)
     }
@@ -74,10 +72,17 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
             Button(it) with {
                 caption = "Modify Season"
                 onClick {
+                    try {
+                        checkSelectSeasonOrException()
+                    } catch (e: NoSelectItemException) {
+                        throw UserException(e.message)
+                    }
                     EditSeasonDialog(
                         owner, thisWindow.modelObject.seasonSelected?.model?.let
-                        { season -> SeasonAppModel(season) }) with {
-                        onAccept {update()}
+                        { season -> SeasonAppModel(season, thisWindow.modelObject.seasons()) }) with {
+                        onAccept {
+                            updateSeasonsList()
+                        }
                         open()
                     }
                 }
@@ -88,13 +93,23 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
             }
             Button(it) with {
                 caption = "Back"
-                onClick { close() }
+                onClick {
+                    close()
+                    cancel()
+                }
             }
 
         }
     }
 
-    fun newSeason() = Season(idGenerator.nextSeasonId(),"","","")
+    private fun checkSelectSeasonOrException() {
+        if (modelObject.seasonSelected == null) {
+            throw NoSelectItemException("To do this, first, click on a season please.")
+        }
+
+    }
+
+    fun newSeason() = Season(IdGeneratorFactory.takeIdGen().nextSeasonId(),"","","")
 
     fun addSeasonToSystem(season: Season){
         try {
@@ -104,8 +119,8 @@ class ShowSerieDialog(owner : WindowOwner, model : SerieAppModel) : Dialog<Serie
         }
     }
 
-    fun update(){
-            modelObject.update()
+    fun updateSeasonsList(){
+        modelObject.updateSeasonsList()
     }
 
 }
