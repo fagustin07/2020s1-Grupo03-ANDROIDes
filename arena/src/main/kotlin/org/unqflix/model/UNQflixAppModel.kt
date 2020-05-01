@@ -53,7 +53,7 @@ class UNQflixAppModel(private val model: UNQFlix) {
     }
      fun checkIsNotAvailable(){
         if(!selectedSerie?.status!!){
-            throw NoAvailableException("This serie is not avaliable")
+            throw NoAvailableException("The serie ${selectedSerie!!.title.toUpperCase()} is not avaliable")
         }
     }
     fun checkNoSelectedException() {

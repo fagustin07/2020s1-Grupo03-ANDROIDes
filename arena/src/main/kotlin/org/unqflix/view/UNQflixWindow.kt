@@ -49,13 +49,18 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 caption = "Add new serie"
                 onClick {
                     val newSerie=newSerie()
+                    close()
                     NewSerieDialog(
                         owner,
                         SerieAppModel(newSerie, thisWindow.modelObject.categories(), thisWindow.modelObject.series())
                     ) with {
                         onAccept{
                             addSerieToSystem(newSerie)
+                            reopenPrincipalWindow()
 
+                        }
+                        onCancel{
+                            reopenPrincipalWindow()
                         }
                         open()
                     }
@@ -69,11 +74,16 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     EditSerieDialog(owner,
                         thisWindow.modelObject.selectedSerie?.serie?.let
                         { serie -> SerieAppModel(serie, categories(), series()) }) with {
                         onAccept{
                             restartFilter()
+                            reopenPrincipalWindow()
+                        }
+                        onCancel{
+                            reopenPrincipalWindow()
                         }
                         open()
                     }
