@@ -2,6 +2,7 @@ package org.unqflix.model
 
 import domain.Season
 import domain.Serie
+import org.apache.commons.lang.WordUtils
 import org.unqflix.exceptions.ExistItemTitleException
 import org.uqbar.commons.model.annotations.Observable
 
@@ -10,12 +11,13 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
 
     var model = season
     var serieWhoBelongs = serieWhoBelongs
-    var title = season.title
+    var chapterSelected : ChapterAppModel? = null
+    var title = WordUtils.capitalize(model.title)
     var description = season.description
     var poster = season.poster
     var seasonChapters= mutableListOf<ChapterAppModel>()
     init {
-        model.chapters.forEach { seasonChapters.add(ChapterAppModel(it)) }
+        model.chapters.forEach { seasonChapters.add(ChapterAppModel(it,model)) }
     }
 
     fun addToSystem() {
@@ -35,15 +37,20 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
     }
 
     private fun checkTitle() {
-        if (model.title!=title && serieWhoBelongs.seasons.map { it.title }.toMutableList().contains(title.toLowerCase())){
+        if (model.title != title && serieWhoBelongs.seasons.map {it.title}.any{it.equals(title, ignoreCase = true)}){
             throw ExistItemTitleException("'$title' already exists in another season from" +
                     "'${serieWhoBelongs.title}' serie. Please, insert another title.")
         }
     }
 
-    fun addChapter(chapter: ChapterAppModel) {}
 
-    fun deleteChapter(idChapter: String){}
+    fun addChapter(chapter: ChapterAppModel) {
+        UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,model.id,chapter.model)
+    }
+
+    fun deleteChapter(){
+        chapterSelected?.model?.id?.let { UnqflixFactory.takeSystem().deleteChapter(serieWhoBelongs.id,id(), it) }
+    }
 
 
     fun id() = model.id

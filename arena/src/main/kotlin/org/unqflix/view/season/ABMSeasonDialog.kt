@@ -1,15 +1,23 @@
 package org.unqflix.view.season
 
 import ICON
+import examples.extensions.widgets.PanelWindow
+import examples.extensions.widgets.control.SpinnerWindow
+import examples.extensions.widgets.control.skinnableControl.FileSelectorExtensionsWindow
+import examples.extensions.widgets.control.skinnableControl.LinkWindow
 import org.unqflix.exceptions.EmptyTitleException
 import org.unqflix.model.SeasonAppModel
+import org.uqbar.arena.aop.windows.TransactionalWindow
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
 import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.MainWindow
+import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.arena.xtend.example.TypeSafeDistanceConverterWindow
 import org.uqbar.commons.model.exceptions.UserException
 
-abstract class ABMSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
+abstract class ABMSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : SimpleWindow<SeasonAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Editing season"
@@ -57,11 +65,6 @@ abstract class ABMSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : D
             throw EmptyTitleException("Title field cannot be empty or start with a space.\n Please, try again.")
         }
     }
-
-
-
-
-
 
 }
 

@@ -1,6 +1,8 @@
 package org.unqflix.model
 
 import domain.*
+import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang.WordUtils
 import org.unqflix.exceptions.ExistItemTitleException
 import org.uqbar.commons.model.annotations.Observable
 
@@ -9,7 +11,7 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
                     series: MutableList<SerieAppModel> = mutableListOf()) {
 
     val model = serie
-    var title = capitalizeFirstLetterOfEachWord(serie.title)
+    var title = WordUtils.capitalize(serie.title)
     var poster = serie.poster
     var description= serie.description
     var status = serie.state::class == Available::class
@@ -75,15 +77,20 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     private fun capitalizeFirstLetterOfEachWord(title: String): String {
         //La idea es que le ponga mayuscula a cada palabra del titulo, pero todavia no funca bien,
         // le pone mayuscula a la segunda palabra y despues ignora las otras :(
+        // Agregue la dependencia de WordUtils que hace lo que querias my friend
 
-        var newTitle=title.toLowerCase().capitalize().toCharArray()
-
-        newTitle.forEach {
-            if (newTitle.indexOf(it) < newTitle.lastIndex && (it == ' ' || it == '.' || it == ',')) {
-                newTitle[newTitle.indexOf(it) + 1] = newTitle[newTitle.indexOf(it) + 1].toUpperCase()
-            }
+        var newTitle = title
+        if (newTitle == null || newTitle.isEmpty()) {
+            return newTitle;
+       } else {
+            return WordUtils.capitalize(title) //       newTitle.substring(0, 1).toUpperCase() + newTitle.substring(1)
+            //  newTitle.forEach {
+            // if (newTitle.indexOf(it) < newTitle.lastIndex && (it == ' ' || it == '.' || it == ',')) {
+           // newTitle[newTitle.indexOf(it) + 1] = newTitle[newTitle.indexOf(it) + 1].toUpperCase()
+            //   }
+            // }
+            return  newTitle
         }
-        return  String(newTitle)
     }
 
 
