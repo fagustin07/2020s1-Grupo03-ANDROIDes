@@ -1,44 +1,57 @@
 package org.unqflix.model
 
 import domain.Season
+import domain.Serie
 import org.unqflix.exceptions.ExistItemTitleException
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
-class SeasonAppModel(season: Season, serieFromSeason : MutableList<Season> = mutableListOf()) {
-    var model = season
+class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
 
-    var id = model.id
+    var model = season
+    var serieWhoBelongs = serieWhoBelongs
     var title = season.title
     var description = season.description
     var poster = season.poster
-    var serieFromSeason = serieFromSeason
-    var chaptersSize = model.chapters.size
-    var chaptersF= mutableListOf<ChapterAppModel>()
-
+    var seasonChapters= mutableListOf<ChapterAppModel>()
     init {
-        model.chapters.forEach { chaptersF.add(ChapterAppModel(it)) }
+        model.chapters.forEach { seasonChapters.add(ChapterAppModel(it)) }
+    }
+
+    fun addToSystem() {
+        updateSeasonFields()
+        UnqflixFactory.takeSystem().addSeason(serieWhoBelongs.id, model)
     }
 
     fun modifySeason() {
         checkTitle()
+        updateSeasonFields()
+    }
+
+    private fun updateSeasonFields() {
         model.title = title.toLowerCase()
         model.description = description
         model.poster = poster
     }
 
     private fun checkTitle() {
-        if (model.title!=title && serieFromSeason.map { it.title }.toMutableList().contains(title.toLowerCase())){
-            throw ExistItemTitleException("El titulo '$title' ya existe en la serie seleccionada, por favor, elija otro nombre.")
+        if (model.title!=title && serieWhoBelongs.seasons.map { it.title }.toMutableList().contains(title.toLowerCase())){
+            throw ExistItemTitleException("'$title' already exists in another season from" +
+                    "'${serieWhoBelongs.title}' serie. Please, insert another title.")
         }
     }
 
+    fun addChapter(chapter: ChapterAppModel) {}
 
-    fun addChapter(chapter: ChapterAppModel) {
-        model.addChapter(chapter.system)
+    fun deleteChapter(idChapter: String){}
+
+
+    fun id() = model.id
+    fun chaptersSize() = model.chapters.size
+
+    fun deleteFromSystem() {
+        UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())
     }
-
-    fun deleteChapter(idChapter: String) = model.deleteChapter(idChapter)
 
 
 }

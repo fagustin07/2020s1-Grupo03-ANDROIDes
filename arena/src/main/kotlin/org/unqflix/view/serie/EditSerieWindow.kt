@@ -1,7 +1,6 @@
 package org.unqflix.view.serie
 
 import ICON
-import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.exceptions.ExistItemTitleException
 import org.unqflix.model.SerieAppModel
 import org.uqbar.arena.kotlin.extensions.*
@@ -9,7 +8,7 @@ import org.uqbar.arena.widgets.*
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 
-class EditSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialog(owner, model) {
+class EditSerieWindow(owner: WindowOwner, model: SerieAppModel?) : ABMSerieWindow(owner, model) {
 
     override fun createFormPanel(mainPanel: Panel?) {
         title= "Modify Serie"
@@ -24,16 +23,11 @@ class EditSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialo
 
     override fun addActions(mainPanel: Panel) {
         Button(mainPanel) with {
-            caption= "Modify"
+            caption= "Accept"
             onClick {
-                try {
-                    checkFields()
-                }catch(e: EmptyFieldException){
-                    throw UserException(e.message)
-                }
-                tryToModify()
+                tryCheckTitle()
+                tryModify()
                 close()
-                accept()
             }
         }
         Button(mainPanel) with {
@@ -44,7 +38,7 @@ class EditSerieDialog(owner: WindowOwner, model: SerieAppModel?) : ABMSerieDialo
         }
 
     }
-    private fun tryToModify(){
+    private fun tryModify(){
         try {
             modelObject.modifySerie()
         }catch (e: ExistItemTitleException){

@@ -1,15 +1,12 @@
 package org.unqflix.model
 
-import domain.IdGenerator
 import domain.Serie
-import domain.UNQFlix
-import org.unqflix.exceptions.NoAvailableException
 import org.unqflix.exceptions.NoSelectItemException
 import org.uqbar.commons.model.annotations.Observable
 
 @Observable
-class UNQflixAppModel(private val model: UNQFlix) {
-    var unqflixModel = model
+class UNQflixAppModel() {
+    var unqflixModel = UnqflixFactory.takeSystem()
     var filteredSeries= mutableListOf<SerieAppModel>()
 
     var selectedSerie: SerieAppModel? = null
@@ -22,10 +19,6 @@ class UNQflixAppModel(private val model: UNQFlix) {
     init {
         unqflixModel.series.forEach { filteredSeries.add(SerieAppModel(it)) }
     }
-    fun addSerie(newSerie: Serie) {
-        unqflixModel.addSerie(newSerie)
-        restartFilter()
-    }
 
     fun filtrateSeries() {
         filteredSeries.removeAll(filteredSeries)
@@ -33,7 +26,7 @@ class UNQflixAppModel(private val model: UNQFlix) {
     }
 
     fun removeSerie() {
-        selectedSerie?.id?.let { unqflixModel.deleteSerie(it) }
+        selectedSerie?.id()?.let { unqflixModel.deleteSerie(it) }
     }
 
     fun restartFilter() {
@@ -51,11 +44,7 @@ class UNQflixAppModel(private val model: UNQFlix) {
         unqflixModel.series.forEach { seriesInSystem.add(SerieAppModel(it))}
         return seriesInSystem
     }
-     fun checkIsNotAvailable(){
-        if(!selectedSerie?.status!!){
-            throw NoAvailableException("The serie ${selectedSerie!!.title.toUpperCase()} is not avaliable")
-        }
-    }
+
     fun checkNoSelectedException() {
         if (selectedSerie == null) {
             throw NoSelectItemException("To do this, first, click on a serie please.")

@@ -1,14 +1,15 @@
 package org.unqflix.view.serie
 
-import org.unqflix.exceptions.EmptyFieldException
+import org.unqflix.exceptions.EmptyTitleException
 import org.unqflix.model.CategoryAppModel
 import org.unqflix.model.SerieAppModel
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
-import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.model.exceptions.UserException
 
-abstract class ABMSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialog<SerieAppModel>(owner, model) {
+abstract class ABMSerieWindow(owner: WindowOwner, model: SerieAppModel?) : SimpleWindow<SerieAppModel>(owner, model) {
 
     abstract override fun createFormPanel(mainPanel: Panel?)
 
@@ -97,10 +98,16 @@ abstract class ABMSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialo
             }
         }
     }
-
-    fun checkFields() {
-        if (modelObject.title==""){
-            throw EmptyFieldException("TITLE CANNOT BE EMPTY")
+    fun tryCheckTitle(){
+        try {
+            checkTitle()
+        }catch(e: EmptyTitleException){
+            throw UserException(e.message)
+        }
+    }
+    private fun checkTitle() {
+        if (modelObject.title=="" || modelObject.title.first()== ' '){
+            throw EmptyTitleException("Title field cannot be empty or start with a space.\n Please, try again.")
         }
     }
 }

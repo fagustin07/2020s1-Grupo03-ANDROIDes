@@ -3,13 +3,12 @@ package org.unqflix.view
 import ICON
 import domain.Serie
 import domain.Unavailable
-import org.unqflix.exceptions.NoAvailableException
 import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
-import org.unqflix.view.serie.EditSerieDialog
-import org.unqflix.view.serie.NewSerieDialog
+import org.unqflix.view.serie.EditSerieWindow
+import org.unqflix.view.serie.NewSerieWindow
 import org.unqflix.view.serie.RemoveSerieDialog
-import org.unqflix.view.season.ShowSerieDialog
+import org.unqflix.view.serie.ShowSerieWindow
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
@@ -48,23 +47,14 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Add new serie"
                 onClick {
-                    val newSerie=newSerie()
-                    close()
-                    NewSerieDialog(
+                    val newSerie = newSerie()
+                    NewSerieWindow(
                         owner,
                         SerieAppModel(newSerie, thisWindow.modelObject.categories(), thisWindow.modelObject.series())
-                    ) with {
-                        onAccept{
-                            addSerieToSystem(newSerie)
-                            reopenPrincipalWindow()
-
-                        }
-                        onCancel{
-                            reopenPrincipalWindow()
-                        }
-                        open()
-                    }
+                    ).open()
+                    restartFilter()
                 }
+
             }
             Button(it) with {
                 caption = "Modify selected"
@@ -74,19 +64,10 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    close()
-                    EditSerieDialog(owner,
+                    EditSerieWindow(owner,
                         thisWindow.modelObject.selectedSerie?.serie?.let
-                        { serie -> SerieAppModel(serie, categories(), series()) }) with {
-                        onAccept{
-                            restartFilter()
-                            reopenPrincipalWindow()
-                        }
-                        onCancel{
-                            reopenPrincipalWindow()
-                        }
-                        open()
-                    }
+                        { serie -> SerieAppModel(serie, categories(), series()) }).open()
+                    restartFilter()
                 }
             }
             Button(it) with {
@@ -97,26 +78,11 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    try {
-                        checkIsNotAvailable()
-                    } catch (e : NoAvailableException) {
-                        throw UserException(e.message)
-                    }
-                    close()
-                    ShowSerieDialog(owner,
-                        thisWindow.modelObject.selectedSerie?.serie?.let
-                        { serie -> SerieAppModel(serie) }) with {
-                        onAccept{
-                            restartFilter()
-                            reopenPrincipalWindow()
-                        }
-                        onCancel{
-                            reopenPrincipalWindow()
-                        }
-                        open()
-                    }
-
+                    ShowSerieWindow(owner,
+                        thisWindow.modelObject.selectedSerie?.serie?.let { serie -> SerieAppModel(serie) }).open()
+                    restartFilter()
                 }
+
             }
             Button(it) with {
                 caption = "Delete selected"
@@ -126,8 +92,8 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    RemoveSerieDialog(thisWindow, thisWindow.modelObject) with {
-                        onAccept { thisWindow.modelObject.removeSerie() }
+                    RemoveSerieDialog(thisWindow, thisWindow.modelObject.selectedSerie) with {
+                        onAccept { modelObject.removeFromSystem() }
                         onCancel { close() }
                         open()
                        restartFilter()
@@ -137,9 +103,6 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
         }
     }
 
-    private fun reopenPrincipalWindow() {
-        UNQflixWindow(owner,modelObject).open()
-    }
     private fun restartFilter() {
         modelObject.restartFilter()
     }
@@ -149,19 +112,11 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
         return Serie(IdGeneratorFactory.takeIdGen().nextSerieId(),"","","", Unavailable())
     }
 
-    private fun addSerieToSystem(newSerie: Serie) {
-        modelObject.addSerie(newSerie)
-    }
-
     private fun categories()=modelObject.categories()
     private fun series()=modelObject.series()
 
     private fun checkSelectSerieOrException() {
         modelObject.checkNoSelectedException()
-    }
-
-    private fun checkIsNotAvailable(){
-        modelObject.checkIsNotAvailable()
     }
 
     private fun makeSearchBox(mainPanel: Panel) {
@@ -172,7 +127,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                 fontSize=10
             }
             TextBox(it) with {
-                width = 270
+                width = 250
                 fontSize=10
                 bindTo("serieToSearch")
             }
@@ -187,15 +142,8 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             bindItemsTo("filteredSeries")
             bindSelectionTo("selectedSerie")
             column {
-               title = "#"
-                fixedSize=50
-              alignCenter()
-                bindContentsTo("id")
-            }
-            column {
                 title = "Serie"
-                fixedSize=150
-                alignCenter()
+                fixedSize=180
                 bindContentsTo("title")
             }
             column {
@@ -206,7 +154,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             }
             column {
                 title = "State"
-                fixedSize=50
+                fixedSize=40
                 alignCenter()
                 bindContentsTo("state")
             }

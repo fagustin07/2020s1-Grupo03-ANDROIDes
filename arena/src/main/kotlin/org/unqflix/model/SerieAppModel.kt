@@ -9,8 +9,7 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
                     series: MutableList<SerieAppModel> = mutableListOf()) {
 
     val model = serie
-    val id = serie.id
-    var title = serie.title
+    var title = capitalizeFirstLetterOfEachWord(serie.title)
     var poster = serie.poster
     var description= serie.description
     var status = serie.state::class == Available::class
@@ -23,13 +22,12 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     var systemCategories = categories
     var chosenSeries = mutableListOf<SerieAppModel>()
     var chosenCategories = mutableListOf<CategoryAppModel>()
-    var seasonsF = mutableListOf<SeasonAppModel>()
+    var serieSeasons = mutableListOf<SeasonAppModel>()
 
     init {
         allSeries.removeIf { it.serie==serie }
-        allSeries.sortBy { id }
 
-        serie.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
+        serie.seasons.forEach{ serieSeasons.add(SeasonAppModel(it,serie))}
         allSeries.forEach { if (serie.relatedContent.contains(it.serie)) chosenSeries.add(it) }
         systemCategories.forEach { if (serie.categories.contains(it.category)) chosenCategories.add(it) }
 
@@ -51,15 +49,12 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     fun removeRelatedContent(){
         chosenSeries.remove(relatedSerieToRemove)
     }
+
     fun serieState()= if (status) Available() else Unavailable()
 
-    fun updateFields() {
-        serie.title=title.toLowerCase()
-        serie.description=description
-        serie.poster=poster
-        serie.state=serieState()
-        serie.categories=chosenCategories.map { it.category }.toMutableList()
-        serie.relatedContent=chosenSeries.map { it.serie }.toMutableList()
+    fun addToSystem() {
+        updateFields()
+        UnqflixFactory.takeSystem().addSerie(serie)
     }
 
     fun modifySerie() {
@@ -67,36 +62,52 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
         updateFields()
     }
 
+    fun updateFields() {
+        serie.title= title.toLowerCase()
+        serie.description= description
+        serie.poster= poster
+        serie.state=serieState()
+        serie.categories=chosenCategories.map { it.category }.toMutableList()
+        serie.relatedContent=chosenSeries.map { it.serie }.toMutableList()
+    }
+
+
+    private fun capitalizeFirstLetterOfEachWord(title: String): String {
+        //La idea es que le ponga mayuscula a cada palabra del titulo, pero todavia no funca bien,
+        // le pone mayuscula a la segunda palabra y despues ignora las otras :(
+
+        var newTitle=title.toLowerCase().capitalize().toCharArray()
+
+        newTitle.forEach {
+            if (newTitle.indexOf(it) < newTitle.lastIndex && (it == ' ' || it == '.' || it == ',')) {
+                newTitle[newTitle.indexOf(it) + 1] = newTitle[newTitle.indexOf(it) + 1].toUpperCase()
+            }
+        }
+        return  String(newTitle)
+    }
+
+
     private fun checkSerieTitle(){
-        if (serie.title!=title &&allSeries.map { it.title }.toList().contains(title)){
-            throw ExistItemTitleException(
-                "La serie $title ya se encuentra en el sistema. Por favor, introduzca otro nombre," +
-                        "o bien, seleccione la que desea modificar en el menu principal.")
+        if (serie.title!=title &&allSeries.map { it.title }.any{it.equals(title,ignoreCase = true)}){
+            throw ExistItemTitleException("Serie called '${title.toUpperCase()}' already exists in the system.\n" +
+                    " Please, insert another title!")
         }
     }
 
-    fun addSeasonToSystem(season : Season){
-        model.addSeason(season)
-        updateSeasonsList()
-
-    }
-    fun seasons()=serie.seasons
-
     fun updateSeasonsList() {
-        seasonsF.removeAll(seasonsF)
-        model.seasons.forEach{ seasonsF.add(SeasonAppModel(it))}
-        seasonSelected = null
-    }
-    fun deleteSeason(){
-        seasonSelected?.id?.let { model.deleteSeason(it) }
-        updateSeasonsList()
+        serieSeasons.removeAll(serieSeasons)
+        model.seasons.forEach{ serieSeasons.add(SeasonAppModel(it,serie))}
+
     }
 
+    fun removeFromSystem() {
+        UnqflixFactory.takeSystem().deleteSerie(id())
+    }
 
+    fun seasons()=serie.seasons
     fun state() = if(serie.state::class == Available::class) "✓" else "✘"
-
+    fun id()= serie.id
     fun seasonsSize() = serie.seasons.size
-
     fun idAndTitle()= "${serie.id} - ${serie.title}"
 
 }

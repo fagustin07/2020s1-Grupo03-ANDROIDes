@@ -16,7 +16,7 @@ class DeleteSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<
     override fun createFormPanel(mainPanel: Panel?) {
         title = "Season to remove"
         iconImage = ICON
-        Label(mainPanel) withText ("Are you sure to remove the season '${modelObject?.title}' of the system? This can't undone!")
+        Label(mainPanel) withText ("Are you sure to remove the season '${modelObject?.title}'\n of the system? This can't undone!")
         Panel(mainPanel) with {
             asHorizontal()
             Button(it) with {

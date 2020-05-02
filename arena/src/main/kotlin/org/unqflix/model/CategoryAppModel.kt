@@ -7,7 +7,4 @@ import org.uqbar.commons.model.annotations.Observable
 class CategoryAppModel(var category:Category) {
 
     var name = category.name
-    var id = category.id
-
-
 }
