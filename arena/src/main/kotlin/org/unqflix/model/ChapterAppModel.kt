@@ -10,14 +10,14 @@ class ChapterAppModel(chapter : Chapter, seasonWhoBelongs : Season) {
         var model = chapter
         var seasonWhoBelongs = seasonWhoBelongs
 
-        var title = WordUtils.capitalize(model.title)
+        var title = model.title
         var descrption = model.description
         var duration = model.duration
         var video = model.video
         var thumbnail = model.thumbnail
 
         private fun updateChapterFields(){
-                model.title = title
+                model.title = title.toLowerCase().capitalize()
                 model.description = descrption
                 model.duration = duration
                 model.video =  video

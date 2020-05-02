@@ -12,7 +12,7 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
     var model = season
     var serieWhoBelongs = serieWhoBelongs
     var chapterSelected : ChapterAppModel? = null
-    var title = WordUtils.capitalize(model.title)
+    var title = WordUtils.capitalize(model.title.toLowerCase())
     var description = season.description
     var poster = season.poster
     var seasonChapters= mutableListOf<ChapterAppModel>()
@@ -44,21 +44,21 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
     }
 
 
+    fun deleteFromSystem() {
+        UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())
+    }
+
     fun addChapter(chapter: ChapterAppModel) {
         UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,model.id,chapter.model)
     }
 
+
     fun deleteChapter(){
         chapterSelected?.model?.id?.let { UnqflixFactory.takeSystem().deleteChapter(serieWhoBelongs.id,id(), it) }
     }
-
-
     fun id() = model.id
-    fun chaptersSize() = model.chapters.size
 
-    fun deleteFromSystem() {
-        UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())
-    }
+    fun chaptersSize() = model.chapters.size
 
 
 }

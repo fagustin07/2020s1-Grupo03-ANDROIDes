@@ -19,11 +19,11 @@ object UnqflixFactory {
             seasons =  baseSeasons()
         )
         var oneP = Serie(
-            title = "one piece", description = "dragon ball", id = idGenerator.nextSerieId(),
+            title = "one piece", description = "las aventuras de los Mugiwara!", id = idGenerator.nextSerieId(),
             poster = "onepiece.net/poster.jpg", state = Available(), categories = mutableListOf(baseCats[1],baseCats[3])
         )
         var gint = Serie(
-            title = "gintama", description = "dragon ball", id = idGenerator.nextSerieId(),
+            title = "gintama", description = "las aventuras de Gintoki Sakata", id = idGenerator.nextSerieId(),
             poster = "gintama.org/poster.jpg", state = Unavailable(), categories = mutableListOf(baseCats[0],baseCats[1])
         )
         var dn = Serie(
@@ -32,7 +32,7 @@ object UnqflixFactory {
             categories = mutableListOf(baseCats[1])
         )
         var snk = Serie(
-            title = "attack on titans", description = "aparecen titanes re grosos que rompen todo",
+            title = "attack on titans", description = "Un mundo en donde los titanes cazan personas.",
             id = idGenerator.nextSerieId(), poster = "attackontitans.com/poster.jpg", state = Available(),
             categories = mutableListOf(baseCats[1])
         )
@@ -74,10 +74,10 @@ object UnqflixFactory {
         val idGenerator = IdGeneratorFactory.takeIdGen()
 
         var chapter1 = Chapter(
-            idGenerator.nextChapterId(),"volamos hacia el espacio!","Termina la batalla entre saiyans" +
+            idGenerator.nextChapterId(),"Volamos hacia el espacio!","Termina la batalla entre saiyans" +
                     "y deciden ir a Namekusei.",60,"dragonballz.com/sagadefreezer1.mp4","")
         var chapter2 = Chapter(
-            idGenerator.nextChapterId(),"el misterio de yunzabit!","La busqueda de la nave espacial de Dios.",
+            idGenerator.nextChapterId(),"El misterio de yunzabit!","La busqueda de la nave espacial de Dios.",
             90,"dragonballz.com/sagadefreezer2.mp4","")
         return mutableListOf(chapter1,chapter2)
     }

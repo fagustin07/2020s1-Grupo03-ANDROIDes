@@ -73,27 +73,6 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
         serie.relatedContent=chosenSeries.map { it.serie }.toMutableList()
     }
 
-
-    private fun capitalizeFirstLetterOfEachWord(title: String): String {
-        //La idea es que le ponga mayuscula a cada palabra del titulo, pero todavia no funca bien,
-        // le pone mayuscula a la segunda palabra y despues ignora las otras :(
-        // Agregue la dependencia de WordUtils que hace lo que querias my friend
-
-        var newTitle = title
-        if (newTitle == null || newTitle.isEmpty()) {
-            return newTitle;
-       } else {
-            return WordUtils.capitalize(title) //       newTitle.substring(0, 1).toUpperCase() + newTitle.substring(1)
-            //  newTitle.forEach {
-            // if (newTitle.indexOf(it) < newTitle.lastIndex && (it == ' ' || it == '.' || it == ',')) {
-           // newTitle[newTitle.indexOf(it) + 1] = newTitle[newTitle.indexOf(it) + 1].toUpperCase()
-            //   }
-            // }
-            return  newTitle
-        }
-    }
-
-
     private fun checkSerieTitle(){
         if (serie.title!=title &&allSeries.map { it.title }.any{it.equals(title,ignoreCase = true)}){
             throw ExistItemTitleException("Serie called '${title.toUpperCase()}' already exists in the system.\n" +
@@ -115,7 +94,7 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
     fun state() = if(serie.state::class == Available::class) "✓" else "✘"
     fun id()= serie.id
     fun seasonsSize() = serie.seasons.size
-    fun idAndTitle()= "${serie.id} - ${serie.title}"
+    fun idAndTitle()= "${serie.id} - $title"
 
 }
 
