@@ -7,6 +7,7 @@ import org.unqflix.model.*
 import org.unqflix.view.season.DeleteSeasonDialog
 import org.unqflix.view.season.EditSeasonDialog
 import org.unqflix.view.season.NewSeasonDialog
+import org.unqflix.view.season.ShowSeasonWindow
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
@@ -49,6 +50,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
         }
 
     }
+
     override fun addActions(actionsPanel: Panel) {
         Panel(actionsPanel) with {
             asColumns(2)
@@ -77,7 +79,17 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
             }
             Button(it) with {
                 caption = "Show chapters"
-                onClick { }
+                onClick {
+                    try {
+                        checkSelectSeasonOrException()
+                    } catch (e: NoSelectItemException) {
+                        throw UserException(e.message)
+                    }
+                    ShowSeasonWindow(owner,
+                            thisWindow.modelObject.seasonSelected?.let { model -> SeasonAppModel(model.model,model.serieWhoBelongs) }).open()
+                    //restartFilter()
+                }
+
             }
             Button(it) with {
                 caption = "Delete Season"

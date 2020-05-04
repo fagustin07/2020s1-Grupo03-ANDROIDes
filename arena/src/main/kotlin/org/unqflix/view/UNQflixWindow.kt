@@ -79,7 +79,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                         throw UserException(e.message)
                     }
                     ShowSerieWindow(owner,
-                        thisWindow.modelObject.selectedSerie?.serie?.let { serie -> SerieAppModel(serie) }).open()
+                            thisWindow.modelObject.selectedSerie?.serie?.let { serie -> SerieAppModel(serie) }).open()
                     restartFilter()
                 }
 

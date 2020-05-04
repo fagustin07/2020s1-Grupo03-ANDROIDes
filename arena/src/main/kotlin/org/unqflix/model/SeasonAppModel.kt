@@ -43,6 +43,11 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
         }
     }
 
+    fun updateChapterList() {
+        seasonChapters.removeAll(seasonChapters)
+        model.chapters.forEach{ seasonChapters.add(ChapterAppModel(it,model))}
+
+    }
 
     fun deleteFromSystem() {
         UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())

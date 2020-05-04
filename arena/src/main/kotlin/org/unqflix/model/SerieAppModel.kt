@@ -73,7 +73,7 @@ class SerieAppModel(var serie : Serie,categories: MutableList<CategoryAppModel> 
         serie.relatedContent=chosenSeries.map { it.serie }.toMutableList()
     }
 
-    private fun checkSerieTitle(){
+    fun checkSerieTitle(){
         if (serie.title!=title &&allSeries.map { it.title }.any{it.equals(title,ignoreCase = true)}){
             throw ExistItemTitleException("Serie called '${title.toUpperCase()}' already exists in the system.\n" +
                     " Please, insert another title!")
