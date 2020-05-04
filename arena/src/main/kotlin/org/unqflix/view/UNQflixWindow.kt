@@ -24,7 +24,8 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
 
         title = "UNQflix Administrator"
         iconImage= ICON
-
+        setMinWidth(350)
+        setMinHeight(400)
         Label(mainPanel) with{
             fontSize=14
             bgColor= Color(0,164,144)

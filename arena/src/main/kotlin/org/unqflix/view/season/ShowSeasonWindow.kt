@@ -2,6 +2,7 @@ package org.unqflix.view.season
 
 import ICON
 import domain.Chapter
+import domain.ExistsException
 import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.ChapterAppModel
 import org.unqflix.model.IdGeneratorFactory
@@ -22,6 +23,7 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
 
     override fun createFormPanel(p0: Panel) {
         title =  "Showing season"
+        setMinHeight(400)
         iconImage = ICON
             Label(p0) with {
                 fontSize = 11
@@ -43,10 +45,10 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                 bindContentsTo("title")
             }
             column {
-                title = "Minutes"
+                title = "Duration"
                 alignCenter()
                 fixedSize=70
-                bindContentsTo("duration")
+                bindContentsTo("minutes")
             }
         }
 
@@ -61,6 +63,7 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                     val newChapter = newChapter()
                     NewChapterDialog(
                             owner, ChapterAppModel(newChapter, thisWindow.modelObject.model)).open()
+                    tryToAddNewChapter(newChapter)
                     updateChapterList()
                 }
             }
@@ -72,6 +75,7 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     EditChapterDialog(
                             owner, thisWindow.modelObject.chapterSelected?.model?.let
                             { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model) }).open()
@@ -87,8 +91,10 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     ShowChapterDialog (owner,
                             thisWindow.modelObject.seasonSelected?.model?.let { model -> SeasonAppModel(model,model.serieWhoBelongs) }).open()
+                    reopenWindow()
                 */}
             }
             Button(it) with {
@@ -110,13 +116,26 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                 }
             }
             Button(it) with {
-                caption = "Close"
+                caption = "Back"
                 onClick {
                     close()
                 }
             }
 
         }
+    }
+
+    private fun tryToAddNewChapter(newChapter: Chapter) {
+        try {
+            thisWindow.modelObject.addChapter(newChapter)
+        } catch (e: ExistsException) {
+            throw UserException(e.message)
+        }
+    }
+
+    private fun reopenWindow() {
+        updateChapterList()
+        ShowSeasonWindow(owner,modelObject).open()
     }
 
     private fun checkSelectChapterOrException() {

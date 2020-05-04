@@ -38,8 +38,8 @@ abstract class ABMChapterDialog (owner : WindowOwner, model : ChapterAppModel?) 
             Label(it) withText ("Duration in minutes: ")
             Spinner(it) with {
                 width = 100
-                minValue = 0
-                maxValue = 180
+                minValue = 1
+                maxValue = 240
                 bindTo("duration")
             }
             Label(it) withText ("Thumbnail: ")

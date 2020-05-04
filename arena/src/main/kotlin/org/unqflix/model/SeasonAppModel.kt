@@ -1,5 +1,6 @@
 package org.unqflix.model
 
+import domain.Chapter
 import domain.Season
 import domain.Serie
 import org.apache.commons.lang.WordUtils
@@ -53,8 +54,8 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
         UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())
     }
 
-    fun addChapter(chapter: ChapterAppModel) {
-        UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,model.id,chapter.model)
+    fun addChapter(chapter: Chapter) {
+        UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,model.id,chapter)
     }
 
 

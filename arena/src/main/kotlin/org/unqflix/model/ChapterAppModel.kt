@@ -10,14 +10,13 @@ class ChapterAppModel(chapter : Chapter, seasonWhoBelongs : Season) {
 
         var model = chapter
         var seasonWhoBelongs = seasonWhoBelongs
-
         var title = model.title
         var description = model.description
         var duration = model.duration
         var video = model.video
         var thumbnail = model.thumbnail
 
-        private fun updateChapterFields(){
+         fun updateChapterFields(){
                 model.title = title.toLowerCase().capitalize()
                 model.description = description
                 model.duration = duration
@@ -30,20 +29,26 @@ class ChapterAppModel(chapter : Chapter, seasonWhoBelongs : Season) {
                 updateChapterFields()
         }
 
-        fun addChapterToSystem(chapter: Chapter){
-                checkTitle() //capaz borrar éste --------------------------------------------------------
+        fun addChapterToSystem(){
                 updateChapterFields()
-                seasonWhoBelongs.addChapter(chapter)
+                //es imposible conseguir desde aca, el id de la serie para agregar el capitulo
+                //a traves de Unqflix, porque al usar la interfaz, deberiamos hacer
+                // UnqflixFactory.takeSystem().addChapter(idSerie:String,idSeason:String,chapter)
+                //y desde aca no se puede, se podria resolver pasando el appModel de season, pero no es muy legal que digamos.
+                //por lo que voy a hacer que ShowSeason se encarge de  delegar esta accion a su appModel
+            // habria que eliminar esta funcion y solo dejar la que actualiza los datos.
         }
 
         fun removeChapterFromSystem(){
                 seasonWhoBelongs.deleteChapter(model.id)
         }
 
-        private fun checkTitle() {   //.toMutableList().contains(title.toLowerCase())) O //.any{it.equals(title, ignoreCase = true)})
-                if (model.title != title && seasonWhoBelongs.chapters.map { it.title }.toMutableList().contains(title.toLowerCase())){
-                        throw ExistItemTitleException("'$title' already exists in another season from" +
+        private fun checkTitle() {
+                if (model.title != title && seasonWhoBelongs.chapters.map { it.title }.any{title.equals(it,ignoreCase = true)}){
+                        throw ExistItemTitleException("'$title' already exists in another chapter from" +
                                 "'${seasonWhoBelongs.title}' season. Please, insert another title.")
                 }
         }
+
+        fun minutes()= "$duration min"
 }

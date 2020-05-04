@@ -21,6 +21,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
 
     override fun createFormPanel(mainPanel: Panel) {
         title =  "Showing serie"
+        setMinHeight(400)
         iconImage = ICON
             Label(mainPanel) with {
                 fontSize = 11
@@ -85,9 +86,10 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     ShowSeasonWindow(owner,
                             thisWindow.modelObject.seasonSelected?.let { model -> SeasonAppModel(model.model,model.serieWhoBelongs) }).open()
-                    //restartFilter()
+                    reopenWindow()
                 }
 
             }
@@ -110,13 +112,17 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                 }
             }
             Button(it) with {
-                caption = "Close"
+                caption = "Back"
                 onClick {
                     close()
                 }
             }
 
         }
+    }
+
+    private fun reopenWindow() {
+        ShowSerieWindow(owner,modelObject).open()
     }
 
     private fun checkSelectSeasonOrException() {

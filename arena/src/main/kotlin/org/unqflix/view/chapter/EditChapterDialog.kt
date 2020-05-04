@@ -43,7 +43,7 @@ class EditChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChap
 
     private fun tryToModifyChapter() {
         try {
-            thisWindow.modelObject.modifyChapter()
+            modelObject.modifyChapter()
         } catch (e: ExistItemTitleException) {
             throw UserException(e.message)
         }

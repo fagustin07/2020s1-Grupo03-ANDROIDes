@@ -39,7 +39,7 @@ class EditSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : ABMSeason
 
     private fun tryToModifySeason() {
         try {
-            thisWindow.modelObject.modifySeason()
+            modelObject.modifySeason()
         } catch (e: ExistItemTitleException) {
             throw UserException(e.message)
         }

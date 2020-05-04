@@ -24,7 +24,7 @@ class NewChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChapt
                 caption = "Save"
                 onClick{
                     tryToCheckEmptyTitle()
-                    tryToAddSystem()
+                    thisWindow.modelObject.updateChapterFields()    //tryToAddSystem()
                     close()
                 }
             }
@@ -39,7 +39,7 @@ class NewChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChapt
 
     private fun tryToAddSystem() {
         try {
-            modelObject.addChapterToSystem(modelObject.model)
+            modelObject.addChapterToSystem()
         } catch (e: ExistsException) {
             throw UserException(e.message)
         }
