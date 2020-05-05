@@ -8,7 +8,7 @@ import org.uqbar.arena.widgets.*
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 
-class NewSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : ABMSeasonDialog(owner,model) {
+class NewSeasonWindow(owner : WindowOwner, model : SeasonAppModel?) : ABMSeasonWindow(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Creating new Season"
@@ -32,14 +32,12 @@ class NewSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : ABMSeasonD
                 caption = "Cancel"
                 onClick{ close()}
             }
-
-
         }
     }
 
     private fun tryToAddSystem() {
         try {
-            modelObject.addToSystem()
+            modelObject.addSeasonToSystem()
         } catch (e: ExistsException) {
             throw UserException(e.message)
         }

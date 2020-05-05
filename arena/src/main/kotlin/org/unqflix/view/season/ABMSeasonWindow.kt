@@ -17,7 +17,7 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.xtend.example.TypeSafeDistanceConverterWindow
 import org.uqbar.commons.model.exceptions.UserException
 
-abstract class ABMSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : SimpleWindow<SeasonAppModel>(owner,model) {
+abstract class ABMSeasonWindow(owner : WindowOwner, model : SeasonAppModel?) : SimpleWindow<SeasonAppModel>(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Editing season"

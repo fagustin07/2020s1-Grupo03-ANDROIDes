@@ -1,17 +1,17 @@
-package org.unqflix.view.chapter
+package org.unqflix.view.season
 
 import ICON
-import domain.ExistsException
-import org.unqflix.model.ChapterAppModel
+import org.unqflix.exceptions.ExistItemTitleException
+import org.unqflix.model.SeasonAppModel
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 
-class NewChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChapterDialog(owner,model) {
+class EditSeasonWindow(owner : WindowOwner, model : SeasonAppModel?) : ABMSeasonWindow(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
-        title= "Creating new chapter"
+        title= "Editing season"
         iconImage= ICON
 
         baseInformation(mainPanel)
@@ -22,25 +22,25 @@ class NewChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChapt
             asColumns(2)
             Button(it) with {
                 caption = "Save"
-                onClick{
+                onClick {
                     tryToCheckEmptyTitle()
-                    thisWindow.modelObject.updateChapterFields()    //tryToAddSystem()
+                    tryToModifySeason()
                     close()
                 }
             }
             Button(it) with {
                 caption = "Cancel"
-                onClick{ close()}
+                onClick{
+                    close()
+                }
             }
-
-
         }
     }
 
-    private fun tryToAddSystem() {
+    private fun tryToModifySeason() {
         try {
-            modelObject.addChapterToSystem()
-        } catch (e: ExistsException) {
+            modelObject.modifySeason()
+        } catch (e: ExistItemTitleException) {
             throw UserException(e.message)
         }
     }

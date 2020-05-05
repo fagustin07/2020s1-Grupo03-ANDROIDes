@@ -12,7 +12,7 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 
-class EditChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChapterDialog(owner,model) {
+class EditChapterWindow(owner : WindowOwner, model : ChapterAppModel?) : ABMChapterWindow(owner,model) {
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Editing chapter"
@@ -29,13 +29,13 @@ class EditChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : ABMChap
                 onClick {
                     tryToCheckEmptyTitle()
                     tryToModifyChapter()
-                    close()
+                    thisWindow.close()
                 }
             }
             Button(it) with {
                 caption = "Cancel"
                 onClick{
-                    close()
+                    thisWindow.close()
                 }
             }
         }

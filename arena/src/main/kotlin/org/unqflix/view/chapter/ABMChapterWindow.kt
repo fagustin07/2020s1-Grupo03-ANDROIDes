@@ -10,7 +10,7 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.model.exceptions.UserException
 
 
-abstract class ABMChapterDialog (owner : WindowOwner, model : ChapterAppModel?) : SimpleWindow<ChapterAppModel>(owner,model){
+abstract class ABMChapterWindow (owner : WindowOwner, model : ChapterAppModel?) : SimpleWindow<ChapterAppModel>(owner,model){
 
     override fun createFormPanel(mainPanel: Panel) {
         title= "Editing season"

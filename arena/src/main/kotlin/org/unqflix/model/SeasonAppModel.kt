@@ -18,10 +18,10 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
     var poster = season.poster
     var seasonChapters= mutableListOf<ChapterAppModel>()
     init {
-        model.chapters.forEach { seasonChapters.add(ChapterAppModel(it,model)) }
+        model.chapters.forEach { seasonChapters.add(ChapterAppModel(it,model, serieWhoBelongs)) }
     }
 
-    fun addToSystem() {
+    fun addSeasonToSystem() {
         updateSeasonFields()
         UnqflixFactory.takeSystem().addSeason(serieWhoBelongs.id, model)
     }
@@ -46,7 +46,7 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
 
     fun updateChapterList() {
         seasonChapters.removeAll(seasonChapters)
-        model.chapters.forEach{ seasonChapters.add(ChapterAppModel(it,model))}
+        model.chapters.forEach{ seasonChapters.add(ChapterAppModel(it,model,serieWhoBelongs ))}
 
     }
 
@@ -54,17 +54,7 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
         UnqflixFactory.takeSystem().deleteSeason(serieWhoBelongs.id,id())
     }
 
-    fun addChapter(chapter: Chapter) {
-        UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,model.id,chapter)
-    }
-
-
-    fun deleteChapter(){
-        chapterSelected?.model?.id?.let { UnqflixFactory.takeSystem().deleteChapter(serieWhoBelongs.id,id(), it) }
-    }
     fun id() = model.id
 
     fun chaptersSize() = model.chapters.size
-
-
 }

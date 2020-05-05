@@ -5,8 +5,8 @@ import domain.Season
 import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
 import org.unqflix.view.season.DeleteSeasonDialog
-import org.unqflix.view.season.EditSeasonDialog
-import org.unqflix.view.season.NewSeasonDialog
+import org.unqflix.view.season.EditSeasonWindow
+import org.unqflix.view.season.NewSeasonWindow
 import org.unqflix.view.season.ShowSeasonWindow
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
@@ -59,7 +59,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                 caption = "Add new season"
                 onClick {
                     val newSeason = newSeason()
-                    NewSeasonDialog(
+                    NewSeasonWindow(
                         owner,SeasonAppModel(newSeason, thisWindow.modelObject.serie)).open()
                     updateSeasonsList()
                 }
@@ -72,7 +72,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    EditSeasonDialog(
+                    EditSeasonWindow(
                         owner, thisWindow.modelObject.seasonSelected?.model?.let
                         { season -> SeasonAppModel(season, thisWindow.modelObject.serie) }).open()
                     updateSeasonsList()
@@ -86,10 +86,8 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    close()
                     ShowSeasonWindow(owner,
                             thisWindow.modelObject.seasonSelected?.let { model -> SeasonAppModel(model.model,model.serieWhoBelongs) }).open()
-                    reopenWindow()
                 }
 
             }

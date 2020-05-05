@@ -8,8 +8,9 @@ import org.unqflix.model.ChapterAppModel
 import org.unqflix.model.IdGeneratorFactory
 import org.unqflix.model.SeasonAppModel
 import org.unqflix.view.chapter.DeleteChapterDialog
-import org.unqflix.view.chapter.EditChapterDialog
-import org.unqflix.view.chapter.NewChapterDialog
+import org.unqflix.view.chapter.EditChapterWindow
+import org.unqflix.view.chapter.NewChapterWindow
+import org.unqflix.view.chapter.ShowChapterDialog
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
@@ -61,9 +62,8 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                 caption = "Add new chapter"
                 onClick {
                     val newChapter = newChapter()
-                    NewChapterDialog(
-                            owner, ChapterAppModel(newChapter, thisWindow.modelObject.model)).open()
-                    tryToAddNewChapter(newChapter)
+                    NewChapterWindow(
+                            owner, ChapterAppModel(newChapter, thisWindow.modelObject.model,thisWindow.modelObject.serieWhoBelongs)).open()
                     updateChapterList()
                 }
             }
@@ -76,26 +76,17 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                         throw UserException(e.message)
                     }
                     close()
-                    EditChapterDialog(
+                    EditChapterWindow(
                             owner, thisWindow.modelObject.chapterSelected?.model?.let
-                            { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model) }).open()
+                            { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model, thisWindow.modelObject.serieWhoBelongs) }).open()
                     updateChapterList()
                 }
             }
             Button(it) with {
                 caption = "Show chapter"
-
-                onClick {/*
-                    try {
-                        checkSelectSeasonOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
-                    close()
-                    ShowChapterDialog (owner,
-                            thisWindow.modelObject.seasonSelected?.model?.let { model -> SeasonAppModel(model,model.serieWhoBelongs) }).open()
-                    reopenWindow()
-                */}
+                onClick {
+                    ShowChapterDialog(owner, thisWindow.modelObject.chapterSelected).open()
+                }
             }
             Button(it) with {
                 caption = "Delete chapter"
@@ -125,18 +116,6 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
         }
     }
 
-    private fun tryToAddNewChapter(newChapter: Chapter) {
-        try {
-            thisWindow.modelObject.addChapter(newChapter)
-        } catch (e: ExistsException) {
-            throw UserException(e.message)
-        }
-    }
-
-    private fun reopenWindow() {
-        updateChapterList()
-        ShowSeasonWindow(owner,modelObject).open()
-    }
 
     private fun checkSelectChapterOrException() {
         if (modelObject.chapterSelected == null) {
