@@ -1,7 +1,7 @@
 package org.unqflix.view.chapter
 
 import ICON
-import org.unqflix.exceptions.EmptyTitleException
+import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.model.ChapterAppModel
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
@@ -45,11 +45,13 @@ abstract class ABMChapterWindow (owner : WindowOwner, model : ChapterAppModel?) 
             Label(it) withText ("Thumbnail: ")
             TextBox(it) with {
                 width= 100
+                withFilter { event -> event.potentialTextResult.matches(Regex("[/^a-zA-Z\\d\\-.,!*?]*")) }
                 bindTo("thumbnail")
             }
             Label(it) withText ("Video: ")
             TextBox(it) with {
                 width= 100
+                withFilter { event -> event.potentialTextResult.matches(Regex("[/^a-zA-Z\\d\\-.,!*?]*")) }
                 bindTo("video")
             }
 
@@ -59,15 +61,18 @@ abstract class ABMChapterWindow (owner : WindowOwner, model : ChapterAppModel?) 
 
     fun tryToCheckEmptyTitle() {
         try {
-            checkTitleChapter()
-        } catch (e: EmptyTitleException) {
+            checkTitleAndVideo()
+        } catch (e: EmptyFieldException) {
             throw UserException(e.message)
         }
     }
 
-    private fun checkTitleChapter(){
+    private fun checkTitleAndVideo(){
         if(modelObject.title == "" || modelObject.title.first()== ' '){
-            throw EmptyTitleException("Title field cannot be empty or start with a space.\n Please, try again.")
+            throw EmptyFieldException("Field 'Title' cannot be empty or start with a space.\n Please, try again.")
+        }
+        if(modelObject.video == ""){
+            throw EmptyFieldException("Field 'Video' cannot be empty. Please, try again!")
         }
     }
 }

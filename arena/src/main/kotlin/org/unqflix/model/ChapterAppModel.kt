@@ -34,13 +34,6 @@ class ChapterAppModel(chapter : Chapter, seasonWhoBelongs : Season, serieWhoBelo
         fun addChapterToSystem(){
                 updateChapterFields()
                 UnqflixFactory.takeSystem().addChapter(serieWhoBelongs.id,seasonWhoBelongs.id,model)
-
-                //es imposible conseguir desde aca, el id de la serie para agregar el capitulo
-                //a traves de Unqflix, porque al usar la interfaz, deberiamos hacer
-                // UnqflixFactory.takeSystem().addChapter(idSerie:String,idSeason:String,chapter)
-                //y desde aca no se puede, se podria resolver pasando el appModel de season, pero no es muy legal que digamos.
-                //por lo que voy a hacer que ShowSeason se encarge de  delegar esta accion a su appModel
-            // habria que eliminar esta funcion y solo dejar la que actualiza los datos.
         }
 
         fun removeChapterFromSystem(){

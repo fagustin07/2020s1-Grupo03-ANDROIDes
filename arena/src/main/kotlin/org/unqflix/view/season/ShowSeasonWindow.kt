@@ -75,10 +75,10 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    close()
                     EditChapterWindow(
                             owner, thisWindow.modelObject.chapterSelected?.model?.let
-                            { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model, thisWindow.modelObject.serieWhoBelongs) }).open()
+                            { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model,
+                                thisWindow.modelObject.serieWhoBelongs) }).open()
                     updateChapterList()
                 }
             }
@@ -124,7 +124,8 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
 
     }
 
-    fun newChapter() = Chapter(IdGeneratorFactory.takeIdGen().nextSeasonId(),"","",1,"","")
+    fun newChapter() = Chapter(IdGeneratorFactory.takeIdGen().nextSeasonId(),
+                                "","",1,"","")
 
 
     fun updateChapterList(){

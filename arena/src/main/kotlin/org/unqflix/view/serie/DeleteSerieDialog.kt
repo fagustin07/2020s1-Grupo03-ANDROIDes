@@ -13,12 +13,12 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 
-class RemoveSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialog<SerieAppModel>(owner,model) {
+class DeleteSerieDialog(owner: WindowOwner, model: SerieAppModel?) : Dialog<SerieAppModel>(owner,model) {
     override fun createFormPanel(p0: Panel?) {
         title = "Removing Serie"
         iconImage = ICON
         Label(p0) withText ("Hey wait. Are you sure to delete '${modelObject.title}' \n" +
-                " of the system? This can't undone!")
+                " from the system? This can't undone!")
 
         Panel(p0) with {
             asHorizontal()

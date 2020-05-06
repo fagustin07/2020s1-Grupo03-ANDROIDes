@@ -25,10 +25,6 @@ class UNQflixAppModel() {
         unqflixModel.searchSeries(serieToSearch).forEach { filteredSeries.add(SerieAppModel(it)) }
     }
 
-    fun removeSerie() {
-        selectedSerie?.id()?.let { unqflixModel.deleteSerie(it) }
-    }
-
     fun restartFilter() {
         serieToSearch=""
         filtrateSeries()

@@ -7,7 +7,7 @@ import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.*
 import org.unqflix.view.serie.EditSerieWindow
 import org.unqflix.view.serie.NewSerieWindow
-import org.unqflix.view.serie.RemoveSerieDialog
+import org.unqflix.view.serie.DeleteSerieDialog
 import org.unqflix.view.serie.ShowSerieWindow
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.arena.kotlin.extensions.*
@@ -93,7 +93,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
-                    RemoveSerieDialog(thisWindow, thisWindow.modelObject.selectedSerie) with {
+                    DeleteSerieDialog(thisWindow, thisWindow.modelObject.selectedSerie) with {
                         onAccept { modelObject.removeFromSystem() }
                         onCancel { close() }
                         open()

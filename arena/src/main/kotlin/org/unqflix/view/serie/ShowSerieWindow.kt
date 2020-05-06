@@ -86,8 +86,10 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
                     } catch (e: NoSelectItemException) {
                         throw UserException(e.message)
                     }
+                    close()
                     ShowSeasonWindow(owner,
                             thisWindow.modelObject.seasonSelected?.let { model -> SeasonAppModel(model.model,model.serieWhoBelongs) }).open()
+                    reopenWindow()
                 }
 
             }

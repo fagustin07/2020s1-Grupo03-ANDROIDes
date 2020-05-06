@@ -1,20 +1,12 @@
 package org.unqflix.view.season
 
 import ICON
-import examples.extensions.widgets.PanelWindow
-import examples.extensions.widgets.control.SpinnerWindow
-import examples.extensions.widgets.control.skinnableControl.FileSelectorExtensionsWindow
-import examples.extensions.widgets.control.skinnableControl.LinkWindow
-import org.unqflix.exceptions.EmptyTitleException
+import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.model.SeasonAppModel
-import org.uqbar.arena.aop.windows.TransactionalWindow
 import org.uqbar.arena.kotlin.extensions.*
 import org.uqbar.arena.widgets.*
-import org.uqbar.arena.windows.Dialog
-import org.uqbar.arena.windows.MainWindow
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.xtend.example.TypeSafeDistanceConverterWindow
 import org.uqbar.commons.model.exceptions.UserException
 
 abstract class ABMSeasonWindow(owner : WindowOwner, model : SeasonAppModel?) : SimpleWindow<SeasonAppModel>(owner,model) {
@@ -55,14 +47,14 @@ abstract class ABMSeasonWindow(owner : WindowOwner, model : SeasonAppModel?) : S
     fun tryToCheckEmptyTitle() {
         try {
             checkTitleSeason()
-        } catch (e: EmptyTitleException) {
+        } catch (e: EmptyFieldException) {
             throw UserException(e.message)
         }
     }
 
      private fun checkTitleSeason(){
         if(modelObject.title == "" || modelObject.title.first()== ' '){
-            throw EmptyTitleException("Title field cannot be empty or start with a space.\n Please, try again.")
+            throw EmptyFieldException("Field 'Title' cannot be empty or start with a space.\n Please, try again.")
         }
     }
 

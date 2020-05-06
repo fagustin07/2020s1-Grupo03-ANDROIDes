@@ -1,6 +1,6 @@
 package org.unqflix.view.serie
 
-import org.unqflix.exceptions.EmptyTitleException
+import org.unqflix.exceptions.EmptyFieldException
 import org.unqflix.model.CategoryAppModel
 import org.unqflix.model.SerieAppModel
 import org.uqbar.arena.kotlin.extensions.*
@@ -101,13 +101,13 @@ abstract class ABMSerieWindow(owner: WindowOwner, model: SerieAppModel?) : Simpl
     fun tryCheckTitle(){
         try {
             checkTitle()
-        }catch(e: EmptyTitleException){
+        }catch(e: EmptyFieldException){
             throw UserException(e.message)
         }
     }
     private fun checkTitle() {
         if (modelObject.title=="" || modelObject.title.first()== ' '){
-            throw EmptyTitleException("Title field cannot be empty or start with a space.\n Please, try again.")
+            throw EmptyFieldException("Field 'Title' cannot be empty or start with a space.\n Please, try again.")
         }
     }
 }

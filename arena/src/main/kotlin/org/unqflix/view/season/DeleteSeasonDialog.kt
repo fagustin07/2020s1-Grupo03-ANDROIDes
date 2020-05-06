@@ -14,9 +14,10 @@ import org.uqbar.arena.windows.WindowOwner
 
 class DeleteSeasonDialog(owner : WindowOwner, model : SeasonAppModel?) : Dialog<SeasonAppModel>(owner,model) {
     override fun createFormPanel(mainPanel: Panel?) {
-        title = "Season to remove"
+        title = "Removing season"
         iconImage = ICON
-        Label(mainPanel) withText ("Are you sure to remove the season '${modelObject?.title}'\n of the system? This can't undone!")
+        Label(mainPanel) withText ("Are you sure to remove the season '${modelObject?.title}'\n" +
+                " from '${modelObject.serieWhoBelongs.title}'? This can't undone!")
         Panel(mainPanel) with {
             asHorizontal()
             Button(it) with {

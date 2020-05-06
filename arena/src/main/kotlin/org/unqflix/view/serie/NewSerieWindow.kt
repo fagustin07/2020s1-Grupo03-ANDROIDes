@@ -20,7 +20,6 @@ class NewSerieWindow(owner: WindowOwner, model: SerieAppModel?) : ABMSerieWindow
         baseInformation(mainPanel)
         categoriesPanel(mainPanel)
         relatedContentPanel(mainPanel)
-
     }
 
 

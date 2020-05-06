@@ -16,7 +16,8 @@ class DeleteChapterDialog(owner : WindowOwner, model : ChapterAppModel?) : Dialo
     override fun createFormPanel(mainPanel: Panel?) {
         title = "Chapter to remove"
         iconImage = ICON
-        Label(mainPanel) withText ("Are you sure to remove the chapter '${modelObject?.title}'\n of the system? This can't undone!")
+        Label(mainPanel) withText ("Are you sure to remove the chapter '${modelObject?.title}'\n" +
+                " from the season '${modelObject.seasonWhoBelongs.title}'? This can't undone!")
         Panel(mainPanel) with {
             asHorizontal()
             Button(it) with {
