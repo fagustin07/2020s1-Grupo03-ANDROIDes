@@ -67,11 +67,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
             Button(it) with {
                 caption = "Modify Season"
                 onClick {
-                    try {
-                        checkSelectSeasonOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     EditSeasonWindow(
                         owner, thisWindow.modelObject.seasonSelected?.model?.let
                         { season -> SeasonAppModel(season, thisWindow.modelObject.serie) }).open()
@@ -81,11 +77,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
             Button(it) with {
                 caption = "Show chapters"
                 onClick {
-                    try {
-                        checkSelectSeasonOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     close()
                     ShowSeasonWindow(owner,
                             thisWindow.modelObject.seasonSelected?.let { model -> SeasonAppModel(model.model,model.serieWhoBelongs) }).open()
@@ -96,11 +88,7 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
             Button(it) with {
                 caption = "Delete Season"
                 onClick{
-                    try {
-                        checkSelectSeasonOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     DeleteSeasonDialog(
                         owner,
                         thisWindow.modelObject.seasonSelected
@@ -121,11 +109,19 @@ class ShowSerieWindow(owner : WindowOwner, model : SerieAppModel?) : SimpleWindo
         }
     }
 
+    private fun tryCheckSelected() {
+        try {
+            checkSelectedSeason()
+        } catch (e: NoSelectItemException) {
+            throw UserException(e.message)
+        }
+    }
+
     private fun reopenWindow() {
         ShowSerieWindow(owner,modelObject).open()
     }
 
-    private fun checkSelectSeasonOrException() {
+    private fun checkSelectedSeason() {
         if (modelObject.seasonSelected == null) {
             throw NoSelectItemException("To do this, first, click on a season please.")
         }

@@ -2,7 +2,6 @@ package org.unqflix.view.season
 
 import ICON
 import domain.Chapter
-import domain.ExistsException
 import org.unqflix.exceptions.NoSelectItemException
 import org.unqflix.model.ChapterAppModel
 import org.unqflix.model.IdGeneratorFactory
@@ -70,11 +69,7 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
             Button(it) with {
                 caption = "Modify chapter"
                 onClick {
-                    try {
-                        checkSelectChapterOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     EditChapterWindow(
                             owner, thisWindow.modelObject.chapterSelected?.model?.let
                             { chapter -> ChapterAppModel(chapter, thisWindow.modelObject.model,
@@ -85,17 +80,16 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
             Button(it) with {
                 caption = "Show chapter"
                 onClick {
-                    ShowChapterDialog(owner, thisWindow.modelObject.chapterSelected).open()
+                    tryCheckSelected()
+                    ShowChapterDialog(
+                        owner,
+                        thisWindow.modelObject.chapterSelected).open()
                 }
             }
             Button(it) with {
                 caption = "Delete chapter"
                 onClick{
-                    try {
-                        checkSelectChapterOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     DeleteChapterDialog(
                             owner,
                             thisWindow.modelObject.chapterSelected
@@ -116,12 +110,19 @@ class ShowSeasonWindow (owner : WindowOwner, model : SeasonAppModel?) : SimpleWi
         }
     }
 
+    private fun tryCheckSelected() {
+        try {
+            checkSelectedChapter()
+        } catch (e: NoSelectItemException) {
+            throw UserException(e.message)
+        }
+    }
 
-    private fun checkSelectChapterOrException() {
+
+    private fun checkSelectedChapter() {
         if (modelObject.chapterSelected == null) {
             throw NoSelectItemException("To do this, first, click on a chapter please.")
         }
-
     }
 
     fun newChapter() = Chapter(IdGeneratorFactory.takeIdGen().nextSeasonId(),

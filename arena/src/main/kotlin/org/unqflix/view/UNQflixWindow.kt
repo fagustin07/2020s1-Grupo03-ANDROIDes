@@ -60,11 +60,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Modify selected"
                 onClick {
-                    try {
-                        checkSelectSerieOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     EditSerieWindow(owner,
                         thisWindow.modelObject.selectedSerie?.serie?.let
                         { serie -> SerieAppModel(serie, categories(), series()) }).open()
@@ -74,11 +70,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Show selected"
                 onClick {
-                    try {
-                        checkSelectSerieOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     ShowSerieWindow(owner,
                             thisWindow.modelObject.selectedSerie?.serie?.let { serie -> SerieAppModel(serie) }).open()
                     restartFilter()
@@ -88,11 +80,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
             Button(it) with {
                 caption = "Delete selected"
                 onClick {
-                    try {
-                        checkSelectSerieOrException()
-                    } catch (e: NoSelectItemException) {
-                        throw UserException(e.message)
-                    }
+                    tryCheckSelected()
                     DeleteSerieDialog(thisWindow, thisWindow.modelObject.selectedSerie) with {
                         onAccept { modelObject.removeFromSystem() }
                         onCancel { close() }
@@ -101,6 +89,14 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
                     }
                 }
             }
+        }
+    }
+
+    private fun tryCheckSelected() {
+        try {
+            checkSelectedSerie()
+        } catch (e: NoSelectItemException) {
+            throw UserException(e.message)
         }
     }
 
@@ -116,7 +112,7 @@ class UNQflixWindow(owner: WindowOwner, unqflixAppModel: UNQflixAppModel):
     private fun categories()=modelObject.categories()
     private fun series()=modelObject.series()
 
-    private fun checkSelectSerieOrException() {
+    private fun checkSelectedSerie() {
         modelObject.checkNoSelectedException()
     }
 

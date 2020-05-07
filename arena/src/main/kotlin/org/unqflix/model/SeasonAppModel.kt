@@ -38,7 +38,7 @@ class SeasonAppModel(season: Season, serieWhoBelongs : Serie) {
     }
 
     private fun checkTitle() {
-        if (model.title != title && serieWhoBelongs.seasons.map {it.title}.any{it.equals(title, ignoreCase = true)}){
+        if (model.title != title.toLowerCase() && serieWhoBelongs.seasons.map {it.title}.any{it.equals(title, ignoreCase = true)}){
             throw ExistItemTitleException("'$title' already exists in another season from" +
                     "'${serieWhoBelongs.title}' serie. Please, insert another title.")
         }
