@@ -18,7 +18,7 @@ fun main() {
     val userController= UserController()
 
     app.routes{
-        path("users"){
+        path("register"){
             post(userController::createUser)
             path(":id"){
                 get(userController::getUser)
