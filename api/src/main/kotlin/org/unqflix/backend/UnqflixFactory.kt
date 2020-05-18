@@ -40,21 +40,29 @@ object UnqflixFactory {
             title = "one punch man", description = "Saitama es el hombre mas fuerte del mundo", id = idGenerator.nextSerieId(),
             poster = "onepunchman.com/poster.jpg", state = Available(), categories = mutableListOf(baseCats[1])
         )
+        var yn= Movie(idGenerator.nextMovieId(),"Your Name","Una linda historia.",
+            "www.yourname.com/poster.png",Available(),"www.yourname.com/movie.mp4",96,
+            categories = mutableListOf(baseCats[1],baseCats[6]))
+
+        var jw= Movie(idGenerator.nextMovieId(),"John Wick","El gran John",
+            "www.johnwickl.com/poster.png",Available(),"www.johnwickl.com/movie.mp4",118,
+            categories = mutableListOf(baseCats[3]))
+
 
         val nico = User(idGenerator.nextUserId(),"Nico Martinez","9784 5548 1123 1234",
-            "https://www.nico.com.ar/image.jpg","nico@gmail.com","martinez2")
+            "https://www.nico.com.ar/image.jpg","nico@gmail.com","martinez2", mutableListOf(yn,gint,dn),
+            mutableListOf(dbz,jw))
 
         val uli = User(idGenerator.nextUserId(),"Uli Lopez","9004 5994 0023 9875",
-            "https://www.uli.com.ar/image.jpg","uli@gmail.com","uli01")
+            "https://www.uli.com.ar/image.jpg","uli@gmail.com","uli01", mutableListOf(dbz,snk),
+            mutableListOf(gint,yn,jw))
 
         val chester = User(idGenerator.nextUserId(),"Chester Sandoval","1234 5678 9123 9999",
-            "https://www.chester.com.ar/image.jpg","chester@gmail.com","fede73")
+            "https://www.chester.com.ar/image.jpg","chester@gmail.com","fede73", mutableListOf(opm,jw,dbz,dn),
+        mutableListOf(oneP,snk))
 
-        val baseSeries = mutableListOf(dbz, oneP, gint, dn, snk, opm)
-        val baseUsers= mutableListOf<User>(nico,uli,chester)
-
-        unqflixModel= UNQFlix(series = baseSeries, categories = baseCats, users = baseUsers)
-
+        unqflixModel= UNQFlix(series = mutableListOf(dbz, oneP, gint, dn, snk, opm), movies = mutableListOf(yn,jw),
+            categories = baseCats, users = mutableListOf(nico,uli,chester), banners = mutableListOf(jw,gint,oneP,yn))
     }
 
 

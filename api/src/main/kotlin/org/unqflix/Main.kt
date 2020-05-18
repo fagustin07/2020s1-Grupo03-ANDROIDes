@@ -5,6 +5,7 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import org.unqflix.controllers.AppController
 import org.unqflix.controllers.UserController
+import org.unqflix.exception.InvalidFieldException
 
 fun main() {
 
@@ -13,31 +14,36 @@ fun main() {
     }
     app.start(7342)
 
+    val  appController = AppController()
     val userController= UserController()
-    
+
     app.routes{
         path("users"){
             post(userController::createUser)
+            path(":id"){
+                get(userController::getUser)
+            }
         }
         path("login"){
             post(userController::loginUser)
         }
-        path(":id"){
-            get(userController::getUser)
-        }
-    }
 
-    val  appController = AppController()
-
-    app.routes{
         path("banners"){
             get(appController::getBanners)
         }
     }
 
+
     app.exception(ExistsException::class.java){ error, ctx ->
         ctx.status(400)
-        ctx.json(mapOf("result" to error.message))
+        ctx.json(mapOf("result" to "Error",
+            "description" to error.message))
+    }
+
+    app.exception(InvalidFieldException::class.java){ error, ctx->
+        ctx.status(400)
+        ctx.json(mapOf("result" to "Error",
+            "description" to error.message))
     }
 }
 

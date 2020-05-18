@@ -1,14 +1,14 @@
 package org.unqflix.controllers
 
+import domain.Available
 import io.javalin.http.Context
-import org.unqflix.mappers.ContentViewMapper
+import org.unqflix.mappers.ContentMapper
 import org.unqflix.model.UnqflixFactory
 
 class AppController {
-    val backend = UnqflixFactory.takeSystem()
+    private val backend = UnqflixFactory.takeSystem()
 
     fun getBanners(ctx : Context){
-        val banners = backend.banners.map { ContentViewMapper(it.id,it.title,it.description,it.state.toString()) }
-        ctx.json(banners)
+        ctx.json(backend.banners.map{ ContentMapper(it.id,it.title, it.description,it.state)}.toList())
     }
 }
