@@ -31,6 +31,12 @@ fun main() {
         path("banners"){
             get(appController::getBanners)
         }
+        path("content"){
+            get(appController::getContent)
+        }
+        path("search"){
+            get(appController::getSpecifyContent)
+        }
     }
 
 
