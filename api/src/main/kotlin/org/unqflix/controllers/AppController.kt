@@ -18,12 +18,17 @@ class AppController {
     }
 
     fun getSpecifyContent(ctx: Context) {
-        val content = search(ctx.queryParam("text")!!)
-        ctx.json(ContentSimpleMapper(content.id,content.title,content.description,content.state))
+        val content = contentSearched(ctx.queryParam("text")!!) // <-- habria que ver como levantar una excepcion si no hay texto ;)
+        ctx.json(ContentMapper(content).contentView())
 
     }
 
-    private fun search(text : String)  = content().find { it.title == text } ?: throw Exception("")
+    private fun contentSearched(text : String) : MutableCollection<Content>  {
+        val content : MutableCollection<Content> = mutableListOf()
+        backend.searchSeries(text).forEach {content.add(it)}
+        backend.searchMovies(text).forEach {content.add(it)}
+        return content
+    }
 
 
     private fun content() : MutableCollection<Content> {
