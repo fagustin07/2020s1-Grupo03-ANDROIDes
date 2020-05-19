@@ -6,6 +6,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import org.unqflix.controllers.AppController
 import org.unqflix.controllers.UserController
 import org.unqflix.exception.InvalidFieldException
+import org.unqflix.support.generateMessage
 
 fun main() {
 
@@ -20,14 +21,13 @@ fun main() {
     app.routes{
         path("register"){
             post(userController::createUser)
-            path(":id"){
-                get(userController::getUser)
-            }
         }
         path("login"){
             post(userController::loginUser)
         }
-
+        path("user"){
+            get(userController::getUser)
+        }
         path("banners"){
             get(appController::getBanners)
         }
@@ -42,14 +42,12 @@ fun main() {
 
     app.exception(ExistsException::class.java){ error, ctx ->
         ctx.status(400)
-        ctx.json(mapOf("result" to "Error",
-            "description" to error.message))
+        ctx.json(generateMessage("Error", error.message!!))
     }
 
     app.exception(InvalidFieldException::class.java){ error, ctx->
         ctx.status(400)
-        ctx.json(mapOf("result" to "Error",
-            "description" to error.message))
+        ctx.json(generateMessage("Error", error.message!!))
     }
 }
 

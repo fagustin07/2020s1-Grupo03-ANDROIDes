@@ -5,37 +5,46 @@ import io.javalin.http.Context
 import org.unqflix.mappers.ContentMapper
 import org.unqflix.mappers.ContentSimpleMapper
 import org.unqflix.model.UnqflixFactory
+import org.unqflix.support.generateContentView
+import org.unqflix.support.generateMessage
 
 class AppController {
     private val backend = UnqflixFactory.takeSystem()
 
     fun getBanners(ctx : Context){
-        ctx.json(ContentMapper(backend.banners).bannersView())
+        ctx.json(generateContentView(backend.banners))
     }
 
     fun getContent(ctx : Context) {
-        ctx.json(ContentMapper(content()).contentView())
+        ctx.json(obtainContent())
     }
 
     fun getSpecifyContent(ctx: Context) {
-        val content = contentSearched(ctx.queryParam("text")!!) // <-- habria que ver como levantar una excepcion si no hay texto ;)
-        ctx.json(ContentMapper(content).contentView())
+        val searchedText = ctx.queryParam("text")
 
+        if(searchedText!= null && searchedText::class== String::class){
+            ctx.json(contentSearched(searchedText))
+        } else {
+            ctx.status(400)
+            ctx.json(generateMessage("Error","You have not send a text. Please, try again."))
+        }
     }
 
-    private fun contentSearched(text : String) : MutableCollection<Content>  {
-        val content : MutableCollection<Content> = mutableListOf()
-        backend.searchSeries(text).forEach {content.add(it)}
-        backend.searchMovies(text).forEach {content.add(it)}
-        return content
+    private fun obtainContent(): MutableList<ContentSimpleMapper> {
+        val content = mutableListOf<Content>()
+        addAllTo(content,backend.series.toMutableList())
+        addAllTo(content,backend.movies.toMutableList())
+
+        return generateContentView(content)
     }
 
+    private fun contentSearched(text : String) : MutableList<ContentSimpleMapper>  {
+        val content = mutableListOf<Content>()
+        addAllTo(content, backend.searchSeries(text).toMutableList())
+        addAllTo(content, backend.searchMovies(text).toMutableList())
 
-    private fun content() : MutableCollection<Content> {
-        val content : MutableCollection<Content> = mutableListOf()
-        backend.series.forEach { content.add(it)}
-        backend.movies.forEach { content.add((it))}
-        return content
+        return generateContentView(content)
     }
 
+    private fun addAllTo(content: MutableList<Content>, contentToAdd: MutableList<Content>)= content.addAll(contentToAdd)
 }
