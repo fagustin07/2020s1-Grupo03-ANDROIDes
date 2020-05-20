@@ -1,7 +1,10 @@
 package org.unqflix.controllers
 
+import domain.ExistsException
 import domain.User
+import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
+import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.*
 import org.unqflix.model.IdGeneratorFactory
 import org.unqflix.model.UnqflixFactory
@@ -17,7 +20,7 @@ class UserController {
             .get()
         ValidateUserData().validate(newUserData)
 
-        val anNewUser= tryAddToSystem(newUserData)
+        val anNewUser= addToSystem(newUserData)
 
         ctx.status(201)
         ctx.json(ViewUserMapper(anNewUser.id,anNewUser.name,anNewUser.email,anNewUser.image))
@@ -30,8 +33,7 @@ class UserController {
             ctx.status(200)
             ctx.json(generateMessage("OK","Authenticated successfully!"))
         } else {
-            ctx.status(404)
-            ctx.json(generateMessage("Error", "Unable to authenticate. Invalid email or password."))
+            throw NotFoundResponse("Unable to authenticate. Invalid email or password.")
         }
     }
 
@@ -41,11 +43,19 @@ class UserController {
             generateContentView(obtainedUser.favorites), generateContentView(obtainedUser.lastSeen)))
     }
 
-    private fun tryAddToSystem(newUser: NewUserMapper): User {
+    private fun addToSystem(newUser: NewUserMapper): User {
         val theNewUser= generateUser(newUser)
-        system.addUser(theNewUser)
+        tryAddToSystem(theNewUser)
 
         return theNewUser
+    }
+
+    private fun tryAddToSystem(theNewUser: User) {
+        try {
+            system.addUser(theNewUser)
+        } catch (error: ExistsException) {
+            throw BadRequestResponse(error.message!!)
+        }
     }
 
     private fun generateUser(newUser: NewUserMapper)= User(nextUserId(), newUser.name!!, newUser.creditCard!!,

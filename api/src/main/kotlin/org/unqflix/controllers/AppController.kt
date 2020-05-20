@@ -2,11 +2,9 @@ package org.unqflix.controllers
 
 import domain.Content
 import io.javalin.http.Context
-import org.unqflix.mappers.ContentMapper
 import org.unqflix.mappers.ContentSimpleMapper
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.generateContentView
-import org.unqflix.support.generateMessage
 
 class AppController {
     private val backend = UnqflixFactory.takeSystem()
@@ -20,14 +18,9 @@ class AppController {
     }
 
     fun getSpecifyContent(ctx: Context) {
-        val searchedText = ctx.queryParam("text")
+        val searchedText = ctx.queryParam("title").toString().toLowerCase()
 
-        if(searchedText!= null && searchedText::class== String::class){
-            ctx.json(contentSearched(searchedText))
-        } else {
-            ctx.status(400)
-            ctx.json(generateMessage("Error","You have not send a text. Please, try again."))
-        }
+        ctx.json(contentSearched(searchedText))
     }
 
     private fun obtainContent(): MutableList<ContentSimpleMapper> {

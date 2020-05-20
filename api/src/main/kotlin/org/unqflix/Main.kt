@@ -3,6 +3,7 @@ package org.unqflix
 import domain.ExistsException
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
+import io.javalin.http.BadRequestResponse
 import org.unqflix.controllers.AppController
 import org.unqflix.controllers.UserController
 import org.unqflix.exception.InvalidFieldException
@@ -37,17 +38,6 @@ fun main() {
         path("search"){
             get(appController::getSpecifyContent)
         }
-    }
-
-
-    app.exception(ExistsException::class.java){ error, ctx ->
-        ctx.status(400)
-        ctx.json(generateMessage("Error", error.message!!))
-    }
-
-    app.exception(InvalidFieldException::class.java){ error, ctx->
-        ctx.status(400)
-        ctx.json(generateMessage("Error", error.message!!))
     }
 }
 
