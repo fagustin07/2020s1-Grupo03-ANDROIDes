@@ -1,7 +1,6 @@
 package org.unqflix.support
 
 import io.javalin.http.BadRequestResponse
-import org.unqflix.exception.InvalidFieldException
 import org.unqflix.mappers.NewUserMapper
 
 class ValidateUserData {
@@ -42,7 +41,7 @@ class ValidateUserData {
     }
 
     private fun validateImage(image: String) {
-        val regex= Regex("^(https?:\\/\\/)?([\\w\\-])+\\.([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]+\\.(?:png|jpg|jpeg|gif|svg)*)")
+        val regex= Regex("^(https?://)?([\\w\\-])+\\.([a-zA-Z]{2,63})([/\\w-]*)*/?\\??([^#\\n\\r]*)?#?([^\\n\\r]+\\.(?:png|jpg|jpeg|gif|svg)*)")
         if(!image.matches(regex))
             throw BadRequestResponse("Invalid image: the URL image submitted was invalid. Please, try again.")
     }

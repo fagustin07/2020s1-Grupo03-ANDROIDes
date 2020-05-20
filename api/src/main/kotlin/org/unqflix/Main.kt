@@ -38,6 +38,10 @@ fun main() {
         path("search"){
             get(appController::getSpecifyContent)
         }
+        path(":contentId"){
+            get(appController::getContentById)
+
+        }
     }
 }
 

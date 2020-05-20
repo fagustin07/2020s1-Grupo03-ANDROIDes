@@ -2,6 +2,7 @@ package org.unqflix.controllers
 
 import domain.Content
 import io.javalin.http.Context
+import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.ContentSimpleMapper
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.generateContentView
@@ -14,13 +15,29 @@ class AppController {
     }
 
     fun getContent(ctx : Context) {
-        ctx.json(obtainContent())
+        val result = obtainContent()
+        result.sortBy { it.title.toLowerCase() }
+        ctx.json(result)
     }
 
     fun getSpecifyContent(ctx: Context) {
         val searchedText = ctx.queryParam("title").toString().toLowerCase()
 
         ctx.json(contentSearched(searchedText))
+    }
+
+    fun getContentById(ctx: Context){
+        val contentId = ctx.pathParam("contentId")
+        val content = getMovieOrSerie(contentId)
+            ?: throw NotFoundResponse("No existe el contenido con id '$contentId'")
+        ctx.json(content)
+    }
+
+    private fun getMovieOrSerie(id: String) : Content? {
+        val result = backend.series.firstOrNull { it.id == id }
+        if (result == null) {
+            return backend.movies.firstOrNull { it.id == id }
+        } else { return result }
     }
 
     private fun obtainContent(): MutableList<ContentSimpleMapper> {
