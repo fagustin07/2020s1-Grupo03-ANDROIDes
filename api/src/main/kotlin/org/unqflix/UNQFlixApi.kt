@@ -15,7 +15,7 @@ fun main() { UNQFlixApi(7342).init() }
 
 class UNQFlixApi(private val  port : Int)
 {
-    private val token = TokenJWT()
+//    private val token = TokenJWT()
 
     //private val  system = UnqflixFactory.takeSystem()
     //private val  jwtAccessManager = JWTAccessManager(token, system)
@@ -34,7 +34,7 @@ class UNQFlixApi(private val  port : Int)
 
 
         val appController = AppController()
-        val userController = UserController(token)
+        val userController = UserController()
 
         app.routes {
             path("register") {
