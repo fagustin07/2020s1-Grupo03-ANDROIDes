@@ -34,14 +34,14 @@ fun main() {
         }
         path("content"){
             get(appController::getContent)
+            path("/:contentId"){
+                get(appController::getContentById)
+            }
         }
         path("search"){
             get(appController::getSpecifyContent)
         }
-        path(":contentId"){
-            get(appController::getContentById)
 
-        }
     }
 }
 
