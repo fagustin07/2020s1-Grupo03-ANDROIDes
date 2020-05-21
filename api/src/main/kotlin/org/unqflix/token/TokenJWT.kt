@@ -1,11 +1,11 @@
-package org.unqflix.controllers
+package org.unqflix.token
 
 import com.auth0.jwt.JWT
-import com.auth0.jwt.JWTCreator
 import com.auth0.jwt.algorithms.Algorithm
 import domain.User
 import javalinjwt.JWTGenerator
 import javalinjwt.JWTProvider
+import org.unqflix.exception.NotFoundToken
 
 
 class UserGenerator() : JWTGenerator<User>{
@@ -24,10 +24,15 @@ class TokenJWT
 
     fun validate(token: String): String {
         val token = provider.validateToken(token)
-        if (!token.isPresent) throw TokenNotPresent()
+        if (!token.isPresent) throw NotFoundToken()
         return token.get().getClaim("id").asString()
     }
 
+    fun generateToken(user: User): String {
+        return provider.generateToken(user)
+    }
+
+
 }
 
-class TokenNotPresent : Exception("Token not present")
+

@@ -4,8 +4,10 @@ import domain.Content
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.ContentSimpleMapper
+import org.unqflix.mappers.LogInDataMapper
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.generateContentView
+import org.unqflix.support.generateMessage
 
 class AppController {
     private val backend = UnqflixFactory.takeSystem()
@@ -39,7 +41,7 @@ class AppController {
 
         val contentToAddOrRemove= ctx.pathParam("contentId")
 
-        if (obtainedUser.favorites.any { contentToAddOrRemove.match(it) }){
+        if (obtainedUser.favorites.any { contentToAddOrRemove == it.id }){
             // eliminar contenido
             // obtainedUser.favorites.remove(contentToAddOrRemove)
             // obtainedUser.removeFav(contentToAddOrRemove)
@@ -56,22 +58,22 @@ class AppController {
         ctx.json(obtainedUser.favorites)// no sé porque, pero no puedo iniciar la api
     }
 
-    fun addLastSeen (ctx: Context){
-        val obtainedUser= system.users[0]
-        val logInData= ctx.body<LogInDataMapper>()
-                                        // negarlo para no poner un else
-        if (obtainedUser.lastSeen.any { logInData.match(it) }){ //tendría que agarrar solo el nombre?
-            // no haría nada? lo saco y lo vuelvo a agregar asi esta al final?
-        } else {
-            // agregar contenido
-            // obtainedUser.lastSeen.add(logInData)
-            // obtainedUser.addLastSeen(logInData)
-            ctx.status(200)
-            ctx.json(generateMessage("OK","Content lastSeen added"))
-        }
-
-        ctx.json(obtainedUser.lastSeen)
-    }
+//    fun addLastSeen (ctx: Context){
+//        val obtainedUser= backend.users[0]
+//        val logInData= ctx.body<LogInDataMapper>()
+//                                        // negarlo para no poner un else
+//        if (obtainedUser.lastSeen.any { logInData.match(it) }){ //tendría que agarrar solo el nombre?
+//            // no haría nada? lo saco y lo vuelvo a agregar asi esta al final?
+//        } else {
+//            // agregar contenido
+//            // obtainedUser.lastSeen.add(logInData)
+//            // obtainedUser.addLastSeen(logInData)
+//            ctx.status(200)
+//            ctx.json(generateMessage("OK","Content lastSeen added"))
+//        }
+//
+//        ctx.json(obtainedUser.lastSeen)
+//    }
 
     private fun unify(contentToUnifyA: MutableList<Content>, contentToUnifyB: MutableList<Content>): MutableList<ContentSimpleMapper> {
         val contentList = mutableListOf<Content>()
