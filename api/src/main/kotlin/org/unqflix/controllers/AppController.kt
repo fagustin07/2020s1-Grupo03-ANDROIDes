@@ -15,45 +15,78 @@ class AppController {
     }
 
     fun getContent(ctx : Context) {
-        val result = obtainContent()
-        result.sortBy { it.title.toLowerCase() }
-        ctx.json(result)
+        val contentList = unify(backend.series.toMutableList(),backend.movies.toMutableList())
+
+        ctx.json(contentList)
     }
 
     fun getSpecifyContent(ctx: Context) {
-        val searchedText = ctx.queryParam("title").toString().toLowerCase()
+        val searchedText = ctx.queryParam("text")!!.toLowerCase()
+        val contentList = unify(backend.searchSeries(searchedText).toMutableList(),backend.searchMovies(searchedText).toMutableList())
 
-        ctx.json(contentSearched(searchedText))
+        ctx.json(contentList)
     }
 
     fun getContentById(ctx: Context){
         val contentId = ctx.pathParam("contentId")
-        val content = getMovieOrSerie(contentId)
-            ?: throw NotFoundResponse("No existe el contenido con id '$contentId'")
+        val content = getContent(contentId)
+            ?: throw NotFoundResponse("Does not exist a content with id '$contentId'")
         ctx.json(content)
     }
 
-    private fun getMovieOrSerie(id: String) : Content? {
-        val result = backend.series.firstOrNull { it.id == id }
-        if (result == null) {
-            return backend.movies.firstOrNull { it.id == id }
-        } else { return result }
+    fun addOrRemoveContent(ctx: Context){
+        val obtainedUser= backend.users[0]
+
+        val contentToAddOrRemove= ctx.pathParam("contentId")
+
+        if (obtainedUser.favorites.any { contentToAddOrRemove.match(it) }){
+            // eliminar contenido
+            // obtainedUser.favorites.remove(contentToAddOrRemove)
+            // obtainedUser.removeFav(contentToAddOrRemove)
+            ctx.status(200)
+            ctx.json(generateMessage("OK","Removed content"))
+        } else {
+            // agregar contenido
+            // obtainedUser.favorites.add(contentToAddOrRemove)
+            // obtainedUser.addFav(contentToAddOrRemove)
+            ctx.status(200) //los dos tienen el mismo status, hay que sacarlos afuera del if
+            ctx.json(generateMessage("OK","Content added")) //idem pero mensaje diferente
+        }
+
+        ctx.json(obtainedUser.favorites)// no sé porque, pero no puedo iniciar la api
     }
 
-    private fun obtainContent(): MutableList<ContentSimpleMapper> {
-        val content = mutableListOf<Content>()
-        addAllTo(content,backend.series.toMutableList())
-        addAllTo(content,backend.movies.toMutableList())
+    fun addLastSeen (ctx: Context){
+        val obtainedUser= system.users[0]
+        val logInData= ctx.body<LogInDataMapper>()
+                                        // negarlo para no poner un else
+        if (obtainedUser.lastSeen.any { logInData.match(it) }){ //tendría que agarrar solo el nombre?
+            // no haría nada? lo saco y lo vuelvo a agregar asi esta al final?
+        } else {
+            // agregar contenido
+            // obtainedUser.lastSeen.add(logInData)
+            // obtainedUser.addLastSeen(logInData)
+            ctx.status(200)
+            ctx.json(generateMessage("OK","Content lastSeen added"))
+        }
 
-        return generateContentView(content)
+        ctx.json(obtainedUser.lastSeen)
     }
 
-    private fun contentSearched(text : String) : MutableList<ContentSimpleMapper>  {
-        val content = mutableListOf<Content>()
-        addAllTo(content, backend.searchSeries(text).toMutableList())
-        addAllTo(content, backend.searchMovies(text).toMutableList())
+    private fun unify(contentToUnifyA: MutableList<Content>, contentToUnifyB: MutableList<Content>): MutableList<ContentSimpleMapper> {
+        val contentList = mutableListOf<Content>()
 
-        return generateContentView(content)
+        contentList.addAll(contentToUnifyA)
+        contentList.addAll(contentToUnifyB)
+        contentList.sortedBy { it.title}
+
+        return generateContentView(contentList)
+    }
+
+    private fun getContent(id: String) : Content? {
+        var requestedContent:Content? = backend.series.firstOrNull { it.id == id }
+        if (requestedContent == null) requestedContent = backend.movies.firstOrNull { it.id == id }
+        return requestedContent
     }
 
     private fun addAllTo(content: MutableList<Content>, contentToAdd: MutableList<Content>)= content.addAll(contentToAdd)

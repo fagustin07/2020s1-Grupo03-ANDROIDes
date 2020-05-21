@@ -72,13 +72,21 @@ class UNQFlixApi(private val  port : Int)
             }
             path("user"){
                 get(userController::getUser)
+                path("fav"){
+                    path(":contentId"){
+                        get(appController::addOrRemoveContent)
+                    }
+                }
+                path("lastSeen"){
+                    get(appController::addLastSeen)
+                }
             }
             path("banners"){
                 get(appController::getBanners)
             }
             path("content"){
                 get(appController::getContent)
-                path("/:contentId"){
+                path(":contentId"){
                     get(appController::getContentById)
                 }
             }
