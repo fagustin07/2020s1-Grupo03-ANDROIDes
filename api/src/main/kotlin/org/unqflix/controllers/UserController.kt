@@ -9,8 +9,9 @@ import org.unqflix.mappers.*
 import org.unqflix.model.IdGeneratorFactory
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.*
+import org.unqflix.token.TokenJWT
 
-class UserController {
+class UserController(val tokenJWT: TokenJWT) {
     private val system=UnqflixFactory.takeSystem()
 
     fun createUser(ctx: Context){
@@ -29,16 +30,19 @@ class UserController {
     fun loginUser(ctx: Context){
         val logInData= ctx.body<LogInDataMapper>()
 
-        if (system.users.any { logInData.match(it) }) {
-            ctx.status(200)
+        val user = system.users.find { it.email==logInData.email && it.password==logInData.password } ?:
+        throw NotFoundResponse("Unable to authenticate. Invalid email or password.")
+
+            ctx.header("Authorization", tokenJWT.generateToken(user))
             ctx.json(generateMessage("OK","Authenticated successfully!"))
-        } else {
-            throw NotFoundResponse("Unable to authenticate. Invalid email or password.")
         }
-    }
 
     fun getUser(ctx: Context){
-        val obtainedUser= system.users[0]
+        val idAuthenticated: String= tokenJWT.validate(ctx.header("Authorization")!!)
+
+        val obtainedUser= system.users
+            .find { it.id==idAuthenticated} ?: throw NotFoundResponse("User not found.")
+
         ctx.json(ViewUserDataMapper(obtainedUser.name,obtainedUser.image,
             generateContentView(obtainedUser.favorites), generateContentView(obtainedUser.lastSeen)))
     }

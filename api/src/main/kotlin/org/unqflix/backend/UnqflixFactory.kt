@@ -13,40 +13,46 @@ object UnqflixFactory {
         val idGenerator = IdGeneratorFactory.takeIdGen()
         var baseCats = baseCategories()
 
-        var dbz = Serie(
-            title = "dragon ball z", description = "Goku quiere ser el mas fuerte del mundo", id = idGenerator.nextSerieId(),
-            poster = "dragonballz.net/poster.jpg", state = Available(), categories = mutableListOf(baseCats[1],baseCats[4]),
-            seasons =  baseSeasons()
-        )
         var oneP = Serie(
-            title = "one piece", description = "las aventuras de los Mugiwara!", id = idGenerator.nextSerieId(),
-            poster = "onepiece.net/poster.jpg", state = Available(), categories = mutableListOf(baseCats[1],baseCats[3])
+            idGenerator.nextSerieId(), "one piece", "las aventuras de los Mugiwara!",
+            "onepiece.net/poster.jpg", Available(), mutableListOf(baseCats[1],baseCats[3])
         )
         var gint = Serie(
-            title = "gintama", description = "las aventuras de Gintoki Sakata", id = idGenerator.nextSerieId(),
-            poster = "gintama.org/poster.jpg", state = Unavailable(), categories = mutableListOf(baseCats[0],baseCats[1])
+            idGenerator.nextSerieId(), "gintama", "las aventuras de Gintoki Sakata",
+            "gintama.org/poster.jpg", Unavailable(), mutableListOf(baseCats[0],baseCats[1])
         )
         var dn = Serie(
-            title = "death note", description = "el prota encuentra una libreta magica que mata gente",
-            id = idGenerator.nextSerieId(), poster = "deadnote.com/poster.jpg", state = Unavailable(),
-            categories = mutableListOf(baseCats[1])
+            idGenerator.nextSerieId(),"death note","el prota encuentra una libreta magica que mata gente",
+            "deadnote.com/poster.jpg", Unavailable(),
+            mutableListOf(baseCats[1])
         )
         var snk = Serie(
-            title = "attack on titans", description = "Un mundo en donde los titanes cazan personas.",
-            id = idGenerator.nextSerieId(), poster = "attackontitans.com/poster.jpg", state = Available(),
-            categories = mutableListOf(baseCats[1])
+            idGenerator.nextSerieId(),"attack on titans","Un mundo en donde los titanes cazan personas.",
+            "attackontitans.com/poster.jpg", Available(), mutableListOf(baseCats[1])
         )
         var opm = Serie(
-            title = "one punch man", description = "Saitama es el hombre mas fuerte del mundo", id = idGenerator.nextSerieId(),
-            poster = "onepunchman.com/poster.jpg", state = Available(), categories = mutableListOf(baseCats[1])
+            idGenerator.nextSerieId(), "one punch man", "Saitama es el hombre mas fuerte del mundo",
+            "onepunchman.com/poster.jpg",Available(),mutableListOf(baseCats[1])
         )
-        var yn= Movie(idGenerator.nextMovieId(),"Your Name","Una linda historia.",
-            "www.yourname.com/poster.png",Available(),"www.yourname.com/movie.mp4",96,
+        var dbz = Serie(
+            idGenerator.nextSerieId(),"dragon ball z","Goku quiere ser el mas fuerte del mundo",
+            "dragonballz.net/poster.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]),baseSeasons(),
+            mutableListOf(opm,dn,gint)
+        )
+
+        var yn= Movie(idGenerator.nextMovieId(),"your name","Una linda historia.",
+            "www.yourname.com/poster.png",Available(),"www.yourname.com/movie.mp4",112,
             categories = mutableListOf(baseCats[1],baseCats[6]))
 
-        var jw= Movie(idGenerator.nextMovieId(),"John Wick","El gran John",
-            "www.johnwickl.com/poster.png",Available(),"www.johnwickl.com/movie.mp4",118,
+        var jw= Movie(idGenerator.nextMovieId(),"john wick","El gran John",
+            "ydondeestanlasrubias.com/poster.png",Available(),"ydondeestanlasrubias.com/movie.mp4",107,
             categories = mutableListOf(baseCats[3]))
+
+        var delr= Movie(idGenerator.nextMovieId(),"y donde estan las rubias?","Los detectives que se visten " +
+                "de mujeres para cumplir su mision",
+            "www.johnwickl.com/poster.png",Available(),"www.johnwickl.com/movie.mp4",115,
+            mutableListOf("Shawn Wayans", "Marlon Wayans","John Heard"), mutableListOf("Keenen Ivory Wayans"),
+            mutableListOf(baseCats[0]), mutableListOf(yn,jw))
 
 
         val nico = User(idGenerator.nextUserId(),"Nico Martinez","9784 5548 1123 1234",
@@ -61,7 +67,7 @@ object UnqflixFactory {
             "https://www.chester.com.ar/image.jpg","chester@gmail.com","fede73", mutableListOf(opm,jw,dbz,dn),
         mutableListOf(oneP,snk))
 
-        unqflixModel= UNQFlix(series = mutableListOf(dbz, oneP, gint, dn, snk, opm), movies = mutableListOf(yn,jw),
+        unqflixModel= UNQFlix(series = mutableListOf(oneP, gint, dn, snk, opm, dbz), movies = mutableListOf(yn,jw,delr),
             categories = baseCats, users = mutableListOf(nico,uli,chester), banners = mutableListOf(jw,gint,oneP,yn))
     }
 
@@ -93,7 +99,7 @@ object UnqflixFactory {
 
         var chapter1 = Chapter(
             idGenerator.nextChapterId(),"Volamos hacia el espacio!","Termina la batalla entre saiyans" +
-                    "y deciden ir a Namekusei.",60,"dragonballz.com/sagadefreezer1.mp4","")
+                    " y deciden ir a Namekusei.",60,"dragonballz.com/sagadefreezer1.mp4","")
         var chapter2 = Chapter(
             idGenerator.nextChapterId(),"El misterio de yunzabit!","La busqueda de la nave espacial de Dios.",
             90,"dragonballz.com/sagadefreezer2.mp4","")

@@ -1,10 +1,7 @@
 package org.unqflix
 
-import domain.User
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import org.unqflix.exception.NotFoundToken
-import org.unqflix.model.IdGeneratorFactory
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.token.TokenJWT
 import kotlin.test.assertNotEquals

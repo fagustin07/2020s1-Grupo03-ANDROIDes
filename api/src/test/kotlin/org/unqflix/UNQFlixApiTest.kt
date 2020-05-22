@@ -1,17 +1,7 @@
 package org.unqflix
 
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.fuel.core.extensions.jsonBody
-import com.github.kittinunf.fuel.jackson.responseObject
 import io.javalin.Javalin
-import org.junit.After
-import org.junit.Test
 import org.junit.jupiter.api.*
-import org.unqflix.mappers.ContentSimpleMapper
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)

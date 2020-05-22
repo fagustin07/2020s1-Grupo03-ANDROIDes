@@ -4,75 +4,70 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.core.security.Role
 import io.javalin.core.util.RouteOverviewPlugin
-import org.unqflix.support.JWTAccessManager
+import org.unqflix.token.JWTAccessManager
 import org.unqflix.controllers.AppController
 import org.unqflix.token.TokenJWT
 import org.unqflix.controllers.UserController
-import org.unqflix.model.UnqflixFactory
-import org.unqflix.support.Roles
 
 fun main() { UNQFlixApi(7342).init() }
 
+internal enum class Roles : Role {
+    PUBLIC, USER
+}
+
 class UNQFlixApi(private val  port : Int)
 {
-//    private val token = TokenJWT()
-
-    //private val  system = UnqflixFactory.takeSystem()
-    //private val  jwtAccessManager = JWTAccessManager(token, system)
+    private val token = TokenJWT()
 
     fun init() : Javalin {
         val app = Javalin.create {
             it.defaultContentType = "application/json"
             it.enableCorsForAllOrigins()
             it.registerPlugin(RouteOverviewPlugin("/routes"))
-            // it.accessManager(jwtAccessManager)
+            it.accessManager(JWTAccessManager(token))
         }.exception(Exception::class.java) { e, ctx ->
             e.printStackTrace()
             ctx.status(500)
             ctx.json("Error")
-        }.start(7342)
+        }.start(port)
 
 
-        val appController = AppController()
-        val userController = UserController()
+        val appController = AppController(token)
+        val userController = UserController(token)
 
         app.routes {
             path("register") {
-                post(userController::createUser)
+                post(userController::createUser, setOf(Roles.PUBLIC))
             }
             path("login") {
-                post(userController::loginUser)
+                post(userController::loginUser, setOf(Roles.PUBLIC) )
             }
             path("user") {
-                path(":id") {
-                    get(userController::getUser)
-                    path("fav") {
-                        path(":contentId") {
-                            get(appController::addOrRemoveContent)
-                        }
+                get(userController::getUser, setOf(Roles.USER))
+                path("fav") {
+                    path(":contentId") {
+                        get(appController::addOrRemoveContent, setOf(Roles.USER))
                     }
-//                path("lastSeen"){
-//                    get(appController::addLastSeen)
-//                }
                 }
+                path("lastSeen") {
+                    get(appController::addLastSeen, setOf(Roles.USER))
+                }
+            }
                 path("banners") {
                     get(
-                        appController::getBanners)
+                        appController::getBanners, setOf(Roles.USER))
                 }
                 path("content") {
-                    get(
-                        appController::getContent)
+                    get(appController::getContent, setOf(Roles.USER))
                     path(":contentId") {
-                        get(
-                            appController::getContentById)
+                        get(appController::getContentById, setOf(Roles.USER))
                     }
                 }
                 path("search") {
-                    get(appController::getSpecifyContent)
+                    get(appController::getSpecifyContent, setOf(Roles.USER))
                 }
 
             }
-        }
         return app
     }
 }

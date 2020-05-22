@@ -5,10 +5,10 @@ import com.auth0.jwt.algorithms.Algorithm
 import domain.User
 import javalinjwt.JWTGenerator
 import javalinjwt.JWTProvider
-import org.unqflix.exception.NotFoundToken
+import org.unqflix.exception.InvalidToken
 
 
-class UserGenerator() : JWTGenerator<User>{
+class UserGenerator : JWTGenerator<User>{
     override fun generate(user: User, alg : Algorithm): String {
         val token = JWT.create().withClaim("id", user.id)
         return token.sign(alg);
@@ -17,20 +17,19 @@ class UserGenerator() : JWTGenerator<User>{
 
 class TokenJWT
 {
-    val algorithm = Algorithm.HMAC256("very_secret")
-    val generator = UserGenerator()
-    val verifier = JWT.require(algorithm).build()
-    val provider = JWTProvider(algorithm, generator, verifier)
+    private val algorithm = Algorithm.HMAC256("ANDROIDesTeam_very_secret_pass")
+    private val generator = UserGenerator()
+    private val verifier = JWT.require(algorithm).build()
+    private val provider = JWTProvider(algorithm, generator, verifier)
 
     fun validate(token: String): String {
-        val token = provider.validateToken(token)
-        if (!token.isPresent) throw NotFoundToken()
-        return token.get().getClaim("id").asString()
+        val anTokenJWT = provider.validateToken(token)
+        if (!anTokenJWT.isPresent) throw InvalidToken()
+
+        return anTokenJWT.get().getClaim("id").asString()
     }
 
-    fun generateToken(user: User): String {
-        return provider.generateToken(user)
-    }
+    fun generateToken(user: User): String = provider.generateToken(user)
 
 
 }
