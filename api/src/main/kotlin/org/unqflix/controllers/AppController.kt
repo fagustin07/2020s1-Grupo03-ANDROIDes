@@ -8,10 +8,10 @@ import org.unqflix.mappers.MovieMapper
 import org.unqflix.mappers.SerieMapper
 import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.generateContentView
-import org.unqflix.support.generateMessage
 import org.unqflix.token.TokenJWT
 
 class AppController(val tokenJWT:TokenJWT) {
+
     private val backend = UnqflixFactory.takeSystem()
 
     fun getBanners(ctx : Context){
@@ -56,42 +56,28 @@ class AppController(val tokenJWT:TokenJWT) {
     fun addOrRemoveContent(ctx: Context){
         val obtainedUser= backend.users[0]
 
-        val contentToAddOrRemove= ctx.pathParam("contentId")
+        val idContentSearched= ctx.pathParam("contentId")
 
-        if (obtainedUser.favorites.any { contentToAddOrRemove == it.id }){
-            // eliminar contenido
-            // obtainedUser.favorites.remove(contentToAddOrRemove)
-            // obtainedUser.removeFav(contentToAddOrRemove)
-            ctx.status(200)
-            ctx.json(generateMessage("OK","Removed content"))
-        } else {
-            // agregar contenido
-            // obtainedUser.favorites.add(contentToAddOrRemove)
-            // obtainedUser.addFav(contentToAddOrRemove)
-            ctx.status(200) //los dos tienen el mismo status, hay que sacarlos afuera del if
-            ctx.json(generateMessage("OK","Content added")) //idem pero mensaje diferente
-        }
+        findContentById(idContentSearched)
 
-        ctx.json(obtainedUser.favorites)// no sé porque, pero no puedo iniciar la api
+        backend.addOrDeleteFav(obtainedUser.id, idContentSearched)
+
+        ctx.status(200)
+//        ctx.json(generateMessage("OK","Updated fav content"))
+        ctx.json(obtainedUser.favorites)
     }
 
-
-
-    fun addLastSeen (ctx: Context){}
-//        ctx.json(obtainedUser.lastSeen)
-//
-//        }
-//            ctx.json(generateMessage("OK","Content lastSeen added"))
-//            ctx.status(200)
-//            // obtainedUser.addLastSeen(logInData)
-//            // obtainedUser.lastSeen.add(logInData)
-//            // agregar contenido
-//        } else {
-//            // no haría nada? lo saco y lo vuelvo a agregar asi esta al final?
-//        if (obtainedUser.lastSeen.any { logInData.match(it) }){ //tendría que agarrar solo el nombre?
-//                                        // negarlo para no poner un else
-//        val logInData= ctx.body<LogInDataMapper>()
+    fun addLastSeen (ctx: Context){
 //        val obtainedUser= backend.users[0]
+//        val logInData= ctx.body<idMapper>()
+//        findContentById(logInData)
+//
+//        backend.addLastSeen(obtainedUser.id, logInData)
+//
+//        ctx.status(200)
+//        ctx.json(generateMessage("OK","Content lastSeen added"))
+//        ctx.json(obtainedUser.lastSeen)
+    }
 
     private fun unify(contentToUnifyA: MutableList<Content>, contentToUnifyB: MutableList<Content>): MutableList<ContentMapper> {
         val contentList = mutableListOf<Content>()
@@ -105,11 +91,11 @@ class AppController(val tokenJWT:TokenJWT) {
 
     private fun findContentById(id: String) : Content {
         var requestedContent:Content? = backend.series.firstOrNull { it.id == id }
+
         requestedContent =  requestedContent ?: backend.movies.firstOrNull { it.id == id }
 
         return requestedContent?: throw NotFoundResponse("Does not exist a content with id '$id'")
     }
-
 
     private fun generateMovieMapper(movieContent: Movie): MovieMapper {
         return MovieMapper(

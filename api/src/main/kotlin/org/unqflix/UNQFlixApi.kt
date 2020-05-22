@@ -15,8 +15,7 @@ internal enum class Roles : Role {
     PUBLIC, USER
 }
 
-class UNQFlixApi(private val  port : Int)
-{
+class UNQFlixApi(private val  port : Int) {
     private val token = TokenJWT()
 
     fun init() : Javalin {
@@ -30,7 +29,6 @@ class UNQFlixApi(private val  port : Int)
             ctx.status(500)
             ctx.json("Error")
         }.start(port)
-
 
         val appController = AppController(token)
         val userController = UserController(token)
