@@ -30,7 +30,6 @@ class UNQFlixApi(private val  port : Int) {
             ctx.json("Error")
         }.start(port)
 
-        val appController = AppController(token)
         val userController = UserController(token)
 
         app.routes {
@@ -38,34 +37,38 @@ class UNQFlixApi(private val  port : Int) {
                 post(userController::createUser, setOf(Roles.PUBLIC))
             }
             path("login") {
-                post(userController::loginUser, setOf(Roles.PUBLIC) )
+                post(userController::loginUser, setOf(Roles.PUBLIC))
             }
             path("user") {
                 get(userController::getUser, setOf(Roles.USER))
                 path("fav") {
                     path(":contentId") {
-                        get(appController::addOrRemoveContent, setOf(Roles.USER))
+                        post(userController::addOrRemoveContent, setOf(Roles.USER))
                     }
                 }
                 path("lastSeen") {
-                    get(appController::addLastSeen, setOf(Roles.USER))
+                    post(userController::addLastSeen, setOf(Roles.USER))
                 }
             }
-                path("banners") {
-                    get(
-                        appController::getBanners, setOf(Roles.USER))
-                }
-                path("content") {
-                    get(appController::getContent, setOf(Roles.USER))
-                    path(":contentId") {
-                        get(appController::getContentById, setOf(Roles.USER))
-                    }
-                }
-                path("search") {
-                    get(appController::getSpecifyContent, setOf(Roles.USER))
-                }
+        }
 
+        val appController = AppController()
+
+        app.routes {
+            path("banners") {
+                get(
+                        appController::getBanners, setOf(Roles.USER))
             }
+            path("content") {
+                get(appController::getContent, setOf(Roles.USER))
+                path(":contentId") {
+                    get(appController::getContentById, setOf(Roles.USER))
+                }
+            }
+            path("search") {
+                get(appController::getSpecifyContent, setOf(Roles.USER))
+            }
+        }
         return app
     }
 }

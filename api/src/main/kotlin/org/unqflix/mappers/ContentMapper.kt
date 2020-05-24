@@ -12,3 +12,5 @@ data class SerieMapper(
     val id: String, val title: String, val status:Boolean,val description: String, val poster:String,
     val categories: MutableList<String>, val seasons: MutableList<Season>, val relatedContent:MutableList<ContentMapper>
 )
+
+data class IdContentMapper(val id : String?)

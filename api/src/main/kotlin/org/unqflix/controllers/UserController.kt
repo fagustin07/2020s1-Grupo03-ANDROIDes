@@ -7,12 +7,10 @@ import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.*
 import org.unqflix.model.IdGeneratorFactory
-import org.unqflix.model.UnqflixFactory
 import org.unqflix.support.*
 import org.unqflix.token.TokenJWT
 
-class UserController(val tokenJWT: TokenJWT) {
-    private val system=UnqflixFactory.takeSystem()
+class UserController(private val tokenJWT: TokenJWT): AbstractController() {
 
     fun createUser(ctx: Context){
         val newUserData = ctx.bodyValidator<NewUserMapper>()
@@ -47,6 +45,36 @@ class UserController(val tokenJWT: TokenJWT) {
             generateContentView(obtainedUser.favorites), generateContentView(obtainedUser.lastSeen)))
     }
 
+    fun addOrRemoveContent(ctx: Context){
+        val idAuthenticated: String= tokenJWT.validate(ctx.header("Authorization")!!)
+        val obtainedUser= system.users
+                .find { it.id==idAuthenticated} ?: throw NotFoundResponse("User not found.")
+
+        val contentId= ctx.pathParam("contentId")
+        val content = findContentById(contentId)
+
+        system.addOrDeleteFav(obtainedUser.id, content.id)
+        val fav = generateContentView(obtainedUser.favorites)
+
+        ctx.json(fav)
+    }
+
+    fun addLastSeen (ctx: Context){
+        val idAuthenticated: String= tokenJWT.validate(ctx.header("Authorization")!!)
+        val obtainedUser= system.users
+                .find { it.id==idAuthenticated}
+
+        val contentToAdd = ctx.bodyValidator<IdContentMapper>()
+                .check({it.id!=null},
+                        "Invalid body: id is required.")
+                .get()
+
+        system.addLastSeen(obtainedUser!!.id, contentToAdd.id!!)
+        val lastSeen = generateContentView(obtainedUser.lastSeen)
+
+        ctx.json(lastSeen)
+    }
+
     private fun addToSystem(newUser: NewUserMapper): User {
         val theNewUser= generateUser(newUser)
         tryAddToSystem(theNewUser)
@@ -66,8 +94,4 @@ class UserController(val tokenJWT: TokenJWT) {
                                                                     newUser.image!!,newUser.email!!,newUser.password!!)
 
     private fun nextUserId() = IdGeneratorFactory.takeIdGen().nextUserId()
-
-
-
-
 }

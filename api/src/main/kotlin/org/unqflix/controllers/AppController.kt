@@ -2,24 +2,18 @@ package org.unqflix.controllers
 
 import domain.*
 import io.javalin.http.Context
-import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.ContentMapper
 import org.unqflix.mappers.MovieMapper
 import org.unqflix.mappers.SerieMapper
-import org.unqflix.model.UnqflixFactory
-import org.unqflix.support.generateContentView
-import org.unqflix.token.TokenJWT
 
-class AppController(val tokenJWT:TokenJWT) {
-
-    private val backend = UnqflixFactory.takeSystem()
+class AppController : AbstractController(){
 
     fun getBanners(ctx : Context){
-        ctx.json(generateContentView(backend.banners))
+        ctx.json(generateContentView(system.banners))
     }
 
     fun getContent(ctx : Context) {
-        val contentList = unify(backend.series.toMutableList(),backend.movies.toMutableList())
+        val contentList = unify(system.series.toMutableList(),system.movies.toMutableList())
 
         ctx.json(contentList)
     }
@@ -28,7 +22,7 @@ class AppController(val tokenJWT:TokenJWT) {
         var searchedText = ctx.queryParam("text")
         searchedText = searchedText ?: ""
 
-        val contentList = unify(backend.searchSeries(searchedText).toMutableList(),backend.searchMovies(searchedText).toMutableList())
+        val contentList = unify(system.searchSeries(searchedText).toMutableList(),system.searchMovies(searchedText).toMutableList())
 
         ctx.json(contentList)
     }
@@ -53,32 +47,6 @@ class AppController(val tokenJWT:TokenJWT) {
 
     private fun takeCategoriesName(categories: MutableList<Category>)= categories.map { it.name }.toMutableList()
 
-    fun addOrRemoveContent(ctx: Context){
-        val obtainedUser= backend.users[0]
-
-        val idContentSearched= ctx.pathParam("contentId")
-
-        findContentById(idContentSearched)
-
-        backend.addOrDeleteFav(obtainedUser.id, idContentSearched)
-
-        ctx.status(200)
-//        ctx.json(generateMessage("OK","Updated fav content"))
-        ctx.json(obtainedUser.favorites)
-    }
-
-    fun addLastSeen (ctx: Context){
-//        val obtainedUser= backend.users[0]
-//        val logInData= ctx.body<idMapper>()
-//        findContentById(logInData)
-//
-//        backend.addLastSeen(obtainedUser.id, logInData)
-//
-//        ctx.status(200)
-//        ctx.json(generateMessage("OK","Content lastSeen added"))
-//        ctx.json(obtainedUser.lastSeen)
-    }
-
     private fun unify(contentToUnifyA: MutableList<Content>, contentToUnifyB: MutableList<Content>): MutableList<ContentMapper> {
         val contentList = mutableListOf<Content>()
 
@@ -87,14 +55,6 @@ class AppController(val tokenJWT:TokenJWT) {
         contentList.sortBy { it.title}
 
         return generateContentView(contentList)
-    }
-
-    private fun findContentById(id: String) : Content {
-        var requestedContent:Content? = backend.series.firstOrNull { it.id == id }
-
-        requestedContent =  requestedContent ?: backend.movies.firstOrNull { it.id == id }
-
-        return requestedContent?: throw NotFoundResponse("Does not exist a content with id '$id'")
     }
 
     private fun generateMovieMapper(movieContent: Movie): MovieMapper {
