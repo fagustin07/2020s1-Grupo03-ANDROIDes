@@ -1,4 +1,4 @@
-package org.unqflix.model
+package org.unqflix.backend
 
 import domain.IdGenerator
 

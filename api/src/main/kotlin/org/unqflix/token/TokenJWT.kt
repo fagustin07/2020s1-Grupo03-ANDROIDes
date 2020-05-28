@@ -3,9 +3,9 @@ package org.unqflix.token
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import domain.User
+import io.javalin.http.UnauthorizedResponse
 import javalinjwt.JWTGenerator
 import javalinjwt.JWTProvider
-import org.unqflix.exception.InvalidToken
 
 
 class UserGenerator : JWTGenerator<User>{
@@ -24,7 +24,7 @@ class TokenJWT
 
     fun validate(token: String): String {
         val anTokenJWT = provider.validateToken(token)
-        if (!anTokenJWT.isPresent) throw InvalidToken()
+        if (!anTokenJWT.isPresent) throw UnauthorizedResponse("Invalid Token.")
 
         return anTokenJWT.get().getClaim("id").asString()
     }

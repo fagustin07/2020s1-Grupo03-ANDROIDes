@@ -8,17 +8,17 @@ import org.unqflix.mappers.SerieMapper
 
 class AppController : AbstractController(){
 
-    fun getBanners(ctx : Context){
+    fun showBanners(ctx : Context){
         ctx.json(generateContentView(system.banners))
     }
 
-    fun getContent(ctx : Context) {
+    fun showContents(ctx : Context) {
         val contentList = unify(system.series.toMutableList(),system.movies.toMutableList())
 
         ctx.json(contentList)
     }
 
-    fun getSpecifyContent(ctx: Context) {
+    fun findContent(ctx: Context) {
         var searchedText = ctx.queryParam("text")
         searchedText = searchedText ?: ""
 
@@ -29,6 +29,7 @@ class AppController : AbstractController(){
 
     fun getContentById(ctx: Context){
         val contentId = ctx.pathParam("contentId")
+
         val content = findContentById(contentId)
         if(content::class==Serie::class) {
             val serieContent:Serie= content as Serie

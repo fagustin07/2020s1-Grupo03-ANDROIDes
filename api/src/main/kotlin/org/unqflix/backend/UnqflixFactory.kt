@@ -1,4 +1,4 @@
-package org.unqflix.model
+package org.unqflix.backend
 
 import domain.*
 
@@ -36,7 +36,7 @@ object UnqflixFactory {
         )
         var dbz = Serie(
             idGenerator.nextSerieId(),"dragon ball z","Goku quiere ser el mas fuerte del mundo",
-            "dragonballz.net/poster.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]),baseSeasons(),
+            "dragonballz.net/poster.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]), baseSeasons(),
             mutableListOf(opm,dn,gint)
         )
 
@@ -45,7 +45,7 @@ object UnqflixFactory {
             categories = mutableListOf(baseCats[1],baseCats[6]))
 
         var jw= Movie(idGenerator.nextMovieId(),"john wick","El gran John",
-            "ydondeestanlasrubias.com/poster.png",Available(),"ydondeestanlasrubias.com/movie.mp4",107,
+            "johnwick.com/poster.png",Available(),"johnwick.com/movie.mp4",107,
             categories = mutableListOf(baseCats[3]))
 
         var delr= Movie(idGenerator.nextMovieId(),"y donde estan las rubias?","Los detectives que se visten " +
@@ -56,18 +56,18 @@ object UnqflixFactory {
 
 
         val nico = User(idGenerator.nextUserId(),"Nico Martinez","9784 5548 1123 1234",
-            "https://www.nico.com.ar/image.jpg","nico@gmail.com","martinez2", mutableListOf(yn,gint,dn),
+            "https://www.nico.com.ar/image.jpg","nico@gmail.com","Martinez2", mutableListOf(yn,gint,dn),
             mutableListOf(dbz,jw))
 
         val uli = User(idGenerator.nextUserId(),"Uli Lopez","9004 5994 0023 9875",
-            "https://www.uli.com.ar/image.jpg","uli@gmail.com","uli01", mutableListOf(dbz,snk),
+            "https://www.uli.com.ar/image.jpg","uli@gmail.com","Uli01", mutableListOf(dbz,snk),
             mutableListOf(gint,yn,jw))
 
         val chester = User(idGenerator.nextUserId(),"Chester Sandoval","1234 5678 9123 9999",
-            "https://www.chester.com.ar/image.jpg","chester@gmail.com","fede73", mutableListOf(opm,jw,dbz,dn),
+            "https://www.chester.com.ar/image.jpg","chester@gmail.com","Fede73", mutableListOf(opm,jw,dbz,dn),
         mutableListOf(oneP,snk))
 
-        unqflixModel= UNQFlix(series = mutableListOf(oneP, gint, dn, snk, opm, dbz), movies = mutableListOf(yn,jw,delr),
+        unqflixModel = UNQFlix(series = mutableListOf(oneP, gint, dn, snk, opm, dbz), movies = mutableListOf(yn,jw,delr),
             categories = baseCats, users = mutableListOf(nico,uli,chester), banners = mutableListOf(jw,gint,oneP,yn))
     }
 

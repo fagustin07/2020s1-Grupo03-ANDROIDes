@@ -4,7 +4,7 @@ import domain.Available
 import domain.Content
 import io.javalin.http.NotFoundResponse
 import org.unqflix.mappers.ContentMapper
-import org.unqflix.model.UnqflixFactory
+import org.unqflix.backend.UnqflixFactory
 
 abstract class AbstractController {
 

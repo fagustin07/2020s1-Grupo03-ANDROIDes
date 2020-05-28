@@ -57,18 +57,19 @@ class UNQFlixApi(private val  port : Int) {
         app.routes {
             path("banners") {
                 get(
-                        appController::getBanners, setOf(Roles.USER))
+                        appController::showBanners, setOf(Roles.USER))
             }
             path("content") {
-                get(appController::getContent, setOf(Roles.USER))
+                get(appController::showContents, setOf(Roles.USER))
                 path(":contentId") {
                     get(appController::getContentById, setOf(Roles.USER))
                 }
             }
             path("search") {
-                get(appController::getSpecifyContent, setOf(Roles.USER))
+                get(appController::findContent, setOf(Roles.USER))
             }
         }
+
         return app
     }
 }
