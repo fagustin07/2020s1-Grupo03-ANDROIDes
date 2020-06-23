@@ -14,7 +14,7 @@ abstract class AbstractController {
             mapOf("result" to typeMessage, "description" to descriptionMessage)
 
     fun generateContentView(contentList: MutableCollection<Content>)=
-            contentList.map { ContentMapper(it.id,it.title,it.description,it.state::class== Available::class) }.toMutableList()
+            contentList.map { ContentMapper(it.id,it.title,it.description,it.poster,it.state::class== Available::class) }.toMutableList()
 
     protected fun findContentById(id: String) : Content {
         var requestedContent: Content? = system.series.firstOrNull { it.id == id }

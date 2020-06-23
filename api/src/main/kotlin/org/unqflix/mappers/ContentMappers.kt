@@ -2,7 +2,7 @@ package org.unqflix.mappers
 
 import domain.Season
 
-data class ContentMapper(val id : String, val title : String, val description : String, val status : Boolean)
+data class ContentMapper(val id : String, val title : String, val description : String, val poster:String,val status : Boolean)
 
 data class MovieMapper(val id : String, val title : String, val status:Boolean, val description : String,
                        val poster:String, val video:String,val duration:Int,val actors:List<String>,val directors:List<String>,

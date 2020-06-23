@@ -66,7 +66,7 @@ class UserController(private val tokenJWT: TokenJWT): AbstractController() {
                 .get()
 
         findContentById(contentToAdd.id!!)
-        system.addLastSeen(obtainedUser!!.id, contentToAdd.id!!)
+        system.addLastSeen(obtainedUser!!.id, contentToAdd.id)
         val lastSeen = generateContentView(obtainedUser.lastSeen)
 
         ctx.json(lastSeen)

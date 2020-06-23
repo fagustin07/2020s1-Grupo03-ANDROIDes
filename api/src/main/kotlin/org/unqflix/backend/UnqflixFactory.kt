@@ -15,42 +15,42 @@ object UnqflixFactory {
 
         var oneP = Serie(
             idGenerator.nextSerieId(), "one piece", "las aventuras de los Mugiwara!",
-            "onepiece.net/poster.jpg", Available(), mutableListOf(baseCats[1],baseCats[3])
+            "https://images-na.ssl-images-amazon.com/images/I/61j4P7FpQhL.jpg", Available(), mutableListOf(baseCats[1],baseCats[3])
         )
         var gint = Serie(
             idGenerator.nextSerieId(), "gintama", "las aventuras de Gintoki Sakata",
-            "gintama.org/poster.jpg", Unavailable(), mutableListOf(baseCats[0],baseCats[1])
+            "https://images-na.ssl-images-amazon.com/images/I/61yd4MxxPGL._AC_.jpg", Unavailable(), mutableListOf(baseCats[0],baseCats[1])
         )
         var dn = Serie(
             idGenerator.nextSerieId(),"death note","el prota encuentra una libreta magica que mata gente",
-            "deadnote.com/poster.jpg", Unavailable(),
+            "https://images-na.ssl-images-amazon.com/images/I/515es5ofRxL._AC_.jpg", Unavailable(),
             mutableListOf(baseCats[1])
         )
         var snk = Serie(
             idGenerator.nextSerieId(),"attack on titans","Un mundo en donde los titanes cazan personas.",
-            "attackontitans.com/poster.jpg", Available(), mutableListOf(baseCats[1])
+            "https://otakuwagon.com/wp-content/uploads/2020/04/s592.jpg", Available(), mutableListOf(baseCats[1])
         )
         var opm = Serie(
             idGenerator.nextSerieId(), "one punch man", "Saitama es el hombre mas fuerte del mundo",
-            "onepunchman.com/poster.jpg",Available(),mutableListOf(baseCats[1])
+            "https://images-na.ssl-images-amazon.com/images/I/717aat3l-YL._AC_SL1224_.jpg",Available(),mutableListOf(baseCats[1])
         )
         var dbz = Serie(
             idGenerator.nextSerieId(),"dragon ball z","Goku quiere ser el mas fuerte del mundo",
-            "dragonballz.net/poster.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]), baseSeasons(),
+            "https://images-na.ssl-images-amazon.com/images/I/61JKxqapVQL._AC_.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]), baseSeasons(),
             mutableListOf(opm,dn,gint)
         )
 
         var yn= Movie(idGenerator.nextMovieId(),"your name","Una linda historia.",
-            "www.yourname.com/poster.png",Available(),"www.yourname.com/movie.mp4",112,
+            "https://images-na.ssl-images-amazon.com/images/I/71-WBN3FCBL._AC_SY741_.jpg",Available(),"www.yourname.com/movie.mp4",112,
             categories = mutableListOf(baseCats[1],baseCats[6]))
 
         var jw= Movie(idGenerator.nextMovieId(),"john wick","El gran John",
-            "johnwick.com/poster.png",Available(),"johnwick.com/movie.mp4",107,
+            "https://images-na.ssl-images-amazon.com/images/I/71WiYBT2QsL._AC_SY741_.jpg",Available(),"johnwick.com/movie.mp4",107,
             categories = mutableListOf(baseCats[3]))
 
         var delr= Movie(idGenerator.nextMovieId(),"y donde estan las rubias?","Los detectives que se visten " +
                 "de mujeres para cumplir su mision",
-            "www.johnwickl.com/poster.png",Available(),"www.johnwickl.com/movie.mp4",115,
+            "https://i.pinimg.com/originals/c4/ad/6b/c4ad6b40be573f8cf2c7459447318f7d.jpg",Available(),"www.johnwickl.com/movie.mp4",115,
             mutableListOf("Shawn Wayans", "Marlon Wayans","John Heard"), mutableListOf("Keenen Ivory Wayans"),
             mutableListOf(baseCats[0]), mutableListOf(yn,jw))
 
