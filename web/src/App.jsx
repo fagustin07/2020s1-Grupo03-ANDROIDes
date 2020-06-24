@@ -9,14 +9,16 @@ import NotFound from './components/NotFound';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-          <Route path="/register" component={RegisterForm}/>
-          <Route path="/home" component={Home}/>
-          <Route exact path="/" component={LogIn} />
-          <Route path="*" component={NotFound} />
-      </Switch>
-    </BrowserRouter>
+    <div className= "home">
+      <BrowserRouter>
+        <Switch>
+            <Route path="/register" component={RegisterForm}/>
+            <Route path="/home" component={Home}/>
+            <Route exact path="/" component={LogIn} />
+            <Route path="*" component={NotFound} />
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 }
 

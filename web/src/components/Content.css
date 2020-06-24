@@ -1,0 +1,46 @@
+/* 
+.card{
+  width: 20%;
+  height: auto;
+  padding : 5px;
+  box-shadow: 2px 5px 10px 0px rgba(0, 0, 0, 0.5);
+} 
+
+.card-body{
+  padding: 10px;
+} 
+ 
+.card-text{
+  text-shadow: 2px 2px 5px red;
+}
+
+.card-text:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.card-img-top:hover{
+  cursor: pointer;
+} */
+
+.title{
+  padding-top: 5px;
+  font-size: large;
+  font-family: Helvetica, sans-serif;
+}
+
+.title:hover {
+cursor: pointer;
+text-decoration: underline;
+}
+
+.poster:hover {
+cursor: pointer;
+}
+
+.poster{
+width: 70%;
+height: auto;
+border: 1px solid black;
+padding: 1px;
+}
