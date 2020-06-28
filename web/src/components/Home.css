@@ -1,3 +1,10 @@
 .container{
     
 }
+
+
+.saludo{
+    font-style: italic;
+    padding: 20px;
+    border-bottom: 3px solid black;
+}

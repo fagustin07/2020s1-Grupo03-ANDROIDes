@@ -6,6 +6,7 @@ export default function Navigation({isLogged}) {
   const [text, setText]= useState('');
 
   const handleSubmit = () => {
+    
     history.push(`/search/${text}`);
   }
 

@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
-import users from './Users.json';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Navigation from './Navigation';
+import Api from './Api'
+
+
 
 export default function LogIn() {
     const [user, setUser] = useState('');
@@ -11,13 +13,15 @@ export default function LogIn() {
 
     const handleSubmit = (ev) =>{
         ev.preventDefault();
-        const findedUser = users.find(anUser => anUser.user===user && anUser.password===password);
-        
-        if(findedUser){
-            history.push('/home', {...findedUser});
-        }
-        setError('Invalid username or password, please, try again.')
-        setPassword('');
+        // const findedUser = users.find(anUser => anUser.user===user && anUser.password===password);
+        Api.logIn(user, password)
+        .then(response => history.push('/home', {...response.headers}))
+        .catch(response => console.log(response.error));
+        // if(findedUser){
+        //     history.push('/home', {...findedUser});
+        // }
+        // setError('Invalid username or password, please, try again.')
+        // setPassword('');
     }
 
     return(

@@ -64,7 +64,7 @@ object UnqflixFactory {
             mutableListOf(gint,yn,jw))
 
         val chester = User(idGenerator.nextUserId(),"Chester Sandoval","1234 5678 9123 9999",
-            "https://www.chester.com.ar/image.jpg","chester@gmail.com","Fede73", mutableListOf(opm,jw,dbz,dn),
+            "https://www.chester.com.ar/image.jpg","chester@gmail.com","Fede73", mutableListOf(opm,jw,dbz,dn,oneP,gint,snk,yn,delr),
         mutableListOf(oneP,snk))
 
         unqflixModel = UNQFlix(series = mutableListOf(oneP, gint, dn, snk, opm, dbz), movies = mutableListOf(yn,jw,delr),

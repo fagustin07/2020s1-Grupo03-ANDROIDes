@@ -24,6 +24,8 @@ class UNQFlixApi(private val  port : Int) {
             it.enableCorsForAllOrigins()
             it.registerPlugin(RouteOverviewPlugin("/routes"))
             it.accessManager(JWTAccessManager(token))
+        }.before{
+            it.header("Access-Control-Expose-Headers", "Authorization")
         }.exception(Exception::class.java) { e, ctx ->
             e.printStackTrace()
             ctx.status(500)
