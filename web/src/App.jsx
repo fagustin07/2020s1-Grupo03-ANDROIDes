@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import RegisterForm from './components/RegisterForm';
 import LogIn from './components/LogIn';
 import NotFound from './components/NotFound';
+import ModalSearch from './components/Modal';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/register" component={RegisterForm}/>
             <Route path="/home" component={Home}/>
             <Route exact path="/" component={LogIn} />
+            <Route path = '/search' component={ModalSearch}/>
             <Route path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>

@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import {Link } from 'react-router-dom';
-export default function Navigation({isLogged}) {
+import ModalSearch from './Modal';
+import Api from './Api'
+import PostersView from './PostersView';
+import Content from './Content';
+
+export default function Navigation({isLogged, authorization}) {
   let history= useHistory();
   const [text, setText]= useState('');
 
   const handleSubmit = () => {
-    
-    history.push(`/search/${text}`);
-  }
-
+    Api.searchContent(authorization, '/search?text='+ text)
+    .then(response => {
+       history.push('/search', response.data)
+      })
+    .catch(() => console.log('Boom'));
+ }
   const goToHome = () => {
     history.push('/');
   }
+
   return (
       <nav className="navbar navbar-dark bg-secondary p-10 justify-content-between">
       { isLogged &&

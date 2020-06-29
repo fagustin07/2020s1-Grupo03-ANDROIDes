@@ -27,7 +27,7 @@ export default function Home() {
     return (
         
         <div className = "container">
-            <Navigation isLogged={true} />
+            <Navigation isLogged={true} authorization = {authorization}/>
             <h1 className = "saludo">
                 HI {name}!
             </h1>

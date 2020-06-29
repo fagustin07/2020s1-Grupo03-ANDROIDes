@@ -1,0 +1,12 @@
+.modalContainer{
+    display: block;
+    block-size: 300px;
+    padding-top: 20px;
+    padding-left: 20px;
+
+}
+
+.banners{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,250px);
+}
