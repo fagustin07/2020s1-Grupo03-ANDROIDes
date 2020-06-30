@@ -2,13 +2,17 @@ import axios from 'axios'
 
 const url = 'http://localhost:7342'
 
-const logIn = (email , password) => axios.post(url + '/login', {  email: email, password: password });
+const logIn = (email , password) =>
+    axios.post(url + '/login', {  email: email, password: password });
 
-const getUser = (authorization) => axios.get(url + '/user', { headers : { Authorization: authorization } });
+const getUser = () =>
+    axios.get(url + '/user', { headers : { Authorization: localStorage.getItem('auth') } });
 
-const searchContent = (authorization, path) => axios.get(url + path, {headers : {Authorization : authorization}});
+const searchContent = (path) =>
+    axios.get(url + path, {headers : {Authorization : localStorage.getItem('auth')}});
 
-const getContent = (authorization) => axios.get (url + '/content', { headers : {Authorization : authorization}});
+const getContent = () =>
+    axios.get (url + '/content', { headers : {Authorization : localStorage.getItem('auth')}});
 
 export default {
     getContent,

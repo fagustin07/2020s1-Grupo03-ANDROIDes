@@ -7,9 +7,9 @@ export default function Content({ banner }) {
     const { poster, title } = banner;
     return (
     <div className = "contentContainer">
-          <div className = "contenido">
-            <img className = 'poster 'src = {poster}/>
-            <h5 className = 'title'>{title} </h5>
+          <div className = "p-3 contenido">
+            <img className = 'poster' src = {poster} alt={title}/>
+            <h5 className = 'text-light text-capitalize title'>{title} </h5>
         </div>
     </div>    
     );

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Content from './Content'
 import './PostersView.css'
-import Api from './Api'
 
 export default function PostersView ({ content, text }) {
     return(

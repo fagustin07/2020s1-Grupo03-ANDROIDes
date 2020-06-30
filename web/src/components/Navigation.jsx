@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import {Link } from 'react-router-dom';
-import ModalSearch from './Modal';
-import Api from './Api'
-import PostersView from './PostersView';
-import Content from './Content';
+import API from './Api'
 
-export default function Navigation({isLogged, authorization}) {
-  let history= useHistory();
+export default function Navigation({isLogged}) {
+  const history = useHistory();
   const [text, setText]= useState('');
 
   const handleSubmit = () => {
-    Api.searchContent(authorization, '/search?text='+ text)
+    API.searchContent(`/search?text=${text}`)
     .then(response => {
        history.push('/search', response.data)
       })
     .catch(() => console.log('Boom'));
- }
+  }
+
   const goToHome = () => {
+    isLogged && history.push('/home');
+    !isLogged && history.push('/');
+  }
+
+  const handleLogOut = () => {
     history.push('/');
+    localStorage.setItem('auth',undefined);
   }
 
   return (
@@ -35,7 +38,7 @@ export default function Navigation({isLogged, authorization}) {
             />
             <button className="btn btn-outline-light my-2 my-sm-0" type="submit" onClick={handleSubmit}>Search</button>
           </div>
-          <Link to="/" className="btn btn-danger">Log Out!</Link>
+          <button className="btn btn-danger my-2 my-sm-0" type="submit" onClick={handleLogOut}>Log Out!</button>
         </>
     }
     { !isLogged &&

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Content from './Content';
 import './Modal.css'
 import { useLocation } from 'react-router-dom';
-import PostersView from './PostersView';
 import Navigation from './Navigation';
 
 export default function ModalSearch(){
@@ -10,11 +9,11 @@ export default function ModalSearch(){
     const content = location.state
 
     return(
-        <div>
+        <div className="container">
         <Navigation isLogged = {true}/>    
         <div className = 'modalContainer'>
             <div className = "banners">
-                {content.map( banner => (<Content banner = {banner}/>))} 
+                {content.map( banner => (<Content key={banner.id} banner = {banner}/>))} 
                 {console.log(content)}
             </div>
         </div>

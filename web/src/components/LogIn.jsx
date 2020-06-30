@@ -13,15 +13,16 @@ export default function LogIn() {
 
     const handleSubmit = (ev) =>{
         ev.preventDefault();
-        // const findedUser = users.find(anUser => anUser.user===user && anUser.password===password);
         Api.logIn(user, password)
-        .then(response => history.push('/home', {...response.headers}))
-        .catch(response => console.log(response.error));
-        // if(findedUser){
-        //     history.push('/home', {...findedUser});
-        // }
-        // setError('Invalid username or password, please, try again.')
-        // setPassword('');
+            .then(response => {
+                if(response.status===200) {
+                    localStorage.setItem('auth',response.headers.authorization);
+                    history.push('/home');
+                }
+            })
+            .catch(response => console.log(response.error));
+
+        setError('Invalid email or password, please, try again.');
     }
 
     return(
