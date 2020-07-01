@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navigation from './Navigation';
 import Content from './Content';
-import './Modal.css'
+import './ContentView.css'
 
-export default function ModalSearch(){
+
+
+export default function ContentView(){
     const location = useLocation();
     const content = location.state
 
+
+
     return(
         <div className="container">
-        <Navigation isLogged = {true}/>    
+        <Navigation isLogged = {true} searchBarMode = {true}/>    
         <div className = 'modalContainer'>
+            <h2 className = "text">Contenidos</h2>
             <div className = "banners">
                 {content.map( banner => (<Content key={banner.id} banner = {banner}/>))}
-                {console.log(content)}
             </div>
         </div>
         </div>

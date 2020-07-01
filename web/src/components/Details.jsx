@@ -6,12 +6,13 @@ import './Details.css';
 import API from './Api'
 
 
-export default function Details(props) {
+export default function Details() {
 
-    const { contentId } = useParams();
-    /*const location = useLocation();
+    // const { contentId } = useParams();
+    const location = useLocation();
      const content = location.state;
-
+    
+     /*
     console.log(props);
     <div><h1> content: {props.match.params.contentId}  </h1> </div>
      */
@@ -19,7 +20,7 @@ export default function Details(props) {
     return (
         <div className = "container">
             <Navigation isLogged={true}/>
-            <div><h1> content: { contentId }  </h1> </div>
+            {/* <div><h1> content: { contentId }  </h1> </div> */}
 
 
             <div class="wrap">

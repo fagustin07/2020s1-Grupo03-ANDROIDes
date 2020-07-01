@@ -25,7 +25,7 @@ export default function Home() {
         <div className = "container">
             <Navigation isLogged={true}/>
             <h1 className = "saludo">
-                Hi {name}!
+                Hi {name.split(" ",1)}!
             </h1>
             <PostersView content = {favorites} text = 'Favoritos'/>
             <PostersView content = {lastSeen} text = 'Ultimos vistos'/>

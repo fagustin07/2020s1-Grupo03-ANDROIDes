@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import RegisterForm from './components/RegisterForm';
-import ModalSearch from './components/Modal';
+import ContentView from './components/ContentView';
 import NotFound from './components/NotFound';
 import Details from './components/Details';
 import LogIn from './components/LogIn';
@@ -17,9 +17,9 @@ function App() {
         <Switch>
             <Route exact path="/" component={LogIn} />
             <Route path="/register" component={RegisterForm}/>
-            <Route path="/home" component={Home}/>
-            <Route path = '/search' component={ModalSearch}/>
-            <Route exact path = '/content' component={Details}/>
+            <Route path="/main" component={Home}/>
+            <Route path = '/search' component={ContentView}/>
+            <Route exact path = '/content' component={ContentView}/>
             <Route path = '/content/:contentId' component={Details}/>
             <Route path="*" component={NotFound} />
         </Switch>

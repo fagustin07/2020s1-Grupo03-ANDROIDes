@@ -17,7 +17,7 @@ export default function LogIn() {
             .then(response => {
                 if(response.status===200) {
                     localStorage.setItem('auth',response.headers.authorization);
-                    history.push('/home');
+                    history.push('/main');
                 }
             })
             .catch(response => console.log(response.error));
@@ -28,6 +28,7 @@ export default function LogIn() {
     return(
         <>
         <Navigation isLogged={false} />
+        <div className = "logoContainer"><h1 className="text-light">WELCOME TO <h1 className = "logo">UNQFLIX!</h1></h1></div>
         <form className="card col-auto m-5 p-3 " onSubmit={handleSubmit}>
             <h1>Log in!</h1>
             <div>
