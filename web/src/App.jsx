@@ -8,6 +8,7 @@ import LogIn from './components/LogIn';
 import Home from './components/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import SearchBar from './components/SearchBar';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
             <Route exact path="/" component={LogIn} />
             <Route path="/register" component={RegisterForm}/>
             <Route path="/main" component={Home}/>
-            <Route path = '/search' component={ContentView}/>
+            <Route path = '/search' component={SearchBar}/>
             <Route exact path = '/content' component={ContentView}/>
             <Route path = '/content/:contentId' component={Details}/>
             <Route path="*" component={NotFound} />

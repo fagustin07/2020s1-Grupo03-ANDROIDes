@@ -17,13 +17,14 @@ const getContent = () =>
 const getDetails = (id) =>
     axios.get(url + '/content/' + id , {headers : {Authorization : localStorage.getItem('auth')}});
 
+const getBanners = () =>
+    axios.get(url + '/banners', {headers : {Authorization : localStorage.getItem('auth')}});
 
 export default {
-
     getDetails,
     getContent,
     searchContent,
     getUser,
     logIn,
-
+    getBanners,
 };

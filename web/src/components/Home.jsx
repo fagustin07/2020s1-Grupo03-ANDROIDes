@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
 import PostersView from './PostersView'
 import Navigation from './Navigation';
 import API from './Api'
@@ -9,6 +8,7 @@ import './Home.css'
 export default function Home() {
     const [favorites, setFavorites] = useState([]);
     const [lastSeen, setLastSeen] = useState([]);
+    const [banners, setBanners] = useState([]);
     const [name, setName] = useState('')
 
     useEffect(() => {
@@ -19,6 +19,10 @@ export default function Home() {
               setName(response.data.name)
             })
           .catch(() => console.log('Boom'));
+
+        API.getBanners()
+            .then(response => setBanners(response.data))
+            .catch(error => console.log(error));
       }, []);
 
     return (
@@ -27,6 +31,7 @@ export default function Home() {
             <h1 className = "saludo">
                 Hi {name.split(" ",1)}!
             </h1>
+            <PostersView content = {banners} text='Banners' />
             <PostersView content = {favorites} text = 'Favoritos'/>
             <PostersView content = {lastSeen} text = 'Ultimos vistos'/>
         </div>

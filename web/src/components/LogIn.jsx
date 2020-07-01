@@ -28,7 +28,7 @@ export default function LogIn() {
     return(
         <>
         <Navigation isLogged={false} />
-        <div className = "logoContainer"><h1 className="text-light">WELCOME TO <h1 className = "logo">UNQFLIX!</h1></h1></div>
+        <div className = "logoContainer"><h1 className="text-dark">WELCOME TO <span className = "logo">UNQFLIX!</span></h1></div>
         <form className="card col-auto m-5 p-3 " onSubmit={handleSubmit}>
             <h1>Log in!</h1>
             <div>
@@ -56,7 +56,7 @@ export default function LogIn() {
                 <Link to='/register'> Unregister Yet?</Link>
                 {error && <small className="font-weight-bolder alert alert-danger">{error}</small>}
             <div className="text-center">
-                <button className="btn btn-info m-3" onSubmit={handleSubmit}> Log in! <img src="iniciar-sesion.png"/></button>
+                <button className="btn btn-info m-3" onSubmit={handleSubmit}> Log in! <img src="iniciar-sesion.png" alt="log in"/></button>
             </div>
         </form>
     </>

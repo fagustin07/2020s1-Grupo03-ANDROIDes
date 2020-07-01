@@ -1,49 +1,47 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import Navigation from './Navigation';
-import Content from './Content';
 import './Details.css';
-import API from './Api'
+import { useState, useEffect } from 'react';
+import API from './Api';
+import Content from './Content';
+import Seasons from './Seasons';
+import PlayMovie from './PlayMovie';
 
+export default function Details({match}) {
+    const [content,setContent] = useState(undefined);
+    const id = match.params.contentId;
 
-export default function Details() {
-
-    // const { contentId } = useParams();
-    const location = useLocation();
-     const content = location.state;
-    
-     /*
-    console.log(props);
-    <div><h1> content: {props.match.params.contentId}  </h1> </div>
-     */
+    useEffect(() => {
+      API.getDetails(id)
+      .then(response => setContent(response.data))
+      .catch(() => console.log('Boom'));
+    },[id])
 
     return (
-        <div className = "container">
-            <Navigation isLogged={true}/>
-            {/* <div><h1> content: { contentId }  </h1> </div> */}
-
-
-            <div class="wrap">
-              <img src="dbz.jpg" className='left' />
-              <h1 className='right'> T I T L E </h1>
-              <div className='right'>Content description nnnnnnnnnnnnnnn nnnnnnnnnnn nnnnnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnn nnnnnn</div>
-              <h1 className='right'><button type="button" className="navbar-brand btn btn-info"><img src="video.png"/> Play </button></h1>
-
-            </div> <br/><br/><br/>
-
-            <div class="wrap">
-              <h1 > Contenido relacionado </h1>
-              <img src="goku.png" className='left' />
-              <img src="vegeta.jpg" className='left' />
-              <img src="goku.png" className='left' />
-              <img src="vegeta.jpg" className='left' />
-              <img src="goku.png" className='left' />
-              <img src="vegeta.jpg" className='left' />
-
+      <div className = "container">
+      <Navigation isLogged={true}/>
+      {content && !content.status && <h1>Sorry! {content.title} is Unavailable :(</h1>}
+      { content && content.status && 
+        <>
+            <div className="wrap">
+              <div className="">
+                <img src={content.poster} alt="foto" className='left' />
+              </div>
+              <div>
+                <h1 className='right text-capitalize'> {content.title} </h1>
+                <p className='right text-justify '>{content.description}</p>
+                {content.id.includes('mov') && <PlayMovie movie={content}/>}
+                {!content.id.includes('mov') && <Seasons seasons={content.seasons}/>}
+              </div>
             </div>
-
-
-
+              <div className="wrap ">
+              <h5 > Related Content </h5>
+              <div className = "banners">
+                {content.relatedContent.map( banner => (<Content key={banner.id} banner = {banner}/>))}
+            </div>
+            
+            </div>
+            </>}
         </div>
     );
   }

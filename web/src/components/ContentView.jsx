@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import Navigation from './Navigation';
 import Content from './Content';
 import './ContentView.css'
-
+import { useEffect } from 'react';
+import API from './Api';
 
 
 export default function ContentView(){
-    const location = useLocation();
-    const content = location.state
+    const [content, setContent]= useState([]);
 
+    useEffect(()=>{
+        API.getContent()
+        .then(response => setContent(response.data))
+        .catch(error => console.log(error))
+    },[]);
 
 
     return(

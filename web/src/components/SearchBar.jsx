@@ -1,39 +1,31 @@
-import React, { useState }  from 'react'
-import { useHistory } from 'react-router';
+import React, { useState, useEffect }  from 'react'
 import API from './Api'
-import { getAllByAltText } from '@testing-library/react';
+import Content from './Content';
+import Navigation from './Navigation'
 
-
-
-export default function SearchBar({ searchBarMode }){   
-    const history = useHistory();
+export default function Search(){   
     const [text, setText]= useState('');
-
-    const handleSubmit = () => {
+    const [content, setContent] = useState([]);
+    
+    useEffect(() => {
         API.searchContent(`/search?text=${text}`)
-        .then(response => {
-           history.push('/search', response.data)
-          })
+        .then(response => setContent(response.data))
         .catch(() => console.log('Boom'));
-      }
+      },[text]);
     
     return( 
-        <div className="form-inline text-center">
-            { searchBarMode && 
-            <>
-             <input
-              className="form-control m-2 col"
+          <div className = 'container'>
+          <Navigation isLogged = {true}/>   
+          <h2 className = "text-center font-italic">Buscador</h2>
+            <input
+              className="m-2 col"
               placeholder="Insert title here..."
               type="text"
-              onChange={event => 
-                              { setText(event.target.value)
-                                if(text === '') {} 
-                                else {handleSubmit()} }
-                              }
-            /> 
-             <button className="btn btn-outline-light my-2 my-sm-0" type="submit" onClick={handleSubmit}>Search <img src="buscar.png"/></button>
-            </>
-            }
+              onChange={event => setText(event.target.value)}
+            />
+            <div className = "banners">
+                {content.map( banner => (<Content key={banner.id} banner = {banner}/>))}
+            </div>
         </div>
     );
 
