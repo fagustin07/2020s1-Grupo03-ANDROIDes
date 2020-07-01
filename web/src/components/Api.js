@@ -14,7 +14,12 @@ const searchContent = (path) =>
 const getContent = () =>
     axios.get (url + '/content', { headers : {Authorization : localStorage.getItem('auth')}});
 
+const getDetails = (path) =>
+    axios.get(url + '/content' + path, {headers : {Authorization : localStorage.getItem('auth')}});
+
+
 export default {
+
     getContent,
     searchContent,
     getUser,

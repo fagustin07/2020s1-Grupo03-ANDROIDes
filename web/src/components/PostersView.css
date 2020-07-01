@@ -1,6 +1,9 @@
 .text{
-    padding-top: 20px;
+    padding: 10px;
     color: black;
+    background-color: #5a5f44;
+    max-width: 300px;
+
 }
 
 .badge.badge-pill{
@@ -11,7 +14,7 @@
     display: block;
     block-size: 300px;
     border: 1px solid black;
-    background-color: #AADD77;
+    background-color: #444c5f;
     padding-top: 20px;
     padding-left: 20px;
     border-radius: 5px;

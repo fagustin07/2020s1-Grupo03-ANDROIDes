@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Navigation from './Navigation';
+import { useHistory } from 'react-router';
 import PostersView from './PostersView'
-import './Home.css'
+import Navigation from './Navigation';
 import API from './Api'
+import './Home.css'
 
 
 export default function Home() {
@@ -15,17 +16,16 @@ export default function Home() {
           .then(response => {
               setFavorites(response.data.favorites);
               setLastSeen(response.data.lastSeen);
-              setName(response.data.name)      
+              setName(response.data.name)
             })
           .catch(() => console.log('Boom'));
       }, []);
 
     return (
-        
         <div className = "container">
             <Navigation isLogged={true}/>
             <h1 className = "saludo">
-                HI {name}!
+                Hi {name}!
             </h1>
             <PostersView content = {favorites} text = 'Favoritos'/>
             <PostersView content = {lastSeen} text = 'Ultimos vistos'/>

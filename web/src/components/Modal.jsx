@@ -1,8 +1,8 @@
 import React from 'react';
-import Content from './Content';
-import './Modal.css'
 import { useLocation } from 'react-router-dom';
 import Navigation from './Navigation';
+import Content from './Content';
+import './Modal.css'
 
 export default function ModalSearch(){
     const location = useLocation();
@@ -13,7 +13,7 @@ export default function ModalSearch(){
         <Navigation isLogged = {true}/>    
         <div className = 'modalContainer'>
             <div className = "banners">
-                {content.map( banner => (<Content key={banner.id} banner = {banner}/>))} 
+                {content.map( banner => (<Content key={banner.id} banner = {banner}/>))}
                 {console.log(content)}
             </div>
         </div>

@@ -28,7 +28,7 @@ export default function Navigation({isLogged}) {
       <nav className="navbar navbar-dark bg-secondary p-10 justify-content-between">
       { isLogged &&
             <>
-          <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}> Home<span className="oi oi-book" /> </button>
+          <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}><img src="casa.png"/> Home <span className="oi oi-book" /> </button>
           <div className="form-inline text-center">
             <input
               className="form-control m-2 col"
@@ -36,9 +36,9 @@ export default function Navigation({isLogged}) {
               type="text"
               onChange={event => setText(event.target.value)}
             />
-            <button className="btn btn-outline-light my-2 my-sm-0" type="submit" onClick={handleSubmit}>Search</button>
+            <button className="btn btn-outline-light my-2 my-sm-0" type="submit" onClick={handleSubmit}>Search <img src="buscar.png"/></button>
           </div>
-          <button className="btn btn-danger my-2 my-sm-0" type="submit" onClick={handleLogOut}>Log Out!</button>
+          <button className="btn btn-danger my-2 my-sm-0" type="submit" onClick={handleLogOut}> Log Out! <img src="salida.png"/></button>
         </>
     }
     { !isLogged &&

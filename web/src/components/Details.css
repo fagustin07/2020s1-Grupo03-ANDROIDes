@@ -1,0 +1,20 @@
+.wrap {
+    width: 100vh;
+    padding: 20px;
+    border: 1px solid black;
+    overflow: hidden;
+
+}
+
+.left {
+    width: 30vh;
+    padding: 20px;
+    float: left;
+
+}
+
+.right {
+    margin-left: 200px;
+    width: 50vh;
+
+}

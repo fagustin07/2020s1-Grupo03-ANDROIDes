@@ -55,7 +55,7 @@ export default function LogIn() {
                 <Link to='/register'> Unregister Yet?</Link>
                 {error && <small className="font-weight-bolder alert alert-danger">{error}</small>}
             <div className="text-center">
-                <button className="btn btn-info m-3" onSubmit={handleSubmit}>Log in!</button>
+                <button className="btn btn-info m-3" onSubmit={handleSubmit}> Log in! <img src="iniciar-sesion.png"/></button>
             </div>
         </form>
     </>

@@ -88,7 +88,7 @@ export default function LogIn() {
             </div>
 
             <div className="text-center">
-                <button className="btn btn-info" onSubmit={handleSubmit}>Register!</button>
+                <button className="btn btn-info" onSubmit={handleSubmit}>Register! <img src="registro.png"/></button>
             </div>
         </form>
         </>
