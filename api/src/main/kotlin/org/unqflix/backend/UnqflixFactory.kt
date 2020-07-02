@@ -15,7 +15,8 @@ object UnqflixFactory {
 
         var oneP = Serie(
             idGenerator.nextSerieId(), "one piece", "las aventuras de los Mugiwara!",
-            "https://images-na.ssl-images-amazon.com/images/I/61j4P7FpQhL.jpg", Available(), mutableListOf(baseCats[1],baseCats[3])
+            "https://images-na.ssl-images-amazon.com/images/I/61j4P7FpQhL.jpg", Available(), mutableListOf(baseCats[1],baseCats[3]),
+            onePSeason()
         )
         var gint = Serie(
             idGenerator.nextSerieId(), "gintama", "las aventuras de Gintoki Sakata",
@@ -23,21 +24,23 @@ object UnqflixFactory {
         )
         var dn = Serie(
             idGenerator.nextSerieId(),"death note","el prota encuentra una libreta magica que mata gente",
-            "https://images-na.ssl-images-amazon.com/images/I/515es5ofRxL._AC_.jpg", Unavailable(),
-            mutableListOf(baseCats[1])
-        )
-        var snk = Serie(
-            idGenerator.nextSerieId(),"attack on titans","Un mundo en donde los titanes cazan personas.",
-            "https://otakuwagon.com/wp-content/uploads/2020/04/s592.jpg", Available(), mutableListOf(baseCats[1])
+            "https://images-na.ssl-images-amazon.com/images/I/515es5ofRxL._AC_.jpg", Available(),
+            mutableListOf(baseCats[1]), dnSeason(), mutableListOf(oneP)
         )
         var opm = Serie(
             idGenerator.nextSerieId(), "one punch man", "Saitama es el hombre mas fuerte del mundo",
-            "https://images-na.ssl-images-amazon.com/images/I/717aat3l-YL._AC_SL1224_.jpg",Available(),mutableListOf(baseCats[1])
+            "https://images-na.ssl-images-amazon.com/images/I/717aat3l-YL._AC_SL1224_.jpg",Available(),mutableListOf(baseCats[1]),
+            opmSeason(), mutableListOf(dn)
         )
         var dbz = Serie(
             idGenerator.nextSerieId(),"dragon ball z","Goku quiere ser el mas fuerte del mundo",
-            "https://images-na.ssl-images-amazon.com/images/I/61JKxqapVQL._AC_.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]), baseSeasons(),
-            mutableListOf(opm,dn,gint)
+            "https://images-na.ssl-images-amazon.com/images/I/61JKxqapVQL._AC_.jpg",Available(),mutableListOf(baseCats[1],baseCats[4]),
+            dbzBaseSeasons(), mutableListOf(opm,dn,gint)
+        )
+        var snk = Serie(
+            idGenerator.nextSerieId(),"attack on titans","Un mundo en donde los titanes cazan personas.",
+            "https://otakuwagon.com/wp-content/uploads/2020/04/s592.jpg", Available(), mutableListOf(baseCats[1]),
+            snkSeasons(), mutableListOf(opm,dn,dbz)
         )
 
         var yn= Movie(idGenerator.nextMovieId(),"your name","Una linda historia.",
@@ -71,19 +74,52 @@ object UnqflixFactory {
             categories = baseCats, users = mutableListOf(nico,uli,chester), banners = mutableListOf(jw,gint,oneP,yn,opm))
     }
 
-
-    private fun baseCategories(): MutableList<Category> {
-        var comedy = Category(idGenerator.nextCategoryId(),"Comedy")
-        var anime = Category(idGenerator.nextCategoryId(),"Anime")
-        var horror = Category(idGenerator.nextCategoryId(),"Horror")
-        var csFic = Category(idGenerator.nextCategoryId(),"Cs. Fiction")
-        var rltShow = Category(idGenerator.nextCategoryId(),"Reality Show")
-        var trror = Category(idGenerator.nextCategoryId(),"Terror")
-        var rmc = Category(idGenerator.nextCategoryId(),"Romance")
-        return mutableListOf(comedy,anime,horror,csFic,rltShow,trror,rmc)
+    private fun onePSeason(): MutableList<Season> {
+        var chapter1 = Chapter(
+            idGenerator.nextChapterId(),"¡Soy Luffy! ¡El hombre que se convertirá en el Rey de los Piratas!","Start chapter",60,
+            "https://www888.o0-2.com/token=SGop8vq0AnwRfKSPrCuJ0w/1593735487/201.176.0.0/38/3/2d/9e4e9f0f0e7f622af422d2dca41432d3-480p.mp4","")
+        var baseCh = mutableListOf(chapter1)
+        var season = Season(
+            idGenerator.nextSeasonId(),"Season 1","First Season",
+            "dn.com/season1.jpg",chapters = baseCh)
+        return mutableListOf(season)
     }
 
-    fun baseSeasons() : MutableList<Season>{
+    private fun dnSeason(): MutableList<Season> {
+        var chapter1 = Chapter(
+            idGenerator.nextChapterId(),"Renacimiento.","Start chapter",60,
+            "https://www66.o0-1.com/token=KCA4fGp3B2MWzkdtHVRWHA/1593735319/201.176.0.0/28/1/ea/01cc337a1707d27b4eedce8586e66ea1-480p.mp4","")
+        var baseCh = mutableListOf(chapter1)
+        var season = Season(
+            idGenerator.nextSeasonId(),"Season 1","First Season",
+            "dn.com/season1.jpg",chapters = baseCh)
+        return mutableListOf(season)
+    }
+
+    private fun opmSeason(): MutableList<Season> {
+        var chapter1 = Chapter(
+            idGenerator.nextChapterId(),"El hombre más poderoso del mundo","Start chapter",60,
+            "https://www1140.o0-3.com/token=1IRwH0v2Zvz1dzvJnB8OTA/1593735073/201.176.0.0/38/9/e9/b0427ab32a9a22af565ce843eb953e99-480p.mp4","")
+        var baseCh = mutableListOf(chapter1)
+        var season = Season(
+            idGenerator.nextSeasonId(),"Season 1","First Season",
+            "opm.com/season1.jpg",chapters = baseCh)
+        return mutableListOf(season)
+    }
+
+    private fun snkSeasons(): MutableList<Season> {
+        var chapter1 = Chapter(
+            idGenerator.nextChapterId(),"A ti, dentro de 2000 años - La caída de Shiganshina, parte 1!",
+            "Start chapter",60,
+            "https://www337.o0-1.com/token=KrdQqJE2s9GnYG2iLUr92w/1593734778/201.176.0.0/31/f/46/801a23a358be1d681659dc2f3ee3946f-480p.mp4","")
+        var baseCh = mutableListOf(chapter1)
+        var season = Season(
+            idGenerator.nextSeasonId(),"Season 1","First Season",
+            "snk.com/season1.jpg",chapters = baseCh)
+        return mutableListOf(season)
+    }
+
+    fun dbzBaseSeasons() : MutableList<Season>{
         var baseCh = baseChapters()
         var season1 = Season(
             idGenerator.nextSeasonId(),"saga de freezer","Freezer es re maligno",
@@ -99,11 +135,22 @@ object UnqflixFactory {
 
         var chapter1 = Chapter(
             idGenerator.nextChapterId(),"Volamos hacia el espacio!","Termina la batalla entre saiyans" +
-                    " y deciden ir a Namekusei.",60,"https://videos2.sendvid.com/8c/86/nceb2qe3.mp4?validfrom=1593642256&validto=1593649456&rate=200k&burst=1000k&ip=201.176.192.99&hash=xSwERa%2FjnHCafzdxdXqPciN4PDo%3D","")
+                    " y deciden ir a Namekusei.",60,"https://www813.o0-2.com/token=UilehDaMu3mjxmALssLJWw/1593733829/201.176.0.0/34/d/23/233436bf2c2841c14228a3adeb7c623d-480p.mp4","")
         var chapter2 = Chapter(
             idGenerator.nextChapterId(),"El misterio de yunzabit!","La busqueda de la nave espacial de Dios.",
-            90,"https://videos2.sendvid.com/3d/79/a1lscyw0.mp4?validfrom=1593642368&validto=1593649568&rate=200k&burst=1000k&ip=201.176.192.99&hash=2mdGCMdKqHgwMFTnWD6Q5qYq82I%3D","")
+            90,"https://www765.o0-2.com/token=08cEcdT28w7367DYaYNgBA/1593733967/201.176.0.0/34/8/02/273c0347a2e46ded18bd688719c27028-480p.mp4","")
         return mutableListOf(chapter1,chapter2)
+    }
+
+    private fun baseCategories(): MutableList<Category> {
+        var comedy = Category(idGenerator.nextCategoryId(),"Comedy")
+        var anime = Category(idGenerator.nextCategoryId(),"Anime")
+        var horror = Category(idGenerator.nextCategoryId(),"Horror")
+        var csFic = Category(idGenerator.nextCategoryId(),"Cs. Fiction")
+        var rltShow = Category(idGenerator.nextCategoryId(),"Reality Show")
+        var trror = Category(idGenerator.nextCategoryId(),"Terror")
+        var rmc = Category(idGenerator.nextCategoryId(),"Romance")
+        return mutableListOf(comedy,anime,horror,csFic,rltShow,trror,rmc)
     }
 
     fun takeSystem(): UNQFlix = unqflixModel

@@ -9,9 +9,15 @@ class ValidateUserData {
         validateName(data.name!!)
         validateEmail(data.email!!)
         validatePassword(data.password!!)
+        validateRepeatedPass(data.password,data.repeatedPass!!)
         validateCreditCard(data.creditCard!!)
         validateImage(data.image!!)
 
+    }
+
+    private fun validateRepeatedPass(password:String, repeatedPass: String) {
+        if (repeatedPass!= password )
+            throw BadRequestResponse("Invalids passwords: passwords does not match.")
     }
 
     private fun validateName(name: String) {
