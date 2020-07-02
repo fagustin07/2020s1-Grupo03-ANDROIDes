@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import {Card, Accordion, Button, ListGroup, Modal} from 'react-bootstrap';
+import {Card, Accordion, Button, ListGroup} from 'react-bootstrap';
+import ModalPlayVideo from './ModalPlayVideo';
 
 const List = ({season, setSelectedChapter, handleShow}) => {
   return (
     <ListGroup>
     {season.chapters.map((chapter,i) =>
          <ListGroup.Item  key={chapter.id}
-         className="capitulo bg-dark text-light text-capitalize"
+         className="capitulo bg-secondary text-light text-capitalize"
          onClick={() => {
              setSelectedChapter(chapter);
              handleShow();
          }
              }>
-             {`${i}.${chapter.title}`}
+             {`${i}. ${chapter.title}`}
          </ListGroup.Item>
      )}
     </ListGroup>
@@ -30,7 +31,7 @@ const Seasons = ({seasons}) => {
         <>
         <Accordion defaultActiveKey="0">
         {seasons.map((season, i) =>
-             <Card key={season.id} className="bg-dark">
+             <Card key={season.id} className="bg-dark m-3">
              <Card.Header>
                <Accordion.Toggle as={Button} className="text-capitalize" variant="link" eventKey={i}>
                  {season.title}
@@ -44,19 +45,7 @@ const Seasons = ({seasons}) => {
            </Card>
         )}
        </Accordion>
-       {selectedChapter &&
-       <Modal show={show} onHide={handleClose}
-       size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-capitalize">{selectedChapter.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <iframe src={selectedChapter.video}
-         width="640" height="360" frameborder="0" allowFullScreen></iframe>
-        </Modal.Body>
-      </Modal>}
+       {selectedChapter && <ModalPlayVideo content={selectedChapter} show={show} handleClose={handleClose}/>}
     </>
     )
 }

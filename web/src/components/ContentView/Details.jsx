@@ -1,7 +1,7 @@
 import React from 'react';
-import Navigation from './Navigation';
+import Navigation from '../Navigation';
 import { useState, useEffect } from 'react';
-import API from './Api';
+import API from '../Api';
 import Content from './Content';
 import Seasons from './Seasons';
 import PlayMovie from './PlayMovie';
@@ -19,22 +19,22 @@ export default function Details({match}) {
     return (
       <div className = "container">
       <Navigation isLogged={true}/>
-      {content && !content.status && <h1>Sorry! {content.title} is Unavailable :(</h1>}
+      {content && !content.status && <h1 className="text-light">Sorry! {content.title} is Unavailable :(</h1>}
       { content && content.status && 
         <>
-            <div className="wrap">
+            <div className="wrap rounded">
               <div className="">
                 <img src={content.poster} alt="foto" className='left' />
               </div>
               <div>
-                <h1 className='right text-capitalize'> {content.title} </h1>
-                <p className='right text-justify '>{content.description}</p>
+                <h1 className='right text-capitalize text-light'> {content.title} </h1>
+                <p className='right text-justify text-light'>{content.description}</p>
                 {content.id.includes('mov') && <PlayMovie movie={content}/>}
                 {!content.id.includes('mov') && <Seasons seasons={content.seasons}/>}
               </div>
             </div>
-              <div className="wrap ">
-              <h5 > Related Content </h5>
+              <div className="wrap rounded">
+              <h5 className="text-light" > Related Content </h5>
               <div className = "banners">
                 {content.relatedContent.map( banner => (<Content key={banner.id} banner = {banner}/>))}
             </div>

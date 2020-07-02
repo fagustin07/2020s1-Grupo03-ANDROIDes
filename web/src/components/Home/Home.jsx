@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import BannersCarrusel from './BannersCarrusel.jsx'
-import Navigation from './Navigation';
-import API from './Api'
-import MainCarrusel from './MainCarrusel.jsx'
+import BannersCarrusel from './BannersCarrusel';
+import Navigation from '../Navigation';
+import API from '../Api'
+import MainCarrusel from './MainCarrusel';
 
 
 export default function Home() {
     const [favorites, setFavorites] = useState([]);
     const [lastSeen, setLastSeen] = useState([]);
-    const [banners, setBanners] = useState([]);
     const [name, setName] = useState('')
 
     useEffect(() => {
@@ -19,10 +18,6 @@ export default function Home() {
               setName(response.data.name)
             })
           .catch(() => console.log('Boom'));
-
-        API.getBanners()
-            .then(response => setBanners(response.data))
-            .catch(error => console.log(error));
       }, []);
 
     return (

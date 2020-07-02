@@ -18,18 +18,18 @@ export default function Navigation({isLogged}) {
 
 
   return (
-      <nav className="navbar navbar-dark bg-secondary p-10 justify-content-between">
+      <nav className="navbar navbar-dark bg-secondary row p-10 justify-content-between rounded">
       { isLogged &&
             <>
-          <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}><img src="casa.png" alt="home"/></button>
-          <h1 className = "logo" onClick = {goToHome}>UNQFLIX</h1>
-          <button className="btn btn-outline-light my-2 my-sm-0" type="submit" onClick={goToSearch}><img src="buscar.png" alt="buscador"/></button>
-          <button className="btn btn-danger my-2 my-sm-0" type="submit" onClick={handleLogOut}><img src="salida.png" alt="log out"/></button>
+          <h1 className = "logo col-1" onClick = {goToHome}>UNQFLIX</h1>
+          <span className="col-8"/>
+          <button className="btn btn-outline-light col-1 mr-2" type="submit" onClick={goToSearch}><img src={require("../images/buscar.png")} alt="buscador"/></button>
+          <button className="btn btn-danger my-2 my-sm-0 col-1" type="submit" onClick={handleLogOut}><img src={require("../images/salida.png")} alt="log out"/></button>
         </>
     }
     { !isLogged &&
     <>
-      <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}> Home<span className="oi oi-book" /> </button>
+      <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}><img src={require("../images/casa.png")} alt="home"/></button>
       <h1 className="text-light">Hello!</h1>
     </>
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react'
 import API from './Api'
-import Content from './Content';
+import Content from './ContentView/Content';
 import Navigation from './Navigation'
 
 export default function Search(){   

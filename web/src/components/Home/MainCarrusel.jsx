@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Content from './Content'
+import Content from '../ContentView/Content';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useEffect } from 'react';
-import API from './Api';
+import API from '../Api';
 
 const responsive = {
     desktop: {
@@ -49,7 +49,7 @@ return(
     additionalTransfrom={0}
     arrows = {false}
     autoPlay
-    autoPlaySpeed={6000}
+    autoPlaySpeed={4000}
     centerMode={false}
     className=""
     containerClass="container"
