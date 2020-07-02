@@ -16,7 +16,7 @@ export default function Search(){
     return( 
           <div className = 'container'>
           <Navigation isLogged = {true}/>   
-          <h2 className = "text-center font-italic">Buscador</h2>
+          <h2 className = "text">Buscador</h2>
             <input
               className="m-2 col"
               placeholder="Insert title here..."
@@ -24,7 +24,7 @@ export default function Search(){
               onChange={event => setText(event.target.value)}
             />
             <div className = "banners">
-                {content.map( banner => (<Content key={banner.id} banner = {banner}/>))}
+                {content.map( banner => (<Content key={banner.id} banner = {banner} titleApear= {true}/>))}
             </div>
         </div>
     );

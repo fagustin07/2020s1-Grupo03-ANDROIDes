@@ -1,6 +1,5 @@
 import React from 'react';
 import Navigation from './Navigation';
-import './Details.css';
 import { useState, useEffect } from 'react';
 import API from './Api';
 import Content from './Content';

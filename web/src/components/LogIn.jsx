@@ -28,7 +28,7 @@ export default function LogIn() {
     return(
         <>
         <Navigation isLogged={false} />
-        <div className = "logoContainer"><h1 className="text-dark">WELCOME TO <span className = "logo">UNQFLIX!</span></h1></div>
+        <div className = "logoContainer"><h1 className="text-ligth">WELCOME TO <span className = "logo">UNQFLIX!</span></h1></div>
         <form className="card col-auto m-5 p-3 " onSubmit={handleSubmit}>
             <h1>Log in!</h1>
             <div>

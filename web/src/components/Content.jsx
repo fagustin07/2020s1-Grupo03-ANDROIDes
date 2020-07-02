@@ -1,8 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import './Content.css';
 
-export default function Content({ banner }) {
+export default function Content({ banner, titleApear }) {
 
     const { poster, title, id } = banner;
     const history = useHistory();
@@ -13,7 +12,12 @@ export default function Content({ banner }) {
     <div className = "contentContainer">
           <div className = "p-4 contenido">
             <img className = 'poster' src = {poster} alt={title} onClick={goToDetails}/>
-          </div>
+            {titleApear &&
+            <>
+            <h3 className = "title" onClick = {goToDetails}>{title.toUpperCase()}</h3>
+            </>
+            }
+            </div>
     </div>    
     );
   }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PostersView from './PostersView'
+import BannersCarrusel from './BannersCarrusel.jsx'
 import Navigation from './Navigation';
 import API from './Api'
-import './Home.css'
+import MainCarrusel from './MainCarrusel.jsx'
 
 
 export default function Home() {
@@ -31,9 +31,9 @@ export default function Home() {
             <h1 className = "saludo">
                 Hi {name.split(" ",1)}!
             </h1>
-            <PostersView content = {banners} text='Banners' />
-            <PostersView content = {favorites} text = 'Favoritos'/>
-            <PostersView content = {lastSeen} text = 'Ultimos vistos'/>
+            <MainCarrusel/>
+            <BannersCarrusel content = {favorites} text = "Favoritos" />
+            <BannersCarrusel content = {lastSeen} text = "Last Seen"/>
         </div>
     )
 }

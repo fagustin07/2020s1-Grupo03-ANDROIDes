@@ -1,7 +1,8 @@
 .text{
-  padding: 10px;
-  color: black;
-  background-color: #5a5f44;
+  padding: 5px;
+  color: #BDC3C7;
+  font-size: xx-large;
+  font-family: fantasy;
   max-width: 300px;
 
 }
@@ -11,13 +12,95 @@
   font-style: italic;
   font-weight: 400;
   cursor: pointer;
+  color: #C0392B;
+
 }
 
 .logoContainer{
   padding-top: 20px;
   text-align: center;
+  color: #fff;
 }
 
 .capitulo:hover {
   cursor: pointer;
+}
+
+.title{
+  padding-top: 5px;
+  font-size: large;
+  font-family: Helvetica, sans-serif;
+  color: #BDC3C7;
+}
+
+.title:hover {
+cursor: pointer;
+text-decoration: underline;
+}
+
+.poster:hover {
+cursor: pointer;
+}
+
+.poster{
+width: 90%;
+height: auto;
+border: 1px solid black;
+padding: 1px;
+border-radius: 5%;
+}
+
+.saludo{
+  font-style: italic;
+  padding: 20px;
+  border-bottom: 3px solid black;
+  color: #BDC3C7;
+  text-shadow: 2px 2px 2px black;
+
+}
+
+.wrap {
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  border: 1px solid black;
+  overflow: hidden;
+}
+
+.left {
+  width: 30vh;
+  padding: 20px;
+  float: left;
+
+}
+
+.right {
+  margin-left: 200px;
+  width: 50vh;
+
+}
+
+
+.modalContainer{
+  display: block;
+  block-size: 300px;
+  padding-top: 20px;
+  padding-left: 20px;
+
+
+}
+
+.badge.badge-pill{
+  padding: 5px;
+}
+
+.contentContainer{
+  padding-top: 20px;
+  padding-left: 20px;
+  
+}
+.banners{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,250px);
 }
