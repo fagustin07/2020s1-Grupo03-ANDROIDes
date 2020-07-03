@@ -8,6 +8,7 @@ import Home from './components/Home/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import SearchBar from './components/SearchBar';
+import RegisterSuccessful from './components/RegisterSuccessful';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/register" component={RegisterForm}/>
             <Route path="/main" component={Home}/>
             <Route path = '/search' component={SearchBar}/>
+            <Route path='/registrationsuccessful/:name/:email' component={RegisterSuccessful} />
             <Route path = '/content/:contentId' component={Details}/>
             <Route path="*" component={NotFound} />
         </Switch>

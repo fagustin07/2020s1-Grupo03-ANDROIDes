@@ -25,7 +25,7 @@ export default function Register() {
         API.register(name, email, password, repeatedPass, image, creditCard)
             .then(response=>{
                 if(response.status>=200 && response.status<300){
-                   history.push('/');
+                   history.push(`/registrationsuccessful/${name}/${email}`);
                 }
             })
             .catch(error =>
