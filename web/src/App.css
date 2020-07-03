@@ -7,6 +7,11 @@
 
 }
 
+.formulario{
+    background-color: #BDC3C7;
+
+}
+
 .logo{
   font-family: fantasy;
   font-style: italic;
@@ -58,7 +63,7 @@ border-radius: 5%;
 .saludo{
   font-style: italic;
   padding: 20px;
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid #BDC3C7;
   color: #BDC3C7;
   text-shadow: 2px 2px 2px black;
 

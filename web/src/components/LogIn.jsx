@@ -20,16 +20,14 @@ export default function LogIn() {
                     history.push('/main');
                 }
             })
-            .catch(response => console.log(response.error));
-
-        setError('Invalid email or password, please, try again.');
+            .catch(error => setError('Invalid email or password, please, try again.'));
     }
 
     return(
         <>
         <Navigation isLogged={false} />
         <div className = "logoContainer"><h1 className="text-ligth">WELCOME TO <span className = "logo">UNQFLIX!</span></h1></div>
-        <form className="card col-auto m-5 p-3 " onSubmit={handleSubmit}>
+        <form className="card formulario col-auto m-5 p-3 " onSubmit={handleSubmit}>
             <h1>Log in!</h1>
             <div>
                 <label htmlFor="username">Username</label>

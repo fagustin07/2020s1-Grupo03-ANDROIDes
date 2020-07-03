@@ -29,7 +29,7 @@ export default function Navigation({isLogged}) {
     }
     { !isLogged &&
     <>
-      <button type="button" className="navbar-brand btn btn-info" onClick={goToHome}><img src={require("../images/casa.png")} alt="home"/></button>
+      <button type="button" className="navbar-brand btn btn-danger" onClick={goToHome}><img src={require("../images/casa.png")} alt="home"/></button>
       <h1 className="text-light">Hello!</h1>
     </>
     }

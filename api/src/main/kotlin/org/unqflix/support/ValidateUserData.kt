@@ -21,7 +21,7 @@ class ValidateUserData {
     }
 
     private fun validateName(name: String) {
-        val regex = Regex("^[a-zA-Z]+(\\s+[a-zA-Z]+)['`\\-]*$")
+        val regex = Regex("^[a-zA-Z]+(\\s+[a-zA-Z]+)['`-]*\$")
         if (!name.matches(regex))
             throw BadRequestResponse("Invalid name: only letters are allowed. Please, submit your name and surname.")
     }
@@ -33,7 +33,7 @@ class ValidateUserData {
     }
 
     private fun validatePassword(password: String) {
-        val regex = Regex("^(?=.*\\d)(?=.*[A-Z])[\\w!@#$%^&*()_+=\\-{}\\[\\];'|?><,./:\\s]{6,16}\$")
+        val regex = Regex("^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{6,16}\$")
         if(!password.matches(regex))
             throw BadRequestResponse("Invalid password: For security reasons, your password must be between 6 and 16 characters, " +
                         "and contains at least one capital letter and one number.")

@@ -27,7 +27,7 @@ export default function Home() {
                 Hi {name.split(" ",1)}!
             </h1>
             <MainCarrusel/>
-            <BannersCarrusel content = {favorites} text = "Favoritos" />
+            <BannersCarrusel content = {favorites} text = "Favorites" />
             <BannersCarrusel content = {lastSeen} text = "Last Seen"/>
         </div>
     )
